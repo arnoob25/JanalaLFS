@@ -52,7 +52,7 @@ const GlaPage = () => {
     return (
         <>
             <InquiryComponent inquiry={selectedInquiry} />
-            <button>Next</button>
+            <button onClick={manageProgression}>Next</button>
         </>
     )
 
