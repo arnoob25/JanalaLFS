@@ -31,9 +31,10 @@ const GlaPage = () => {
 
         if (nextInquiry) {
             setSelectedInquiry(nextInquiry)
-        } else (
-            console.log("this was the last inquiry")
-        )
+            return true
+        } 
+        
+        else { return false }
     }
 
     const manageProgression = () => {
