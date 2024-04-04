@@ -18,7 +18,7 @@ const GlaPage = () => {
 
     // states for managing branching progression
     const [allBranchInquiries, setAllBranchInquiries] = useState('') // stores all the inquiries in the branch
-    const [branchParentInquiry, setBranchParentInquiry] = useState('')
+    const [branchParentInquiry, setBranchParentInquiry] = useState('') // inquiry that originates the branch
     const [shouldBreakBranch, setShouldBreakBranch] = useState(false) // dictates if we should return to the main set of inquiries
 
     // helper functions
@@ -47,14 +47,16 @@ const GlaPage = () => {
     }
 
     const handleProgression = () => {
-        if (allBranchInquiries) { // we're displaying a branch 
-            if (shouldBreakBranch) {
+        if (allBranchInquiries) { 
+            if (shouldBreakBranch) { 
                 const orderOfNextInquiry = branchParentInquiry.order + 1
                 const hasNextInquiry = selectNextInquiry(allInquiries, orderOfNextInquiry)
 
                 if (!hasNextInquiry) {
-                    handleGleEnd()
+                    handleGlaEnd()
                 }
+
+                resetBranch()
             }
             else {
                 const hasNextInquiry = selectNextInquiry(allBranchInquiries)
@@ -68,11 +70,18 @@ const GlaPage = () => {
             const hasNextInquiry = selectNextInquiry(allInquiries)
 
             if (!hasNextInquiry) {
-                handleGleEnd()
+                handleGlaEnd()
             }
         }
 
         setShouldAllowProgression(false)
+    }
+
+    const resetBranch = () => {
+        setShouldAllowProgression(false)
+        setAllBranchInquiries('')
+        setBranchParentInquiry('')
+        setShouldBreakBranch(false)
     }
 
     const manageProgression = () => {
@@ -84,7 +93,7 @@ const GlaPage = () => {
         }
     }
 
-    const handleGleEnd = () => {
+    const handleGlaEnd = () => {
         console.log('This is the end of the gla'); // TODO: go to the summary page
     }
 
