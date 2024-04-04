@@ -13,6 +13,8 @@ const GlaPage = () => {
     const [allInquiries] = useState(INQUIRIES)
     const [selectedInquiry, setSelectedInquiry] = useState('')
 
+    const [allowNext, setAllowNext] = useState(true)
+
     // helper functions
 
     const selectFirstInquiry = () => {
@@ -22,12 +24,13 @@ const GlaPage = () => {
 
         setSelectedInquiry(sortedInquiries[0])
     }
-    const selectNextInquiry = (list, order = null) => {
-        if (!order) {
-            order = selectedInquiry.order
+    
+    const selectNextInquiry = (listOfInquiries, orderOfCurrentInquiry = null) => {
+        if (!orderOfCurrentInquiry) {
+            orderOfCurrentInquiry = selectedInquiry.order
         }
 
-        const nextInquiry = list[order + 1]
+        const nextInquiry = listOfInquiries[orderOfCurrentInquiry + 1]
 
         if (nextInquiry) {
             setSelectedInquiry(nextInquiry)
