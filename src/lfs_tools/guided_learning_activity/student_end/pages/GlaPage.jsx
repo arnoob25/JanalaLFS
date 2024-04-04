@@ -5,7 +5,7 @@
 import { useEffect, useState } from "react"
 import InquiryComponent from "../../shared_ui_components/InquiryComponent"
 
-import { INQUIRIES, BRANCHES } from '../test_db'
+import { INQUIRIES } from '../test_db'
 
 
 
@@ -26,7 +26,7 @@ const GlaPage = () => {
         if (!order) {
             order = selectedInquiry.order
         }
-        
+
         const nextInquiry = list[order + 1]
 
         if (nextInquiry) {
