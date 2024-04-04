@@ -26,6 +26,10 @@ const GlaPage = () => {
 
     }
 
+    const manageProgression = () => {
+        
+    }
+
 
     useEffect(() => {
         if (!selectedInquiry) {
