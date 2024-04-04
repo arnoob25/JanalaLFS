@@ -10,10 +10,16 @@ import { INQUIRIES } from '../test_db'
 
 
 const GlaPage = () => {
+    // states for displaying inquiries and managing linear progression
     const [allInquiries] = useState(INQUIRIES)
     const [selectedInquiry, setSelectedInquiry] = useState('')
 
-    const [allowNext, setAllowNext] = useState(true)
+    const [allowNext, setAllowNext] = useState(true) // TODO: false by default
+
+    // states for managing branching progression
+    const [allBranchInquiries, setAllBranchInquiries] = useState('') // stores all the inquiries in the branch
+    const [branch_parent, setBranchParent] = useState('')
+    const [breakBranch, setBreakBranch] = useState(false) // dictates if we should return to the main set of inquiries
 
     // helper functions
 
