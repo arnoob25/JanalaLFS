@@ -22,12 +22,22 @@ const GlaPage = () => {
 
         setSelectedInquiry(sortedInquiries[0])
     }
-    const selectNextInquiry = () => {
+    const selectNextInquiry = (list, order = null) => {
+        if (!order) {
+            order = selectedInquiry.order
+        }
+        
+        const nextInquiry = list[order + 1]
 
+        if (nextInquiry) {
+            setSelectedInquiry(nextInquiry)
+        } else (
+            console.log("this was the last inquiry")
+        )
     }
 
     const manageProgression = () => {
-        
+        selectNextInquiry(allInquiries)
     }
 
 
