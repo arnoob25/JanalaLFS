@@ -14,12 +14,12 @@ const GlaPage = () => {
     const [allInquiries] = useState(INQUIRIES)
     const [selectedInquiry, setSelectedInquiry] = useState('')
 
-    const [allowNext, setAllowNext] = useState(true) // TODO: false by default
+    const [shouldAllowProgression, setShouldAllowProgression] = useState(true) // TODO: false by default
 
     // states for managing branching progression
     const [allBranchInquiries, setAllBranchInquiries] = useState('') // stores all the inquiries in the branch
-    const [branch_parent, setBranchParent] = useState('')
-    const [breakBranch, setBreakBranch] = useState(false) // dictates if we should return to the main set of inquiries
+    const [branchParentInquiry, setBranchParentInquiry] = useState('')
+    const [shouldBreakBranch, setShouldBreakBranch] = useState(false) // dictates if we should return to the main set of inquiries
 
     // helper functions
 
@@ -30,7 +30,7 @@ const GlaPage = () => {
 
         setSelectedInquiry(sortedInquiries[0])
     }
-    
+
     const selectNextInquiry = (listOfInquiries, orderOfCurrentInquiry = null) => {
         if (!orderOfCurrentInquiry) {
             orderOfCurrentInquiry = selectedInquiry.order
@@ -41,20 +41,55 @@ const GlaPage = () => {
         if (nextInquiry) {
             setSelectedInquiry(nextInquiry)
             return true
-        } 
-        
+        }
+
         else { return false }
     }
 
-    const manageProgression = () => {
-        selectNextInquiry(allInquiries)
+    const handleProgression = () => {
+        if (allBranchInquiries) { // we're displaying a branch 
+            if (shouldBreakBranch) {
+                const orderOfNextInquiry = branchParentInquiry.order + 1
+                const hasNextInquiry = selectNextInquiry(allInquiries, orderOfNextInquiry)
+
+                if (!hasNextInquiry) {
+                    handleGleEnd()
+                }
+            }
+            else {
+                const hasNextInquiry = selectNextInquiry(allBranchInquiries)
+
+                if (!hasNextInquiry) {
+                    setSelectedInquiry(branchParentInquiry)
+                }
+            }
+        }
+        else {
+            const hasNextInquiry = selectNextInquiry(allInquiries)
+
+            if (!hasNextInquiry) {
+                handleGleEnd()
+            }
+        }
+
+        setShouldAllowProgression(false)
     }
 
+    const manageProgression = () => {
+        if (shouldAllowProgression) {
+            handleProgression()
+        }
+        else {
+            console.log("respond correctly to proceed");
+        }
+    }
+
+    const handleGleEnd = () => {
+        console.log('This is the end of the gla'); // TODO: go to the summary page
+    }
 
     useEffect(() => {
         if (!selectedInquiry) {
-
-
             selectFirstInquiry()
         }
     }, [selectedInquiry])
