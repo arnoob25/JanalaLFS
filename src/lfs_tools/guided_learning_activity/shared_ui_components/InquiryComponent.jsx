@@ -4,7 +4,9 @@
  * but also used in the author end, to preview the designed inquiry.
  */
 
-const InquiryComponent = ({inquiry}) => {
+
+const InquiryComponent = ({ inquiry }) => {
+
     return (
         <>
             <h1>{inquiry.context_text}</h1>

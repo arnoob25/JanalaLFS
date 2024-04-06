@@ -8,10 +8,17 @@ import InquiryComponent from "../../shared_ui_components/InquiryComponent"
 import { INQUIRIES } from '../test_db'
 
 
-
 const GlaPage = () => {
-    const [allInquiries] = useState(INQUIRIES)
+    // states for displaying inquiries and managing linear progression
+    const [allInquiries] = useState(INQUIRIES.filter(inquiry => inquiry.branch == null))
     const [selectedInquiry, setSelectedInquiry] = useState('')
+
+    const [shouldAllowProgression, setShouldAllowProgression] = useState(true) // TODO: false by default
+
+    // states for managing branching progression
+    const [allBranchInquiries, setAllBranchInquiries] = useState('') // stores all the inquiries in the branch
+    const [branchParentInquiry, setBranchParentInquiry] = useState('') // inquiry that originates the branch
+    const [shouldBreakBranch, setShouldBreakBranch] = useState(false) // dictates if we should return to the main set of inquiries
 
     // helper functions
 
@@ -22,29 +29,81 @@ const GlaPage = () => {
 
         setSelectedInquiry(sortedInquiries[0])
     }
-    const selectNextInquiry = (list, order = null) => {
-        if (!order) {
-            order = selectedInquiry.order
+
+    const selectNextInquiry = (listOfInquiries, indexOfCurrentInquiry = null) => {
+        if (!indexOfCurrentInquiry) {
+            indexOfCurrentInquiry = listOfInquiries.indexOf(selectedInquiry)
         }
 
-        const nextInquiry = list[order + 1]
+        const nextInquiry = listOfInquiries[indexOfCurrentInquiry + 1]
 
         if (nextInquiry) {
             setSelectedInquiry(nextInquiry)
-        } else (
-            console.log("this was the last inquiry")
-        )
+            return true
+        }
+
+        else { return false }
+    }
+
+    const handleProgression = () => {
+        if (allBranchInquiries) {
+            if (shouldBreakBranch) {
+                const isLastInquiryInTheBranch = allBranchInquiries.indexOf(selectedInquiry) == allBranchInquiries.length - 1
+                if (isLastInquiryInTheBranch) {
+                    const indexOfCurrentInquiry = allInquiries.indexOf(branchParentInquiry)
+                    const hasNextInquiry = selectNextInquiry(allInquiries, indexOfCurrentInquiry)
+
+                    if (!hasNextInquiry) {
+                        handleGlaEnd()
+                    }
+                    resetBranch()
+                }
+            }
+            else {
+                const hasNextInquiry = selectNextInquiry(allBranchInquiries)
+
+                if (!hasNextInquiry) {
+                    handleBranchRepetition()
+                }
+            }
+        }
+        else {
+            const hasNextInquiry = selectNextInquiry(allInquiries)
+
+            if (!hasNextInquiry) {
+                handleGlaEnd()
+            }
+        }
+
+        //setShouldAllowProgression(false) // TODO: uncomment this line
+    }
+
+    const resetBranch = () => {
+        setShouldAllowProgression(false)
+        setAllBranchInquiries('')
+        setBranchParentInquiry('')
+        setShouldBreakBranch(false)
     }
 
     const manageProgression = () => {
-        selectNextInquiry(allInquiries)
+        if (shouldAllowProgression) {
+            handleProgression()
+        }
+        else {
+            console.log("respond correctly to proceed");
+        }
     }
 
+    const handleBranchRepetition = () => {
+        setSelectedInquiry(branchParentInquiry)
+    }
+
+    const handleGlaEnd = () => {
+        console.log('This is the end of the gla'); // TODO: go to the summary page
+    }
 
     useEffect(() => {
         if (!selectedInquiry) {
-
-
             selectFirstInquiry()
         }
     }, [selectedInquiry])
