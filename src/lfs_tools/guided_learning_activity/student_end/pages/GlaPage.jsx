@@ -112,7 +112,6 @@ const GlaPage = () => {
         <>
             <InquiryComponent inquiry={selectedInquiry} />
             <button onClick={manageProgression}>Next</button>
-            
         </>
     )
 
