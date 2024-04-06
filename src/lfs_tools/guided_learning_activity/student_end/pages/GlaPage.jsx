@@ -8,21 +8,17 @@ import InquiryComponent from "../../shared_ui_components/InquiryComponent"
 import { INQUIRIES } from '../test_db'
 
 
-const branch_inquiries = INQUIRIES.filter(inquiry => inquiry.branch == 1).sort((a, b) => a.order - b.order)
-
-
-
 const GlaPage = () => {
     // states for displaying inquiries and managing linear progression
-    const [allInquiries] = useState(INQUIRIES)
-    const [selectedInquiry, setSelectedInquiry] = useState(branch_inquiries[1])
+    const [allInquiries] = useState(INQUIRIES.filter(inquiry => inquiry.branch == null))
+    const [selectedInquiry, setSelectedInquiry] = useState('')
 
     const [shouldAllowProgression, setShouldAllowProgression] = useState(true) // TODO: false by default
 
     // states for managing branching progression
-    const [allBranchInquiries, setAllBranchInquiries] = useState(branch_inquiries) // stores all the inquiries in the branch
-    const [branchParentInquiry, setBranchParentInquiry] = useState(allInquiries[1]) // inquiry that originates the branch
-    const [shouldBreakBranch, setShouldBreakBranch] = useState(true) // dictates if we should return to the main set of inquiries
+    const [allBranchInquiries, setAllBranchInquiries] = useState('') // stores all the inquiries in the branch
+    const [branchParentInquiry, setBranchParentInquiry] = useState('') // inquiry that originates the branch
+    const [shouldBreakBranch, setShouldBreakBranch] = useState(false) // dictates if we should return to the main set of inquiries
 
     // helper functions
 
@@ -52,7 +48,7 @@ const GlaPage = () => {
     const handleProgression = () => {
         if (allBranchInquiries) {
             if (shouldBreakBranch) {
-                const isLastInquiryInTheBranch = allBranchInquiries.indexOf(selectedInquiry) == allBranchInquiries.length -1
+                const isLastInquiryInTheBranch = allBranchInquiries.indexOf(selectedInquiry) == allBranchInquiries.length - 1
                 if (isLastInquiryInTheBranch) {
                     const indexOfCurrentInquiry = allInquiries.indexOf(branchParentInquiry)
                     const hasNextInquiry = selectNextInquiry(allInquiries, indexOfCurrentInquiry)
