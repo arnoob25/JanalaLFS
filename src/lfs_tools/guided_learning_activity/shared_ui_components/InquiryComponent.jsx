@@ -5,7 +5,7 @@
  */
 
 import { useState } from "react"
-import ChoiceComponent from "../../shared_tools/user_response/ChoiceComponent"
+import ChoiceComponent from "../../shared_components/user_response/ChoiceComponent"
 
 
 const InquiryComponent = ({ inquiry }) => {

@@ -1,10 +1,13 @@
 /* eslint-disable react/prop-types */
+/**
+ * allows selecting single or multiple choices.
+ */
+
 import { Label } from "@/global_ui_components/ui/label";
 import { Checkbox } from "@/global_ui_components/ui/checkbox";
 import { useState } from "react";
 
-const ChoiceComponent = ({ choices }) => {
-    const [maxChoices] = useState(2)
+const ChoiceComponent = ({ choices, maxChoices = 1 }) => {
     const [selectedChoices, setSelectedChoices] = useState([]);
 
     const handleCheckboxChange = (choiceId) => {
@@ -25,7 +28,7 @@ const ChoiceComponent = ({ choices }) => {
         }
     };
 
-    const options = choices.map((choice) => {
+    const checkboxes = choices.map((choice) => {
         return (
             <div className="flex items-center space-x-2" key={choice.id}>
                 <Checkbox
@@ -39,7 +42,7 @@ const ChoiceComponent = ({ choices }) => {
         );
     });
 
-    return <>{options}</>;
+    return <>{checkboxes}</>;
 };
 
 export default ChoiceComponent;
