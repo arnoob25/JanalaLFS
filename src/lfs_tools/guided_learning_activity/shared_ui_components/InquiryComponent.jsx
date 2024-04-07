@@ -5,7 +5,7 @@
  */
 
 import { useState } from "react"
-import SingleChoiceComponent from "../student_end/components/response/SingleChoiceComponent"
+import ChoiceComponent from "../../shared_tools/user_response/ChoiceComponent"
 
 
 const InquiryComponent = ({ inquiry }) => {
@@ -19,7 +19,7 @@ const InquiryComponent = ({ inquiry }) => {
     return (
         <>
             <h1>{inquiry.context_text}</h1>
-            <SingleChoiceComponent choices={choices} />
+            <ChoiceComponent choices={choices} />
         </>
     )
 }
