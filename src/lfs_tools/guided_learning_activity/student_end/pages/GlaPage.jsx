@@ -1,35 +1,34 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /**
  * facilitates all the features of the gle - for the student to experience
  */
 import { useEffect, useState } from "react"
-import InquiryComponent from "../../shared_ui_components/InquiryComponent"
+import InquiryComponent from "../../shared_components/InquiryComponent"
 
 import { INQUIRIES } from '../test_db'
 
 
 const GlaPage = () => {
-    // states for displaying inquiries and managing linear progression
-    const [allInquiries] = useState(INQUIRIES.filter(inquiry => inquiry.branch == null))
+    // states for displaying inquiries and managing basic progression
+    const [allInquiries] = useState(INQUIRIES.filter(inquiry => inquiry.branch == null)) // main set of inquiries
     const [selectedInquiry, setSelectedInquiry] = useState('')
-
-    const [shouldAllowProgression, setShouldAllowProgression] = useState(true) // TODO: false by default
+    const [shouldAllowProgression, setShouldAllowProgression] = useState(false) // set by the inquiry component
 
     // states for managing branching progression
-    const [allBranchInquiries, setAllBranchInquiries] = useState('') // stores all the inquiries in the branch
+    const [allBranchInquiries, setAllBranchInquiries] = useState('') // stores all the inquiries in the active branch
     const [branchParentInquiry, setBranchParentInquiry] = useState('') // inquiry that originates the branch
     const [shouldBreakBranch, setShouldBreakBranch] = useState(false) // dictates if we should return to the main set of inquiries
 
-    // helper functions
-
-    const selectFirstInquiry = () => {
-        const sortedInquiries = allInquiries
-            .filter(inquiry => inquiry.branch === null)
-            .sort((a, b) => a.order - b.order);
-
-        setSelectedInquiry(sortedInquiries[0])
+    // event handlers
+    const handleProgressionRequest = () => {
+        if (shouldAllowProgression) {
+            manageProgression()
+        }
+        else {
+            console.log("respond correctly to proceed");
+        }
     }
 
+    // state management functions  
     const selectNextInquiry = (listOfInquiries, indexOfCurrentInquiry = null) => {
         if (!indexOfCurrentInquiry) {
             indexOfCurrentInquiry = listOfInquiries.indexOf(selectedInquiry)
@@ -45,7 +44,19 @@ const GlaPage = () => {
         else { return false }
     }
 
-    const handleProgression = () => {
+    const manageBranchRepetition = () => {
+        setSelectedInquiry(branchParentInquiry)
+    }
+    
+    const resetBranch = () => {
+        setShouldAllowProgression(false)
+        setAllBranchInquiries('')
+        setBranchParentInquiry('')
+        setShouldBreakBranch(false)
+    }
+
+    // helper functions
+    const manageProgression = () => {
         if (allBranchInquiries) {
             if (shouldBreakBranch) {
                 const isLastInquiryInTheBranch = allBranchInquiries.indexOf(selectedInquiry) == allBranchInquiries.length - 1
@@ -54,7 +65,7 @@ const GlaPage = () => {
                     const hasNextInquiry = selectNextInquiry(allInquiries, indexOfCurrentInquiry)
 
                     if (!hasNextInquiry) {
-                        handleGlaEnd()
+                        manageGlaEnd()
                     }
                     resetBranch()
                 }
@@ -63,7 +74,7 @@ const GlaPage = () => {
                 const hasNextInquiry = selectNextInquiry(allBranchInquiries)
 
                 if (!hasNextInquiry) {
-                    handleBranchRepetition()
+                    manageBranchRepetition()
                 }
             }
         }
@@ -71,47 +82,45 @@ const GlaPage = () => {
             const hasNextInquiry = selectNextInquiry(allInquiries)
 
             if (!hasNextInquiry) {
-                handleGlaEnd()
+                manageGlaEnd()
             }
         }
 
         //setShouldAllowProgression(false) // TODO: uncomment this line
     }
 
-    const resetBranch = () => {
-        setShouldAllowProgression(false)
-        setAllBranchInquiries('')
-        setBranchParentInquiry('')
-        setShouldBreakBranch(false)
-    }
-
-    const manageProgression = () => {
-        if (shouldAllowProgression) {
-            handleProgression()
-        }
-        else {
-            console.log("respond correctly to proceed");
-        }
-    }
-
-    const handleBranchRepetition = () => {
-        setSelectedInquiry(branchParentInquiry)
-    }
-
-    const handleGlaEnd = () => {
+    const manageGlaEnd = () => {
         console.log('This is the end of the gla'); // TODO: go to the summary page
     }
 
+    // side effects
     useEffect(() => {
+        const selectFirstInquiry = () => {
+            const sortedInquiries = allInquiries
+                .filter(inquiry => inquiry.branch === null)
+                .sort((a, b) => a.order - b.order);
+
+            setSelectedInquiry(sortedInquiries[0])
+        }
         if (!selectedInquiry) {
             selectFirstInquiry()
         }
-    }, [selectedInquiry])
+    }, [allInquiries, selectedInquiry])
+
 
     return (
         <>
-            <InquiryComponent inquiry={selectedInquiry} />
-            <button onClick={manageProgression}>Next</button>
+            <InquiryComponent
+                inquiry={selectedInquiry}
+                handleCorrectResponse={() => setShouldAllowProgression(true)}
+            />
+
+            <button
+                onClick={handleProgressionRequest}
+                disabled={shouldAllowProgression}
+            >
+                Next
+            </button>
         </>
     )
 
