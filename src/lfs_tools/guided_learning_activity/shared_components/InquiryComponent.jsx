@@ -26,28 +26,24 @@ const InquiryComponent = ({
     }
 
     return (
-        <>
-            <h3>
-                {inquiry.prompt}
-            </h3>
-
-            {
-                inquiry.is_branching
-                    ? <SelectBranchComponent
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-10">
+            <div>
+                <h3 className="text-xl md:text-2xl lg:text-3xl font-medium ml-auto">{inquiry.prompt}</h3>
+            </div>
+            <div>
+                {inquiry.is_branching ? (
+                    <SelectBranchComponent
                         inquiry={inquiry}
-                        onBranchSelection={selectedBranch => handleBranchSelection(selectedBranch)}
+                        onBranchSelection={(selectedBranch) => handleBranchSelection(selectedBranch)}
                     />
-
-                    : <ChoiceResponseComponent
+                ) : (
+                    <ChoiceResponseComponent
                         inquiry={inquiry}
-                        onChoiceEvaluation={isCorrect => handleInquiryCompletion(isCorrect)}
+                        onChoiceEvaluation={(isCorrect) => handleInquiryCompletion(isCorrect)}
                     />
-            }
-
-
-
-
-        </>
+                )}
+            </div>
+        </div>
     );
 };
 
