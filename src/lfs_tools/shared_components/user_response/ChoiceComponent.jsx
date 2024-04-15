@@ -20,6 +20,7 @@
 import { Label } from "@/global_ui_components/ui/label";
 import { Checkbox } from "@/global_ui_components/ui/checkbox";
 import { useEffect, useState } from "react";
+import { TypographyMuted } from "@/global_ui_components/ui/typography";
 
 const ChoiceComponent = ({
     choices,
@@ -66,7 +67,7 @@ const ChoiceComponent = ({
 
     return (
         <>
-            <p className="text-sm text-muted-foreground mb-2">Select {maxChoices} from {choices.length} options</p>
+            <TypographyMuted text={`Select ${maxChoices} from ${choices.length} options`} />
             <div className="flex flex-col space-y-3">
                 {choices.map(choice => (
                     <label
