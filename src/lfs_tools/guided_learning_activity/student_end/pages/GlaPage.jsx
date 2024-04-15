@@ -171,7 +171,7 @@ const GlaPage = () => {
         <>
             <div className="min-h-screen md:h-screen">
                 <div className="h-full grid grid-cols-1">
-                    <div className="flex-grow">
+                    <div className="flex-grow mt-5">
                         <InquiryComponent
                             key={selectedInquiry.id}
                             inquiry={selectedInquiry}
@@ -181,7 +181,7 @@ const GlaPage = () => {
                             onProgressionRequest={(result) => setShouldAllowProgression(result)}
                         />
                     </div>
-                    <div className="mt-auto ml-auto">
+                    <div className="mt-auto ml-auto  mb-5">
                         <Button
                             onClick={handleProgressionRequest}
                             disabled={!shouldAllowProgression}

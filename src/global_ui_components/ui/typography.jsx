@@ -28,3 +28,4 @@ export function TypographyMuted({ text }) {
         <p className="text-sm text-muted-foreground">{text}</p>
     )
 }
+

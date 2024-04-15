@@ -20,7 +20,7 @@
 import { Label } from "@/global_ui_components/ui/label";
 import { Checkbox } from "@/global_ui_components/ui/checkbox";
 import { useEffect, useState } from "react";
-import { TypographyMuted } from "@/global_ui_components/ui/typography";
+import { TypographyMuted, TypographyP } from "@/global_ui_components/ui/typography";
 
 const ChoiceComponent = ({
     choices,
@@ -67,8 +67,13 @@ const ChoiceComponent = ({
 
     return (
         <>
-            <TypographyMuted text={`Select ${maxChoices} from ${choices.length} options`} />
-            <div className="flex flex-col space-y-3">
+            { // don't display how many choices can be selected if the component is disabled
+                disabled
+                    ? null
+                    : <TypographyMuted text={`Select ${maxChoices} from ${choices.length} options`} />
+            }
+
+            <div className="flex flex-col space-y-3 mt-1">
                 {choices.map(choice => (
                     <label
                         htmlFor={choice.id}
@@ -81,9 +86,8 @@ const ChoiceComponent = ({
                             value={choice.value}
                             checked={selectedChoiceIds.includes(choice.id)}
                             onCheckedChange={() => handleChoiceSelection(choice.id)}
-                            className="form-checkbox h-5 w-5"
                         />
-                        <span>{choice.label}</span>
+                        <span><TypographyP text={choice.label} /></span>
                     </label>
                 ))}
             </div>
