@@ -1,6 +1,3 @@
-/* eslint-disable react/prop-types */
-
-
 /**
  * A reusable component that allows users to select single or multiple choices from a list of options.
  *
@@ -23,13 +20,14 @@
 import { Label } from "@/global_ui_components/ui/label";
 import { Checkbox } from "@/global_ui_components/ui/checkbox";
 import { useEffect, useState } from "react";
+import { TypographyMuted, TypographyP } from "@/global_ui_components/ui/typography";
 
 const ChoiceComponent = ({
     choices,
-    maxChoices=1,
+    maxChoices = 1,
     onSelectionChange,
     disabled = false,
-    evaluatedUserResponseData = ['','']
+    evaluatedUserResponseData = ['', '']
 }) => {
 
     const [selectedChoiceIds, setSelectedChoiceIds] = useState([]); // stores the id instead of the object
@@ -69,25 +67,35 @@ const ChoiceComponent = ({
 
     return (
         <>
-            {// render checkboxes for each choice
-                choices.map(
-                    choice => {
-                        return (
-                            <div className="flex items-center space-x-2" key={choice.id}>
-                                <Checkbox
-                                    id={choice.id}
-                                    value={choice.value}
-                                    checked={selectedChoiceIds.includes(choice.id)}
-                                    onCheckedChange={() => handleChoiceSelection(choice.id)}
-                                />
-                                <Label htmlFor={choice.id}>{choice.label}</Label>
-                            </div>
-                        );
-                    }
-                )
+            { // don't display how many choices can be selected if the component is disabled
+                disabled
+                    ? null
+                    : <TypographyMuted text={`Select ${maxChoices} from ${choices.length} options`} />
             }
+
+            <div className="flex flex-col space-y-3 mt-1">
+                {choices.map(choice => (
+                    <label
+                        htmlFor={choice.id}
+                        className="flex items-center space-x-2 p-6 rounded-md cursor-pointer"
+                        style={{ backgroundColor: 'var(--card)', color: 'var(--card-foreground)' }}
+                        key={choice.id}
+                    >
+                        <Checkbox
+                            id={choice.id}
+                            value={choice.value}
+                            checked={selectedChoiceIds.includes(choice.id)}
+                            onCheckedChange={() => handleChoiceSelection(choice.id)}
+                        />
+                        <span><TypographyP text={choice.label} /></span>
+                    </label>
+                ))}
+            </div>
         </>
     );
+
+
+
 };
 
 export default ChoiceComponent;
