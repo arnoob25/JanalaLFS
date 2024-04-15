@@ -1,88 +1,91 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
+
+
 /**
- * allows selecting and evaluating single or multiple choices.
- * Also, reports the user selection.
+ * A reusable component that allows users to select single or multiple choices from a list of options.
+ *
+ * @param {Array<Object>} choices - An array of objects representing the available choices. Each object should have the following properties:
+ *   - `id` (string|number): A unique identifier for the choice.
+ *   - `label` (string): The label to be displayed for the choice.
+ *   - `value` (any): The value associated with the choice.
+ * @param {number} maxChoices - The maximum number of choices the user can select. Set to 1 for single-select, and greater than 1 for multi-select.
+ * @param {Function} onSelectionChange - A callback function that is called whenever the user's selection changes. It receives an array of the selected choices as its argument.
+ * @param {boolean} [disabled=false] - An optional boolean flag indicating whether the choices should be disabled and unselectable.
+ * @param {Object} evaluatedUserResponse - An object containing the evaluated user response, with the following properties:
+ *   - `isCorrect` (boolean): Indicates whether the user's response is correct or not.
+ *   - `correctResponses` (Array<Object>): An array of the user's selected choices that match the correct choices.
+ *   - `incorrectResponses` (Array<Object>): An array of the user's selected choices that do not match the correct choices.
+ *
+ * @returns {JSX.Element} - A React component that renders the choice selection UI.
  */
+
+
 import { Label } from "@/global_ui_components/ui/label";
 import { Checkbox } from "@/global_ui_components/ui/checkbox";
 import { useEffect, useState } from "react";
 
 const ChoiceComponent = ({
     choices,
-    correctChoices = [],
-    reportEvaluation = () => { },
-    reportSelectedChoice = () => { },
+    maxChoices=1,
+    onSelectionChange,
+    disabled = false,
+    evaluatedUserResponseData = ['','']
 }) => {
-    const [selectedChoices, setSelectedChoices] = useState([]); // stores the id instead of the object
-    // eslint-disable-next-line no-unused-vars
-    const [incorrectChoices, setIncorrectChoices] = useState([]);
 
-    const maxChoices = correctChoices.length;
+    const [selectedChoiceIds, setSelectedChoiceIds] = useState([]); // stores the id instead of the object
+    const [correctResponses, incorrectResponses] = evaluatedUserResponseData
 
-    // event handlers
+    // TODO: apply custom styling for incorrect and correct responses,
+    // TODO: disable the component conditionally
+    // TODO: display additional info and/ user's explanations
+
     const handleChoiceSelection = (choiceId) => {
 
         if (maxChoices === 1) {
             // single-select behavior
-            if (selectedChoices.includes(choiceId)) {
-                setSelectedChoices([]);
+            if (selectedChoiceIds.includes(choiceId)) {
+                setSelectedChoiceIds([]);
             } else {
-                setSelectedChoices([choiceId]);
+                setSelectedChoiceIds([choiceId]);
             }
         } else {
             // multi-select behavior
-            if (selectedChoices.includes(choiceId)) {
-                setSelectedChoices(selectedChoices.filter((id) => id !== choiceId));
-            } else if (selectedChoices.length < maxChoices) {
-                setSelectedChoices([...selectedChoices, choiceId]);
+            if (selectedChoiceIds.includes(choiceId)) {
+                setSelectedChoiceIds(selectedChoiceIds.filter((id) => id !== choiceId));
+            } else if (selectedChoiceIds.length < maxChoices) {
+                setSelectedChoiceIds([...selectedChoiceIds, choiceId]);
             }
         }
     };
 
-    // helper functions
-    const evaluateResponse = () => {
-        const incorrectResponses = selectedChoices.filter(
-            (choice) => !correctChoices.some((correctChoice) => correctChoice.id === choice)
-        );
-        setIncorrectChoices(incorrectResponses);
-        if (incorrectResponses.length === 0 && selectedChoices.length === correctChoices.length) {
-            return [true, []];
-        } else {
-            return [false, incorrectResponses];
-        }
-    };
-
+    // sending the selected choices to the parent
     useEffect(() => {
-        if (selectedChoices.length > 0 && correctChoices.length > 0) {
-            if (maxChoices === 1) {
-                reportSelectedChoice(selectedChoices);
-            }
+        const selectedChoices = choices.filter(
+            choice => selectedChoiceIds.includes(choice.id)
+        )
 
-            const [isCorrectResponse, incorrectChoices] = evaluateResponse();
-
-            setIncorrectChoices(incorrectChoices);
-
-            reportEvaluation(isCorrectResponse);
-        }
-    }, [selectedChoices]);
+        onSelectionChange(selectedChoices)
+    }, [selectedChoiceIds])
 
     return (
         <>
             {// render checkboxes for each choice
-                choices.map((choice) => {
-                    return (
-                        <div className="flex items-center space-x-2" key={choice.id}>
-                            <Checkbox
-                                id={choice.id}
-                                value={choice.value}
-                                checked={selectedChoices.includes(choice.id)}
-                                onCheckedChange={() => handleChoiceSelection(choice.id)}
-                            />
-                            <Label htmlFor={choice.id}>{choice.label}</Label>
-                        </div>
-                    );
-                })}
+                choices.map(
+                    choice => {
+                        return (
+                            <div className="flex items-center space-x-2" key={choice.id}>
+                                <Checkbox
+                                    id={choice.id}
+                                    value={choice.value}
+                                    checked={selectedChoiceIds.includes(choice.id)}
+                                    onCheckedChange={() => handleChoiceSelection(choice.id)}
+                                />
+                                <Label htmlFor={choice.id}>{choice.label}</Label>
+                            </div>
+                        );
+                    }
+                )
+            }
         </>
     );
 };
