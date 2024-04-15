@@ -1,6 +1,3 @@
-/* eslint-disable react/prop-types */
-
-
 /**
  * A reusable component that allows users to select single or multiple choices from a list of options.
  *
@@ -26,10 +23,10 @@ import { useEffect, useState } from "react";
 
 const ChoiceComponent = ({
     choices,
-    maxChoices=1,
+    maxChoices = 1,
     onSelectionChange,
     disabled = false,
-    evaluatedUserResponseData = ['','']
+    evaluatedUserResponseData = ['', '']
 }) => {
 
     const [selectedChoiceIds, setSelectedChoiceIds] = useState([]); // stores the id instead of the object
@@ -68,26 +65,27 @@ const ChoiceComponent = ({
     }, [selectedChoiceIds])
 
     return (
-        <>
-            {// render checkboxes for each choice
-                choices.map(
-                    choice => {
-                        return (
-                            <div className="flex items-center space-x-2" key={choice.id}>
-                                <Checkbox
-                                    id={choice.id}
-                                    value={choice.value}
-                                    checked={selectedChoiceIds.includes(choice.id)}
-                                    onCheckedChange={() => handleChoiceSelection(choice.id)}
-                                />
-                                <Label htmlFor={choice.id}>{choice.label}</Label>
-                            </div>
-                        );
-                    }
-                )
-            }
-        </>
+        <div className="flex flex-col space-y-3">
+            {choices.map(choice => (
+                <label
+                    htmlFor={choice.id}
+                    className="flex items-center space-x-2 bg-gray-100 p-6 rounded-md cursor-pointer"
+                    key={choice.id}
+                >
+                    <Checkbox
+                        id={choice.id}
+                        value={choice.value}
+                        checked={selectedChoiceIds.includes(choice.id)}
+                        onCheckedChange={() => handleChoiceSelection(choice.id)}
+                        className="form-checkbox h-5 w-5"
+                    />
+                    <span className="text-gray-700">{choice.label}</span>
+                </label>
+            ))}
+        </div>
     );
+
+
 };
 
 export default ChoiceComponent;
