@@ -65,25 +65,28 @@ const ChoiceComponent = ({
     }, [selectedChoiceIds])
 
     return (
-        <div className="flex flex-col space-y-3">
-            {choices.map(choice => (
-                <label
-                    htmlFor={choice.id}
-                    className="flex items-center space-x-2 p-6 rounded-md cursor-pointer"
-                    style={{ backgroundColor: 'var(--card)', color: 'var(--card-foreground)' }}
-                    key={choice.id}
-                >
-                    <Checkbox
-                        id={choice.id}
-                        value={choice.value}
-                        checked={selectedChoiceIds.includes(choice.id)}
-                        onCheckedChange={() => handleChoiceSelection(choice.id)}
-                        className="form-checkbox h-5 w-5"
-                    />
-                    <span>{choice.label}</span>
-                </label>
-            ))}
-        </div>
+        <>
+            <p className="text-sm text-muted-foreground mb-2">Select {maxChoices} from {choices.length} options</p>
+            <div className="flex flex-col space-y-3">
+                {choices.map(choice => (
+                    <label
+                        htmlFor={choice.id}
+                        className="flex items-center space-x-2 p-6 rounded-md cursor-pointer"
+                        style={{ backgroundColor: 'var(--card)', color: 'var(--card-foreground)' }}
+                        key={choice.id}
+                    >
+                        <Checkbox
+                            id={choice.id}
+                            value={choice.value}
+                            checked={selectedChoiceIds.includes(choice.id)}
+                            onCheckedChange={() => handleChoiceSelection(choice.id)}
+                            className="form-checkbox h-5 w-5"
+                        />
+                        <span>{choice.label}</span>
+                    </label>
+                ))}
+            </div>
+        </>
     );
 
 
