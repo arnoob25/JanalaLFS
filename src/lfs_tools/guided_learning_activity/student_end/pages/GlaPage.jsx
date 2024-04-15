@@ -167,24 +167,32 @@ const GlaPage = () => {
     }
 
 
-
     return (
         <>
-            <InquiryComponent
-                key={selectedInquiry.id} // so that, react knows to treat each inquiry rendered in the same place as different
-                inquiry={selectedInquiry}
-                onBranchingRequest={selectedBranch => handleBranchInitialization(selectedBranch)}
-                onProgressionRequest={result => setShouldAllowProgression(result)}
-            />
-
-            <Button
-                onClick={handleProgressionRequest} // TODO: if branching is allowed, enter the branch, otherwise, proceed
-                disabled={!shouldAllowProgression}
-            >
-                Next
-            </Button>
+            <div className="min-h-screen md:h-screen">
+                <div className="h-full grid grid-cols-1">
+                    <div className="flex-grow">
+                        <InquiryComponent
+                            key={selectedInquiry.id}
+                            inquiry={selectedInquiry}
+                            onBranchingRequest={(selectedBranch) =>
+                                handleBranchInitialization(selectedBranch)
+                            }
+                            onProgressionRequest={(result) => setShouldAllowProgression(result)}
+                        />
+                    </div>
+                    <div className="mt-auto ml-auto">
+                        <Button
+                            onClick={handleProgressionRequest}
+                            disabled={!shouldAllowProgression}
+                        >
+                            Next
+                        </Button>
+                    </div>
+                </div>
+            </div>
         </>
-    )
+    );
 
 }
 
