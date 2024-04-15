@@ -18,7 +18,7 @@ const InquiryComponent = ({
 
     // 
     const handleBranchSelection = selectedBranch => { // this choice corresponds to the branch we shall enter
-        // get the corresponding branch 
+        // get the corresponding branch selected by the student using the selected choice
         // TODO: replace it with a proper query
         const branchToEnter = BRANCHES.filter(
             branch => branch.id === selectedBranch.branchId
