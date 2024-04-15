@@ -69,7 +69,8 @@ const ChoiceComponent = ({
             {choices.map(choice => (
                 <label
                     htmlFor={choice.id}
-                    className="flex items-center space-x-2 bg-gray-100 p-6 rounded-md cursor-pointer"
+                    className="flex items-center space-x-2 p-6 rounded-md cursor-pointer"
+                    style={{ backgroundColor: 'var(--card)', color: 'var(--card-foreground)' }}
                     key={choice.id}
                 >
                     <Checkbox
@@ -79,11 +80,12 @@ const ChoiceComponent = ({
                         onCheckedChange={() => handleChoiceSelection(choice.id)}
                         className="form-checkbox h-5 w-5"
                     />
-                    <span className="text-gray-700">{choice.label}</span>
+                    <span>{choice.label}</span>
                 </label>
             ))}
         </div>
     );
+
 
 
 };
