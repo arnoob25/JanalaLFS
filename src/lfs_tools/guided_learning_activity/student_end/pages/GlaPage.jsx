@@ -6,7 +6,7 @@ import InquiryComponent from "../../shared_components/InquiryComponent"
 
 import { Button } from "@/global_ui_components/ui/button";
 
-import { BRANCHES, INQUIRIES } from '../test_db'
+import { INQUIRIES } from '../test_db'
 
 
 const GlaPage = () => {
@@ -125,9 +125,11 @@ const GlaPage = () => {
     // for enabling branching progression
 
     // TODO: replace this with a query
-    const getBranchInquiries = selectedBranch => {
-        selectedBranch // TODO: fetch the inquiries using the selected branch (map using the choice made by the user)
-        return INQUIRIES.filter(inquiry => inquiry.branch == 2)
+    const getBranchInquiries = () => {
+        // TODO: replace this with a proper query
+        return INQUIRIES.filter(
+            inquiry => inquiry.branch === selectedBranch.id
+        )
     }
 
     const handleBranchInitialization = selectedBranch => {
@@ -138,11 +140,11 @@ const GlaPage = () => {
 
             setShouldEnterBranch(true)
 
-            setSelectedBranch(BRANCHES[1])
+            setSelectedBranch(selectedBranch)
 
             setBranchParentInquiry(selectedInquiry) // current inquiry is the selected branch's inquiry
 
-            const filteredInquiries = getBranchInquiries(selectedBranch)
+            const filteredInquiries = getBranchInquiries()
 
             setAllBranchInquiries(filteredInquiries)
         }
@@ -175,10 +177,8 @@ const GlaPage = () => {
                         <InquiryComponent
                             key={selectedInquiry.id}
                             inquiry={selectedInquiry}
-                            onBranchingRequest={(selectedBranch) =>
-                                handleBranchInitialization(selectedBranch)
-                            }
-                            onProgressionRequest={(result) => setShouldAllowProgression(result)}
+                            onBranchEntryRequest={selectedBranch => handleBranchInitialization(selectedBranch)}
+                            onProgressionRequest={result => setShouldAllowProgression(result)}
                         />
                     </div>
                     <div className="mt-auto ml-auto  mb-5">
