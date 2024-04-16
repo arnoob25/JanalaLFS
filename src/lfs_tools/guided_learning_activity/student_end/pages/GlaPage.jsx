@@ -12,7 +12,7 @@ import { BRANCHES, INQUIRIES } from '../test_db'
 const GlaPage = () => {
 
     // statesfor displaying inquiries 
-    const [allInquiries, setAllInquiries] = useState(INQUIRIES.filter(inquiry => inquiry.branch == null)) // main set of inquiries
+    const [allMainInquiries] = useState(INQUIRIES.filter(inquiry => inquiry.branch == null)) // main set of inquiries
     const [selectedInquiry, setSelectedInquiry] = useState('')
 
     // controls progression
@@ -28,7 +28,7 @@ const GlaPage = () => {
 
     // for initializing the GLA
     const selectFirstInquiry = () => {
-        const sortedInquiries = allInquiries
+        const sortedInquiries = allMainInquiries
             .filter(inquiry => inquiry.branch === null)
             .sort((a, b) => a.order - b.order);
 
@@ -70,8 +70,8 @@ const GlaPage = () => {
 
                 // exits the branch, and resumes the main set of inquiries
                 if (isLastInquiryInTheBranch) {
-                    const indexOfCurrentInquiry = allInquiries.indexOf(branchParentInquiry)
-                    const hasNextInquiry = selectNextInquiry(allInquiries, indexOfCurrentInquiry)
+                    const indexOfCurrentInquiry = allMainInquiries.indexOf(branchParentInquiry)
+                    const hasNextInquiry = selectNextInquiry(allMainInquiries, indexOfCurrentInquiry)
 
                     if (!hasNextInquiry) {
                         manageGlaEnd()
@@ -90,7 +90,7 @@ const GlaPage = () => {
         }
         // linear progression
         else {
-            const hasNextInquiry = selectNextInquiry(allInquiries)
+            const hasNextInquiry = selectNextInquiry(allMainInquiries)
 
             if (!hasNextInquiry) {
                 manageGlaEnd()
