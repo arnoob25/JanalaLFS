@@ -21,7 +21,7 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
+        sm: "h-7 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
       },
@@ -45,3 +45,51 @@ const Button = React.forwardRef(({ className, variant, size, asChild = false, ..
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
+
+
+
+// derived buttons
+
+export function ButtonPrimary({ label, onClick }) {
+  return <Button onClick={onClick}>{label}</Button>
+}
+
+export function ButtonSecondary({ label, onClick }) {
+  return <Button variant='secondary' onClick={onClick}>{label}</Button>
+}
+
+export function ButtonSecondarySm({ label, onClick }) {
+  return <Button variant='secondary' size='sm' onClick={onClick}>{label}</Button>
+}
+
+export function ButtonDestructive({ label, onClick }) {
+  return <Button variant='destructive' onClick={onClick}>{label}</Button>
+}
+
+export function ButtonOutline({ label, onClick }) {
+  return <Button variant='outline' onClick={onClick}>{label}</Button>
+}
+
+export function ButtonGhost({ label, onClick }) {
+  return <Button variant='ghost' onClick={onClick}>{label}</Button>
+}
+
+export function ButtonLink({ label, onClick }) {
+  return <Button variant='Link' onClick={onClick}>{label}</Button>
+}
+
+export function ButtonIcon({ children, onClick }) {
+  return (
+    <Button variant='outline' size='icon' onClick={onClick}>
+      {children}
+    </Button>
+  )
+}
+
+export function ButtonWithIcon({ children, label, onClick }) {
+  return (
+    <Button onClick={onClick}>
+      {children} {label}
+    </Button>
+  )
+}
