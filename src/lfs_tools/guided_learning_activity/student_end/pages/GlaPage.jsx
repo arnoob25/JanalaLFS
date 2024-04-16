@@ -6,7 +6,7 @@ import InquiryComponent from "../../shared_components/InquiryComponent"
 
 import { Button } from "@/global_ui_components/ui/button";
 
-import { BRANCHES, INQUIRIES } from '../test_db'
+import { BRANCHES, INQUIRIES } from '../../test_data/test_db'
 
 
 const GlaPage = () => {
