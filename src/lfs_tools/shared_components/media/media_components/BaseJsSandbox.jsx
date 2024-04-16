@@ -4,7 +4,7 @@ import { selectControlMethod } from '../helpers/mediaUtilities';
 import MediaControl from '../MediaControl';
 
 
-const MinimalJsSandbox = ({ simCode }) => {
+const BaseJsSandbox = ({ simCode }) => {
   const canvasRef = useRef(null);
   const [isRunning, exposedControls, exposedMessages] = useSimulation(simCode, canvasRef);
 
@@ -24,4 +24,4 @@ const MinimalJsSandbox = ({ simCode }) => {
   );
 };
 
-export default MinimalJsSandbox;
+export default BaseJsSandbox;
