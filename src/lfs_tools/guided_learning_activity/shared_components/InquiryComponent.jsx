@@ -5,7 +5,7 @@
  */
 import ChoiceResponseComponent from "../student_end/components/ChoiceResponseComponent";
 import ContextComponent from "../student_end/components/ContextComponent";
-import MediaComponent from "../../shared_components/media/MediaComponent";
+import MediaContainer from "../../shared_components/media/MediaContainer";
 import PromptComponent from "../student_end/components/PromptComponent";
 import SelectBranchComponent from "../student_end/components/SelectBranchComponent";
 
@@ -40,9 +40,10 @@ const InquiryComponent = ({
                     <ContextComponent inquiry={inquiry} />
                 </div>
                 <div>
-                    <MediaComponent inquiry={inquiry} />
+                    <MediaContainer inquiry={inquiry} />
                 </div>
             </div>
+            
             <div className="space-y-4">
                 <div>
                     <PromptComponent inquiry={inquiry} />
