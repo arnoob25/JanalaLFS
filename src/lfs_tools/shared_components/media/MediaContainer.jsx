@@ -1,8 +1,11 @@
 // MediaComponent.js
 import snakeGame from '@/lfs_tools/guided_learning_activity/test_data/snakeGame';
-import MinimalJsSandbox from './sandboxes/MinimalJsSandbox';
+import BaseJsSandbox from './media_components/BaseJsSandbox';
+import MediaContainerCard from '@/global_ui_components/cards/MediaContainerCard';
 
-const MediaComponent = ({ inquiry }) => {
+const MediaContainer = ({ inquiry }) => {
+
+
 
   /**
    * TODO: fetch the media.
@@ -17,13 +20,14 @@ const MediaComponent = ({ inquiry }) => {
    */
 
 
+
   return (
-    <div className="border-2 border-var(--border) rounded-xl">
-      <MinimalJsSandbox
+    <MediaContainerCard>
+      <BaseJsSandbox
         simCode={snakeGame}
       />
-    </div>
+    </MediaContainerCard>
   );
 };
 
-export default MediaComponent;
+export default MediaContainer;
