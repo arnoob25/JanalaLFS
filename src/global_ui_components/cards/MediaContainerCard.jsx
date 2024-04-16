@@ -2,7 +2,7 @@
 const MediaContainerCard = ({ children }) => {
     return (
         <>
-            <div className="border-2 border-var(--border) rounded-xl">
+            <div className="border-2 rounded-xl">
                 {children}
             </div>
         </>

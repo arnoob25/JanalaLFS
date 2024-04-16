@@ -4,7 +4,7 @@ const TextContainerCard = ({ text, label }) => {
     return (
         <>
             <TypographySmall text={label} />
-            <div className="flex flex-col space-y-3 rounded-xl p-5" style={{ backgroundColor: 'var(--card)', color: 'var(--card-foreground)' }}>
+            <div className="bg-[var(--card)] text-[var(--card-foreground)] flex flex-col space-y-3 rounded-xl p-5" >
                 <TypographyP text={text} />
             </div>
         </>

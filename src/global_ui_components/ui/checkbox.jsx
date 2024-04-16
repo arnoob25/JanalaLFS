@@ -29,7 +29,7 @@ const Choice = ({id, label, checked, onCheckedChange }) => {
   return (
     <label
       htmlFor={id}
-      className="flex items-center space-x-2 p-6 rounded-md cursor-pointer"
+      className="flex items-center bg-[var(--card)] space-x-2 p-6 rounded-lg cursor-pointer"
     >
       <CheckboxBase
         id={id}
