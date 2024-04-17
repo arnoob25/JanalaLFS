@@ -3,8 +3,9 @@ import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { Check } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { TypographyP } from "./typography"
 
-const Checkbox = React.forwardRef(({ className, ...props }, ref) => (
+const CheckboxBase = React.forwardRef(({ className, ...props }, ref) => (
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(
@@ -17,6 +18,27 @@ const Checkbox = React.forwardRef(({ className, ...props }, ref) => (
     </CheckboxPrimitive.Indicator>
   </CheckboxPrimitive.Root>
 ))
-Checkbox.displayName = CheckboxPrimitive.Root.displayName
+CheckboxBase.displayName = CheckboxPrimitive.Root.displayName
 
-export { Checkbox }
+export { CheckboxBase }
+
+
+// derived checkboxes
+
+const Choice = ({id, label, checked, onCheckedChange }) => {
+  return (
+    <label
+      htmlFor={id}
+      className="flex items-center bg-[var(--card)] space-x-2 p-6 rounded-lg cursor-pointer"
+    >
+      <CheckboxBase
+        id={id}
+        checked={checked}
+        onCheckedChange={onCheckedChange}
+      />
+      <span><TypographyP text={label} /></span>
+    </label>
+  )
+}
+
+export default Choice

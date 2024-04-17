@@ -12,7 +12,7 @@
 
 import ChoiceComponent from "@/lfs_tools/shared_components/user_response/ChoiceComponent";
 import { useEffect, useState } from "react";
-import { CHOICES } from "../test_db";
+import { CHOICES } from "../../test_data/test_db";
 import { evaluateChoiceResponse } from "@/lfs_tools/shared_features/user_response/userResponseEvaluation";
 
 // TODO: work with objects for the time being. Later, we'll decide whether to work with ids or objects

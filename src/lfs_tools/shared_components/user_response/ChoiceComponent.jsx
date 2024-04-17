@@ -18,7 +18,7 @@
 
 
 import { Label } from "@/global_ui_components/ui/label";
-import { Checkbox } from "@/global_ui_components/ui/checkbox";
+import Choice, { CheckboxBase } from "@/global_ui_components/ui/checkbox";
 import { useEffect, useState } from "react";
 import { TypographyMuted, TypographyP } from "@/global_ui_components/ui/typography";
 
@@ -67,29 +67,23 @@ const ChoiceComponent = ({
 
     return (
         <>
-            { // don't display how many choices can be selected if the component is disabled
-                disabled
-                    ? null
-                    : <TypographyMuted text={`Select ${maxChoices} from ${choices.length} options`} />
+            {!disabled // don't display how many choices can be selected if the component is disabled
+                ? <TypographyMuted text={`Select ${maxChoices} from ${choices.length} options`} />
+                : null
             }
 
             <div className="flex flex-col space-y-3 mt-1">
-                {choices.map(choice => (
-                    <label
-                        htmlFor={choice.id}
-                        className="flex items-center space-x-2 p-6 rounded-md cursor-pointer"
-                        style={{ backgroundColor: 'var(--card)', color: 'var(--card-foreground)' }}
-                        key={choice.id}
-                    >
-                        <Checkbox
+                {choices.map(choice => {
+                    return (
+                        <Choice
+                            key={choice.id}
                             id={choice.id}
-                            value={choice.value}
+                            label={choice.label}
                             checked={selectedChoiceIds.includes(choice.id)}
                             onCheckedChange={() => handleChoiceSelection(choice.id)}
                         />
-                        <span><TypographyP text={choice.label} /></span>
-                    </label>
-                ))}
+                    )
+                })}
             </div>
         </>
     );

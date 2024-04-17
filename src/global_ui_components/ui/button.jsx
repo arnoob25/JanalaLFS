@@ -45,3 +45,10 @@ const Button = React.forwardRef(({ className, variant, size, asChild = false, ..
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
+
+
+// derived buttons
+
+export function ButtonSecondarySm({ label, onClick }) {
+  return <Button variant="secondary" size='sm' onClick={onClick}>{label}</Button>
+}

@@ -6,13 +6,13 @@ import InquiryComponent from "../../shared_components/InquiryComponent"
 
 import { Button } from "@/global_ui_components/ui/button";
 
-import { INQUIRIES } from '../test_db'
+import { BRANCHES, INQUIRIES } from '../../test_data/test_db'
 
 
 const GlaPage = () => {
 
     // statesfor displaying inquiries 
-    const [allInquiries, setAllInquiries] = useState(INQUIRIES.filter(inquiry => inquiry.branch == null)) // main set of inquiries
+    const [allMainInquiries] = useState(INQUIRIES.filter(inquiry => inquiry.branch == null)) // main set of inquiries
     const [selectedInquiry, setSelectedInquiry] = useState('')
 
     // controls progression
@@ -28,7 +28,7 @@ const GlaPage = () => {
 
     // for initializing the GLA
     const selectFirstInquiry = () => {
-        const sortedInquiries = allInquiries
+        const sortedInquiries = allMainInquiries
             .filter(inquiry => inquiry.branch === null)
             .sort((a, b) => a.order - b.order);
 
@@ -70,8 +70,8 @@ const GlaPage = () => {
 
                 // exits the branch, and resumes the main set of inquiries
                 if (isLastInquiryInTheBranch) {
-                    const indexOfCurrentInquiry = allInquiries.indexOf(branchParentInquiry)
-                    const hasNextInquiry = selectNextInquiry(allInquiries, indexOfCurrentInquiry)
+                    const indexOfCurrentInquiry = allMainInquiries.indexOf(branchParentInquiry)
+                    const hasNextInquiry = selectNextInquiry(allMainInquiries, indexOfCurrentInquiry)
 
                     if (!hasNextInquiry) {
                         manageGlaEnd()
@@ -90,7 +90,7 @@ const GlaPage = () => {
         }
         // linear progression
         else {
-            const hasNextInquiry = selectNextInquiry(allInquiries)
+            const hasNextInquiry = selectNextInquiry(allMainInquiries)
 
             if (!hasNextInquiry) {
                 manageGlaEnd()
@@ -125,11 +125,9 @@ const GlaPage = () => {
     // for enabling branching progression
 
     // TODO: replace this with a query
-    const getBranchInquiries = () => {
-        // TODO: replace this with a proper query
-        return INQUIRIES.filter(
-            inquiry => inquiry.branch === selectedBranch.id
-        )
+    const getBranchInquiries = selectedBranch => {
+        selectedBranch // TODO: fetch the inquiries using the selected branch (map using the choice made by the user)
+        return INQUIRIES.filter(inquiry => inquiry.branch == 2)
     }
 
     const handleBranchInitialization = selectedBranch => {
@@ -140,11 +138,11 @@ const GlaPage = () => {
 
             setShouldEnterBranch(true)
 
-            setSelectedBranch(selectedBranch)
+            setSelectedBranch(BRANCHES[1])
 
             setBranchParentInquiry(selectedInquiry) // current inquiry is the selected branch's inquiry
 
-            const filteredInquiries = getBranchInquiries()
+            const filteredInquiries = getBranchInquiries(selectedBranch)
 
             setAllBranchInquiries(filteredInquiries)
         }
@@ -177,8 +175,10 @@ const GlaPage = () => {
                         <InquiryComponent
                             key={selectedInquiry.id}
                             inquiry={selectedInquiry}
-                            onBranchEntryRequest={selectedBranch => handleBranchInitialization(selectedBranch)}
-                            onProgressionRequest={result => setShouldAllowProgression(result)}
+                            onBranchingRequest={(selectedBranch) =>
+                                handleBranchInitialization(selectedBranch)
+                            }
+                            onProgressionRequest={(result) => setShouldAllowProgression(result)}
                         />
                     </div>
                     <div className="mt-auto ml-auto  mb-5">

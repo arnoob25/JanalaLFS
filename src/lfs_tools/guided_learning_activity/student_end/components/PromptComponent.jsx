@@ -1,4 +1,4 @@
-import TextContainerCard from '@/lfs_tools/shared_components/cards/TextContainerCard'
+import TextContainerCard from '@/global_ui_components/cards/TextContainerCard'
 
 const PromptComponent = ({ inquiry }) => {
     return (

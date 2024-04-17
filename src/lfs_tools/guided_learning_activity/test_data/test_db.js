@@ -102,3 +102,8 @@ export const CHOICES = [
   { id: 27, inquiry: 8, label: 'Inquiry 8, Choice C', isCorrect: true, branchId:null },
   { id: 28, inquiry: 8, label: 'Inquiry 8, Choice D', isCorrect: false, branchId:null },
 ];
+
+export const MEDIA = [
+  {id: 1, type: 'simulation', label: 'sim 1', inquiry: 1, code: 'src/lfs_tools/guided_learning_activity/test_data/snakeGame.js'},
+  {id: 2, type: 'simulation', label: 'sim 2', inquiry: 1, code: 'src/lfs_tools/guided_learning_activity/test_data/snakeGame.js'}
+]
