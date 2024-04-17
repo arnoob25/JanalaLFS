@@ -1,18 +1,40 @@
 import { ButtonSecondarySm } from "@/global_ui_components/ui/button";
 import { Label } from "@/global_ui_components/ui/label";
 import { Slider } from "@/global_ui_components/ui/slider";
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/global_ui_components/ui/tabs';
 
 // for displaying specific media selector
-export const SELECTOR_TYPES = {
+export const MEDIA_SWITCH_TYPE = {
     TAB: 'tab',
     CAROUSEL: 'carousel',
 }
 
-export const selectSelectionMethod = (selectionMethod) => {
+export async function dynamicallyImport(uri) {
+    const module = await import(uri);
+    console.log(module.default);
+    return module.default;
+}
+
+export const selectMediaSwitcherComponent = (selectionMethod) => {
     switch (selectionMethod) {
-        case SELECTOR_TYPES.TAB:
-            break;
+        case MEDIA_SWITCH_TYPE.TAB:
+            return (
+                <Tabs defaultValue="account" className="w-[400px]">
+                    <TabsList className="grid w-full grid-cols-2">
+                        <TabsTrigger value="account">Account</TabsTrigger>
+                        <TabsTrigger value="password">Password</TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="account">
+
+                    </TabsContent>
+                    <TabsContent value="password">
+                        <BaseJsSandbox
+                            simCode={games[1]}
+                        />
+                    </TabsContent>
+                </Tabs>
+            )
         default:
             return null;
     }
@@ -25,7 +47,7 @@ export const CONTROL_TYPES = {
     SLIDER: "slider",
 };
 
-export const selectControlMethod = (providedControl) => {
+export const selectMediaControllerComponent = (providedControl) => {
     switch (providedControl.type) {
         case CONTROL_TYPES.BUTTON:
             return (

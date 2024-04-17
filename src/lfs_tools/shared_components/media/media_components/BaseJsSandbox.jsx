@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import useSimulation from '../helpers/useSimulationHook';
-import { selectControlMethod } from '../helpers/mediaUtilities';
+import { selectMediaControllerComponent } from '../helpers/mediaUtilities';
 import MediaControl from '../MediaControl';
 
 
@@ -9,7 +9,7 @@ const BaseJsSandbox = ({ simCode }) => {
   const [isRunning, exposedControls, exposedMessages] = useSimulation(simCode, canvasRef);
 
   const simControls = exposedControls.map(
-    exposedControl => selectControlMethod(exposedControl)
+    exposedControl => selectMediaControllerComponent(exposedControl)
   );
 
   return (
