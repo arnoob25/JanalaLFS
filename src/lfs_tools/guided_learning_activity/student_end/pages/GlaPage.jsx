@@ -125,11 +125,9 @@ const GlaPage = () => {
     // for enabling branching progression
 
     // TODO: replace this with a query
-    const getBranchInquiries = () => {
-        // TODO: replace this with a proper query
-        return INQUIRIES.filter(
-            inquiry => inquiry.branch === selectedBranch.id
-        )
+    const getBranchInquiries = selectedBranch => {
+        selectedBranch // TODO: fetch the inquiries using the selected branch (map using the choice made by the user)
+        return INQUIRIES.filter(inquiry => inquiry.branch == 2)
     }
 
     const handleBranchInitialization = selectedBranch => {
@@ -140,11 +138,11 @@ const GlaPage = () => {
 
             setShouldEnterBranch(true)
 
-            setSelectedBranch(selectedBranch)
+            setSelectedBranch(BRANCHES[1])
 
             setBranchParentInquiry(selectedInquiry) // current inquiry is the selected branch's inquiry
 
-            const filteredInquiries = getBranchInquiries()
+            const filteredInquiries = getBranchInquiries(selectedBranch)
 
             setAllBranchInquiries(filteredInquiries)
         }
@@ -177,8 +175,10 @@ const GlaPage = () => {
                         <InquiryComponent
                             key={selectedInquiry.id}
                             inquiry={selectedInquiry}
-                            onBranchEntryRequest={selectedBranch => handleBranchInitialization(selectedBranch)}
-                            onProgressionRequest={result => setShouldAllowProgression(result)}
+                            onBranchingRequest={(selectedBranch) =>
+                                handleBranchInitialization(selectedBranch)
+                            }
+                            onProgressionRequest={(result) => setShouldAllowProgression(result)}
                         />
                     </div>
                     <div className="mt-auto ml-auto  mb-5">
