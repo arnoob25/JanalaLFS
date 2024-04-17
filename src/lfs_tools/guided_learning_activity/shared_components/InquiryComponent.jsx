@@ -8,16 +8,23 @@ import ContextComponent from "../student_end/components/ContextComponent";
 import MediaContainer from "../../shared_components/media/MediaContainer";
 import PromptComponent from "../student_end/components/PromptComponent";
 import SelectBranchComponent from "../student_end/components/SelectBranchComponent";
+import { BRANCHES } from "../student_end/test_db";
 
 const InquiryComponent = ({
     inquiry,
     onProgressionRequest = () => { },
-    onBranchingRequest = () => { }
+    onBranchEntryRequest = () => { }
 }) => {
 
     // 
-    const handleBranchSelection = selectedBranch => {
-        onBranchingRequest(selectedBranch)
+    const handleBranchSelection = selectedBranch => { // this choice corresponds to the branch we shall enter
+        // get the corresponding branch selected by the student using the selected choice
+        // TODO: replace it with a proper query
+        const branchToEnter = BRANCHES.filter(
+            branch => branch.id === selectedBranch.branchId
+        )[0]
+
+        onBranchEntryRequest(branchToEnter)
     }
 
     const handleInquiryCompletion = isCorrect => {
@@ -52,12 +59,12 @@ const InquiryComponent = ({
                     {inquiry.is_branching ? (
                         <SelectBranchComponent
                             inquiry={inquiry}
-                            onBranchSelection={(selectedBranch) => handleBranchSelection(selectedBranch)}
+                            onBranchSelection={selectedBranch => handleBranchSelection(selectedBranch)}
                         />
                     ) : (
                         <ChoiceResponseComponent
                             inquiry={inquiry}
-                            onChoiceEvaluation={(isCorrect) => handleInquiryCompletion(isCorrect)}
+                            onChoiceEvaluation={isCorrect => handleInquiryCompletion(isCorrect)}
                         />
                     )}
                 </div>
