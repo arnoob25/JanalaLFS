@@ -1,5 +1,4 @@
 // MediaComponent.js
-import snakeGame from '@/lfs_tools/guided_learning_activity/test_data/snakeGame';
 import BaseJsSandbox from './media_components/BaseJsSandbox';
 import MediaContainerCard from '@/global_ui_components/cards/MediaContainerCard';
 
@@ -24,7 +23,6 @@ const MediaContainer = ({ inquiry }) => {
   return (
     <MediaContainerCard>
       <BaseJsSandbox
-        simCode={snakeGame}
       />
     </MediaContainerCard>
   );
