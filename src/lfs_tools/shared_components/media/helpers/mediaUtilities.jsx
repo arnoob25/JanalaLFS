@@ -3,7 +3,7 @@ import { Label } from "@/global_ui_components/ui/label";
 import { Slider } from "@/global_ui_components/ui/slider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/global_ui_components/ui/tabs';
 
-// for displaying specific media selector
+// for displaying specific media switcher component
 export const MEDIA_SWITCH_TYPE = {
     TAB: 'tab',
     CAROUSEL: 'carousel',
