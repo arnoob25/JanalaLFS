@@ -8,7 +8,7 @@ import ContextComponent from "../student_end/components/ContextComponent";
 import MediaContainer from "../../shared_components/media/MediaContainer";
 import PromptComponent from "../student_end/components/PromptComponent";
 import SelectBranchComponent from "../student_end/components/SelectBranchComponent";
-import { BRANCHES } from "../student_end/test_db";
+import { BRANCHES } from "../test_data/test_db";
 
 const InquiryComponent = ({
     inquiry,
