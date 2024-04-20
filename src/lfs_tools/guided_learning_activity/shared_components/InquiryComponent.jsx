@@ -8,13 +8,24 @@ import ContextComponent from "../student_end/components/ContextComponent";
 import MediaContainer from "../../shared_components/media/MediaContainer";
 import PromptComponent from "../student_end/components/PromptComponent";
 import SelectBranchComponent from "../student_end/components/SelectBranchComponent";
-import { BRANCHES } from "../test_data/test_db";
+import { BRANCHES, INQUIRIES, RESPONSE_TYPES } from "../test_data/test_db";
+import TextResponseComponent from "../student_end/components/TextResponseComponent";
+import { useEffect } from "react";
+
+const number = 7 // TODO: remove these - they are for testing
 
 const InquiryComponent = ({
-    inquiry,
+    inquiry = INQUIRIES[number-1], // TODO: remove these - they are for testing
     onProgressionRequest = () => { },
     onBranchEntryRequest = () => { }
 }) => {
+
+    // TODO: remove the following
+    useEffect(() => {
+        if (inquiry.response_type === RESPONSE_TYPES.TEXT) {
+            onProgressionRequest(true)
+        }
+    }, [inquiry])
 
     // 
     const handleBranchSelection = selectedBranch => { // this choice corresponds to the branch we shall enter
@@ -43,30 +54,34 @@ const InquiryComponent = ({
              * we'll display these divs in the same column.
              * 
              */}
-                <div>
-                    <ContextComponent inquiry={inquiry} />
-                </div>
+                {inquiry.context.length > 0
+                    ? <div>
+                        <ContextComponent inquiry={inquiry} />
+                    </div>
+                    : null
+                }
                 <div>
                     <MediaContainer inquiry={inquiry} />
                 </div>
             </div>
-            
+
             <div className="space-y-4">
                 <div>
                     <PromptComponent inquiry={inquiry} />
                 </div>
                 <div>
-                    {inquiry.is_branching ? (
-                        <SelectBranchComponent
+                    {inquiry.is_branching
+                        ? <SelectBranchComponent
                             inquiry={inquiry}
                             onBranchSelection={selectedBranch => handleBranchSelection(selectedBranch)}
                         />
-                    ) : (
-                        <ChoiceResponseComponent
-                            inquiry={inquiry}
-                            onChoiceEvaluation={isCorrect => handleInquiryCompletion(isCorrect)}
-                        />
-                    )}
+                        : inquiry.response_type === RESPONSE_TYPES.CHOICE
+                            ? <ChoiceResponseComponent
+                                inquiry={inquiry}
+                                onChoiceEvaluation={isCorrect => handleInquiryCompletion(isCorrect)}
+                            />
+                            : <TextResponseComponent inquiry={inquiry} />
+                    }
                 </div>
             </div>
 

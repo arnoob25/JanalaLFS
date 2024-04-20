@@ -174,7 +174,7 @@ const GlaPage = () => {
                     <div className="flex-grow mt-5">
                         <InquiryComponent
                             key={selectedInquiry.id}
-                            inquiry={selectedInquiry}
+                            //inquiry={selectedInquiry}
                             onBranchingRequest={(selectedBranch) =>
                                 handleBranchInitialization(selectedBranch)
                             }

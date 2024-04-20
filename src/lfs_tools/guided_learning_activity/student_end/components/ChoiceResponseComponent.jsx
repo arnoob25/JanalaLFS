@@ -33,11 +33,7 @@ const ChoiceResponseComponent = ({ inquiry, onChoiceEvaluation }) => {
     useEffect(() => {
 
         const choiceArray = CHOICES.filter(
-            choice => {
-                return (
-                    choice.inquiry === inquiry.id
-                )
-            }
+            choice => choice.inquiry === inquiry.id
         )
 
         const correctChoiceArray = choiceArray.filter(
@@ -47,6 +43,8 @@ const ChoiceResponseComponent = ({ inquiry, onChoiceEvaluation }) => {
                 )
             }
         )
+
+        
 
         setChoices(choiceArray);
         setCorrectChoices(correctChoiceArray);
