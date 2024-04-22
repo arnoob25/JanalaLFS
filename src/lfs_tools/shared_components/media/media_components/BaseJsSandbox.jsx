@@ -1,7 +1,7 @@
 import { useRef } from 'react';
-import useSimulation from '../helpers/useSimulationHook';
-import { selectMediaControllerComponent } from '../helpers/mediaUtilities';
+import useSimulation from '../helpers/hooks/useSimulationHook';
 import MediaControl from '../MediaControl';
+import { selectMediaControllerComponent } from '../helpers/utils/mediaControls';
 
 
 const BaseJsSandbox = ({ simCode }) => {
