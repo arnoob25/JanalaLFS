@@ -13,33 +13,18 @@ const GlaPage = () => {
 
     // statesfor displaying inquiries 
     const [allMainInquiries] = useState(INQUIRIES.filter(inquiry => inquiry.branch == null)) // main set of inquiries
-    const [selectedInquiry, setSelectedInquiry] = useState('')
+    const [selectedInquiry, setSelectedInquiry] = useState(allMainInquiries[0])
+
 
     // controls progression
     const [shouldAllowProgression, setShouldAllowProgression] = useState(false) // set by the inquiry component
 
     // states for enabling branching progression
     const [shouldEnterBranch, setShouldEnterBranch] = useState(false)
-    const [selectedBranch, setSelectedBranch] = useState('') // current branch
-    const [branchParentInquiry, setBranchParentInquiry] = useState('') // inquiry that originated the selected branch
+    const [selectedBranch, setSelectedBranch] = useState(undefined) // current branch
+    const [branchParentInquiry, setBranchParentInquiry] = useState(undefined) // inquiry that originated the selected branch
     const [allBranchInquiries, setAllBranchInquiries] = useState([]) // stores all the inquiries in the active branch
     const [shouldExitBranch, setShouldExitBranch] = useState(false) // dictates if we should return to the main set of inquiries
-
-
-    // for initializing the GLA
-    const selectFirstInquiry = () => {
-        const sortedInquiries = allMainInquiries
-            .filter(inquiry => inquiry.branch === null)
-            .sort((a, b) => a.order - b.order);
-
-        setSelectedInquiry(sortedInquiries[0])
-    }
-
-    useEffect(() => {
-        if (!selectedInquiry) {
-            selectFirstInquiry()
-        }
-    }, [])
 
 
 
@@ -168,30 +153,28 @@ const GlaPage = () => {
 
 
     return (
-        <>
-            <div className="min-h-screen md:h-screen">
-                <div className="h-full grid grid-cols-1">
-                    <div className="flex-grow mt-5">
-                        <InquiryComponent
-                            key={selectedInquiry.id}
-                            //inquiry={selectedInquiry}
-                            onBranchingRequest={(selectedBranch) =>
-                                handleBranchInitialization(selectedBranch)
-                            }
-                            onProgressionRequest={(result) => setShouldAllowProgression(result)}
-                        />
-                    </div>
-                    <div className="mt-auto ml-auto  mb-5">
-                        <Button
-                            onClick={handleProgressionRequest}
-                            disabled={!shouldAllowProgression}
-                        >
-                            Next
-                        </Button>
-                    </div>
+        <div className="min-h-screen md:h-screen">
+            <div className="h-full grid grid-cols-1">
+                <div className="flex-grow mt-5">
+                    <InquiryComponent
+                        key={selectedInquiry.id}
+                        inquiry={selectedInquiry}
+                        onBranchingRequest={(selectedBranch) =>
+                            handleBranchInitialization(selectedBranch)
+                        }
+                        onProgressionRequest={(result) => setShouldAllowProgression(result)}
+                    />
+                </div>
+                <div className="mt-auto ml-auto  mb-5">
+                    <Button
+                        onClick={handleProgressionRequest}
+                        disabled={!shouldAllowProgression}
+                    >
+                        Next
+                    </Button>
                 </div>
             </div>
-        </>
+        </div>
     );
 
 }

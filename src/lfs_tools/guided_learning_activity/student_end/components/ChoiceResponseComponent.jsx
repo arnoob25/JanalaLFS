@@ -12,7 +12,7 @@
 
 import ChoiceComponent from "@/lfs_tools/shared_components/user_response/ChoiceComponent";
 import { useEffect, useState } from "react";
-import { CHOICES } from "../../test_data/test_db";
+import { CHOICES, RESPONSE_TYPES } from "../../test_data/test_db";
 import { evaluateChoiceResponse } from "@/lfs_tools/shared_features/user_response/userResponseEvaluation";
 
 // TODO: work with objects for the time being. Later, we'll decide whether to work with ids or objects
@@ -26,7 +26,6 @@ const ChoiceResponseComponent = ({ inquiry, onChoiceEvaluation }) => {
 
     // evaluates user responses
     const [isCorrectResponse, correctResponses, incorrectResponses] = evaluateChoiceResponse(selectedChoices, correctChoices)
-
 
     // setting the choices and correct choices
     // TODO: replace with query client from TanStack
@@ -44,7 +43,7 @@ const ChoiceResponseComponent = ({ inquiry, onChoiceEvaluation }) => {
             }
         )
 
-        
+
 
         setChoices(choiceArray);
         setCorrectChoices(correctChoiceArray);
@@ -63,12 +62,13 @@ const ChoiceResponseComponent = ({ inquiry, onChoiceEvaluation }) => {
         <>
             <ChoiceComponent
                 choices={choices}
-                maxChoices={correctChoices.length}
+                maxChoices={inquiry.response_type === RESPONSE_TYPES.CHOICE_AMBIGIOUS ? choices.length : correctChoices.length}
                 onSelectionChange={setSelectedChoices}
                 evaluatedUserResponseData={[
                     correctResponses,
                     incorrectResponses
                 ]}
+                show_selection_prompt={!(inquiry.response_type === RESPONSE_TYPES.CHOICE_AMBIGIOUS)}
             />
         </>
     );

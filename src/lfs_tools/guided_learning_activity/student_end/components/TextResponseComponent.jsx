@@ -4,23 +4,26 @@ import { TEXT_LABELS } from '../../test_data/test_db'
 
 const TextResponseComponent = ({ inquiry }) => {
 
-    const [label, setLabel] = useState('')
+    const [items, setItems] = useState([])
 
     useEffect(() => {
-        const label = TEXT_LABELS.filter(item => item.inquiry === inquiry.id)
-        const responseComponent = label[0]
-
-        setLabel(responseComponent !== undefined ? responseComponent.label : '')
+        const items = TEXT_LABELS.filter(item => item.inquiry === inquiry.id)
+        setItems(items)
     }, [inquiry])
 
-
-
-    return (
-        <div className='mb-5'>
+    const textAreas = items.map(item => {
+        return (
             <TextareaWithLabel
-                label={label}
+                key={item.id}
+                label={item.label}
                 placeholder='Type your response here'
             />
+        )
+    })
+
+    return (
+        <div className='mb-5 flex flex-col gap-5'>
+            {textAreas}
         </div>
     )
 }

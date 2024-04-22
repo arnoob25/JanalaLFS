@@ -12,10 +12,8 @@ import { BRANCHES, INQUIRIES, RESPONSE_TYPES } from "../test_data/test_db";
 import TextResponseComponent from "../student_end/components/TextResponseComponent";
 import { useEffect } from "react";
 
-const number = 7 // TODO: remove these - they are for testing
-
 const InquiryComponent = ({
-    inquiry = INQUIRIES[number-1], // TODO: remove these - they are for testing
+    inquiry,
     onProgressionRequest = () => { },
     onBranchEntryRequest = () => { }
 }) => {
@@ -65,7 +63,7 @@ const InquiryComponent = ({
                 </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-4 flex flex-col  gap-5">
                 <div>
                     <PromptComponent inquiry={inquiry} />
                 </div>
@@ -75,7 +73,7 @@ const InquiryComponent = ({
                             inquiry={inquiry}
                             onBranchSelection={selectedBranch => handleBranchSelection(selectedBranch)}
                         />
-                        : inquiry.response_type === RESPONSE_TYPES.CHOICE
+                        : inquiry.response_type === RESPONSE_TYPES.CHOICE || inquiry.response_type === RESPONSE_TYPES.CHOICE_AMBIGIOUS
                             ? <ChoiceResponseComponent
                                 inquiry={inquiry}
                                 onChoiceEvaluation={isCorrect => handleInquiryCompletion(isCorrect)}

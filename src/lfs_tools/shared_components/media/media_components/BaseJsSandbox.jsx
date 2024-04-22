@@ -13,7 +13,7 @@ const BaseJsSandbox = ({ simCode }) => {
   );
 
   return (
-    <div className='p-2'>
+    <div className='rounded-xl'>
       <canvas ref={canvasRef} className="w-full h-full p-2" />
 
       {simControls.length > 0
