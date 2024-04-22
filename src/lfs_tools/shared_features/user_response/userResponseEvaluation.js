@@ -25,7 +25,7 @@ export function evaluateChoiceResponse(selectedChoices, correctChoices) {
     );
 
     return [
-      correctResponses.length === correctChoices.length,
+      correctResponses.length === correctChoices.length && selectedChoices.length === correctChoices.length,
       correctResponses,
       incorrectResponses,
     ];

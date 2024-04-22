@@ -4,7 +4,7 @@ import { ButtonSecondarySm } from '@/global_ui_components/ui/button';
 import { Slider } from '@/global_ui_components/ui/slider';
 import { Label } from '@/global_ui_components/ui/label';
 
-const VideoPlayer = ({ videoSrc, loop = false, hideControls = false, autoplay = false }) => {
+const VideoPlayer = ({ videoSrc, loop = false, controls = { play: true, reset: true, slider: true }, hideControls = false, autoplay = false }) => {
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const VideoPlayer = ({ videoSrc, loop = false, hideControls = false, autoplay = 
   };
 
   return (
-    <div className='p-2'>
+    <div className='rounded-xl'>
       <video
         ref={videoRef}
         src={videoSrc}
@@ -45,12 +45,16 @@ const VideoPlayer = ({ videoSrc, loop = false, hideControls = false, autoplay = 
       />
       {!hideControls ? (
         <MediaControl>
-          <ButtonSecondarySm label={'Play'} onClick={handlePlay} />
-          <ButtonSecondarySm label={'Reset'} onClick={handleReset} />
-          <div className="flex items-center gap-2 flex-1 w-100%">
-            <Label>Speed:</Label>
-            <Slider defaultValue={[10]} min={2} max={100} step={2} onValueChange={handleSpeedChange} />
-          </div>
+          {controls.play ? <ButtonSecondarySm label={'Simulate'} onClick={handlePlay} /> : null}
+          {controls.reset ? <ButtonSecondarySm label={'Reset'} onClick={handleReset} /> : null}
+          {controls.slider
+            ? <div className="flex items-center gap-2 flex-1 w-100%">
+              <Label>Speed:</Label>
+              <Slider defaultValue={[10]} min={2} max={100} step={2} onValueChange={handleSpeedChange} />
+            </div>
+            : null}
+
+
         </MediaControl>
       ) : null}
     </div>
