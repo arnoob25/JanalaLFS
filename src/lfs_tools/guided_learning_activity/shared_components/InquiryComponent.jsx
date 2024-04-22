@@ -8,7 +8,7 @@ import ContextComponent from "../student_end/components/ContextComponent";
 import MediaContainer from "../../shared_components/media/MediaContainer";
 import PromptComponent from "../student_end/components/PromptComponent";
 import SelectBranchComponent from "../student_end/components/SelectBranchComponent";
-import { BRANCHES, INQUIRIES, RESPONSE_TYPES } from "../test_data/test_db";
+import { BRANCHES, RESPONSE_TYPES } from "../test_data/test_db";
 import TextResponseComponent from "../student_end/components/TextResponseComponent";
 import { useEffect } from "react";
 
