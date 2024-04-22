@@ -35,7 +35,7 @@ export const INQUIRIES = [
     is_branching: false,
     order: 1,
     context: "Consider applying force to an object on a smooth surface. Apply the same amount of force at two separate points on the object.",
-    prompt: "Predict (describe) the motions of the objects in these two cases.",
+    prompt: "Predict (describe) the motion of the object in these two cases.",
     response_type: RESPONSE_TYPES.TEXT,
     media_type: MEDIA_TYPES.VIDEO
   },
@@ -45,7 +45,7 @@ export const INQUIRIES = [
     is_branching: false,
     order: 2,
     context: "Lets simulate the motion of the object to validate our predictions. We'll apply the same amount of force on the object. And repeat it 3 times. In each new attempt, we'll apply the force farther away from the center.",
-    prompt: "The wheel rotates in the last 2 attempts! But did you notice that, the wheel rotates fastest in the last attempt?",
+    prompt: "Did you notice that the wheel rotates in the last 2 attempts!",
     response_type: RESPONSE_TYPES.TEXT,
     media_type: MEDIA_TYPES.VIDEO
   },
@@ -54,8 +54,8 @@ export const INQUIRIES = [
     branch: null,
     is_branching: false,
     order: 3,
-    context: `Newton's second law describes acceleration due to force. The stronger the force is, the faster an object will accelerate (F=ma). So, lets try to simulate the wheel's motion using F=ma.`,
-    prompt: "Notice that, F=ma doesn't tell us about the rotation of the wheel. Why?",
+    context: `Newton's second law describes acceleration due to force. The stronger the force is, the faster an object will accelerate (F=ma). Perhaps it can explain the rotation. So, lets try to simulate the wheel's motion using F=ma.`,
+    prompt: "Notice that the simulation is inaccurate. But why?",
     response_type: RESPONSE_TYPES.CHOICE,
     media_type: MEDIA_TYPES.VIDEO
   },
@@ -64,9 +64,9 @@ export const INQUIRIES = [
     branch: null,
     is_branching: false,
     order: 4,
-    context: "Apparantly, F=ma doesn't have any quantities that address rotation. So, how about we investigate some cases involving rotation?",
-    prompt: "Suggest 3 examples we should study to better understand rotation.",
-    response_type: RESPONSE_TYPES.CHOICE,
+    context: "Apparantly, F=ma doesn't have any quantities that address rotation. How about we investigate some cases involving rotation? Perhaps this could help us find ways to explain rotation due to force.",
+    prompt: "Select relevant examples to study.",
+    response_type: RESPONSE_TYPES.CHOICE_AMBIGIOUS,
     media_type: MEDIA_TYPES.VIDEO
   },
   {
@@ -76,7 +76,7 @@ export const INQUIRIES = [
     order: 5,
     context: "It's always wise to identify the specific conditions that distinguish a category of situations. In our case, situations that involve rotation.",
     prompt: "Which condition(s) differentiate these examples from linear motion?",
-    response_type: RESPONSE_TYPES.CHOICE,
+    response_type: RESPONSE_TYPES.CHOICE_AMBIGIOUS,
     media_type: MEDIA_TYPES.VIDEO
   },
   {
@@ -85,7 +85,7 @@ export const INQUIRIES = [
     is_branching: false,
     order: 6,
     context: `"Fixed Axis Rotation" - seems to describe objects rotating around a fixed pivot/ axis, reasonably well. Observing the effects of force in Fixed Axis Rotation - can be a fine start for building our understanding of it.`,
-    prompt: "Lets use the Windmill example for our experiments. Which of the proposed tests would you carry out to observe the effect mentioned in the first scenario?",
+    prompt: "Lets use the Windmill example for our experiments. Which of the proposed tests would help you observe the effect mentioned in the first scenario?",
     response_type: RESPONSE_TYPES.CHOICE,
     media_type: MEDIA_TYPES.DATA_TABLE
   },
@@ -94,7 +94,7 @@ export const INQUIRIES = [
     branch: null,
     is_branching: false,
     order: 7,
-    context: "We’ll compare the blade's number of rotations per minute, for wind flowing close close to and away from the shaft.",
+    context: "We have to observe how force influences rotation when acting on various distances from the axis. So, lets compare the blade's number of rotations per minute.",
     prompt: "Which proposition aligns best with your observation?",
     response_type: RESPONSE_TYPES.CHOICE,
     media_type: MEDIA_TYPES.VIDEO
@@ -104,8 +104,8 @@ export const INQUIRIES = [
     branch: null,
     is_branching: false,
     order: 8,
-    context: `Lets proceed with experiments to observe the effects of force in Fixed Axis Rotation.`,
-    prompt: "We're using the Windmill example for our experiments. Which of the proposed tests would you carry out to observe the effect mentioned in the second scenario?",
+    context: `Lets proceed with the experiments to outline rest the effects.`,
+    prompt: "Which of the proposed tests with the windmill would help you observe the effect mentioned in the second scenario?",
     response_type: RESPONSE_TYPES.CHOICE,
     media_type: MEDIA_TYPES.DATA_TABLE
   },
@@ -114,7 +114,7 @@ export const INQUIRIES = [
     branch: null,
     is_branching: false,
     order: 9,
-    context: `We’ll observe the blade's number of rotations for varying windspeeds.`,
+    context: `We want to see how varying force influence rotation. For this, we’ll observe the blade's number of rotations for varying windspeeds.`,
     prompt: "What do you observe?",
     response_type: RESPONSE_TYPES.CHOICE,
     media_type: MEDIA_TYPES.VIDEO
@@ -124,8 +124,8 @@ export const INQUIRIES = [
     branch: null,
     is_branching: false,
     order: 10,
-    context: `Lets proceed with experiments to observe the effects of force in Fixed Axis Rotation.`,
-    prompt: "We'll continue using the Windmill example for our final experiment. Which of the proposed tests would you carry out to observe the effect mentioned in the third scenario?",
+    context: `Lets complete our outline.`,
+    prompt: "Which of the proposed tests would help you observe the effect mentioned in the third scenario?",
     response_type: RESPONSE_TYPES.CHOICE,
     media_type: MEDIA_TYPES.DATA_TABLE
   },
@@ -134,8 +134,8 @@ export const INQUIRIES = [
     branch: null,
     is_branching: false,
     order: 11,
-    context: `We will monitor the blade's rotational speed when the wind strikes the blade faces from two different angles relative to the blades.`,
-    prompt: "How does the angle between the blade and the direction of wind influence rotation?",
+    context: `To specify how force acting on different angles influence rotation, we'll monitor how fast the blades rotate. In cases where the wind strikes the face of the blade from two different angles relative to it.`,
+    prompt: "How does the angle between the blade and the direction of the wind influence rotation?",
     response_type: RESPONSE_TYPES.CHOICE,
     media_type: MEDIA_TYPES.VIDEO
   },
@@ -144,7 +144,7 @@ export const INQUIRIES = [
     branch: null,
     is_branching: false,
     order: 12,
-    context: `F=ma explains linear motion, but not rotation. How about we introduce a new physical quantity to explain the effects of force on Fixed Axis Rotation? Let's call it Torque.`,
+    context: `Given that F=ma doesn't explain rotation. How about we introduce a new physical quantity based on our findings? Let's call it Torque. Torque will explain the effects of force on Fixed Axis Rotation.`,
     prompt: "Select the propositions you support regarding the nature of Torque.",
     response_type: RESPONSE_TYPES.CHOICE_AMBIGIOUS,
     media_type: MEDIA_TYPES.DATA_TABLE
@@ -154,8 +154,8 @@ export const INQUIRIES = [
     branch: null,
     is_branching: false,
     order: 13,
-    context: `Lets express our findings mathematically to see if we can combine them to build formula. This formula can help us calculate Torque.`,
-    prompt: `Since θ is the angle between F and r, let’s simplify the task by initially representing torque without accounting for θ. Now, which of the following equations best represents Torque?`,
+    context: `We can't reliably explain and predict Torque unless we have a formula to calculate it with. Lets start by expressing our findings mathematically. Hopefully, combining our findings in an equation might give us the formula for Troque.`,
+    prompt: `Let’s simplify the task by initially representing torque without accounting for θ. Now, which of the following equations best represents Torque?`,
     response_type: RESPONSE_TYPES.CHOICE,
     media_type: MEDIA_TYPES.DATA_TABLE
   },
@@ -171,14 +171,14 @@ export const CHOICES = [
   { id: 2, inquiry: 3, label: `F=ma doesn't address rotation`, isCorrect: true, branchId: null },
   // inquiry 4
   { id: 3, inquiry: 4, label: `A windmill’s rotating blades.`, isCorrect: true, branchId: null },
-  { id: 4, inquiry: 4, label: `A see saw.`, isCorrect: true, branchId: null },
-  { id: 5, inquiry: 4, label: `A door with hinges.`, isCorrect: true, branchId: null },
-  { id: 6, inquiry: 4, label: `A projectile`, isCorrect: false, branchId: null },
+  { id: 4, inquiry: 4, label: `A projectile`, isCorrect: false, branchId: null },
+  { id: 5, inquiry: 4, label: `A see saw.`, isCorrect: true, branchId: null },
+  { id: 6, inquiry: 4, label: `A door with hinges.`, isCorrect: true, branchId: null },
   // inquiry 5
-  { id: 7, inquiry: 5, label: `They all rotate about a fixed pivot point`, isCorrect: true, branchId: null },
-  { id: 8, inquiry: 5, label: `Their trajectories create a complete circle`, isCorrect: false, branchId: null },
-  { id: 9, inquiry: 5, label: `They require no driving force to sustain rotation`, isCorrect: false, branchId: null },
-  { id: 10, inquiry: 5, label: `No condition is shared by all examples`, isCorrect: false, branchId: null },
+  { id: 7, inquiry: 5, label: `Their trajectories create a complete circle`, isCorrect: false, branchId: null },
+  { id: 8, inquiry: 5, label: `They require no driving force to sustain rotation`, isCorrect: false, branchId: null },
+  { id: 9, inquiry: 5, label: `No condition is shared by all examples`, isCorrect: false, branchId: null },
+  { id: 10, inquiry: 5, label: `They all rotate about a fixed pivot point`, isCorrect: true, branchId: null },
   // inquiry 6
   { id: 11, inquiry: 6, label: `Counting the number of rotations in a controlled experiment. Blade facing the wind from varying angles, keeping every other factor constant across iterations.`, isCorrect: false, branchId: null },
   { id: 12, inquiry: 6, label: `Observing the number of rotations for varying windspeeds. Targetting the same area of the blade.`, isCorrect: false, branchId: null },
@@ -220,7 +220,7 @@ export const TEXT_LABELS = [
   { id: 1, inquiry: 1, label: 'Motion of the object when applying force towards the center' },
   { id: 2, inquiry: 1, label: 'Motion of the object when applying force away from the center' },
   //inquiry 2
-  { id: 3, inquiry: 2, label: 'Why do you think the wheel is rotating faster?' },
+  { id: 3, inquiry: 2, label: 'Why do you think the wheel is rotating?' },
 ]
 
 export const MEDIA = [
@@ -278,7 +278,7 @@ export const MEDIA = [
           },
           {
             id: 3,
-            scenario: 'Same force on same point, but different angles',
+            scenario: 'Same force on the same point, but from different angles',
             effect: 'Unknown',
           },
         ]
@@ -294,7 +294,7 @@ export const MEDIA = [
   {
     id: 8, inquiry: 8, type: MEDIA_TYPES.VIDEO, sims: [], data: [
       {
-        id: "1", label: 'Common circumstances involving force',
+        id: "1", label: 'Effects of force on Fixed Axis Rotation',
         columns: [
           { accessorKey: 'scenario', header: 'Scenario' },
           { accessorKey: 'effect', header: 'Effect on Fixed Axis Rotation' }
@@ -321,13 +321,13 @@ export const MEDIA = [
   },
   {
     id: 9, inquiry: 9, type: MEDIA_TYPES.VIDEO, sims: [
-      { src: video91, label: 'Near the shaft (Rotations: 10)', loop: true },
+      { src: video91, label: 'Rotation due to force', loop: true },
     ], data: []
   },
   {
     id: 10, inquiry: 10, type: MEDIA_TYPES.VIDEO, sims: [], data: [
       {
-        id: "1", label: 'Common circumstances involving force',
+        id: "1", label: 'Effects of force on Fixed Axis Rotation',
         columns: [
           { accessorKey: 'scenario', header: 'Scenario' },
           { accessorKey: 'effect', header: 'Effect on Fixed Axis Rotation' }
