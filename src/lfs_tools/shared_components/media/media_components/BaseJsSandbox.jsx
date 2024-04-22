@@ -1,7 +1,8 @@
 import { useRef } from 'react';
 import useSimulation from '../helpers/hooks/useSimulationHook';
-import MediaControl from '../MediaControl';
 import { selectMediaControllerComponent } from '../helpers/utils/mediaControls';
+import MediaControl from '../MediaControl';
+import RoundedCornerFrame from '@/global_ui_components/frames/RoundedCornerFrame';
 
 
 const BaseJsSandbox = ({ simCode }) => {
@@ -13,13 +14,14 @@ const BaseJsSandbox = ({ simCode }) => {
   );
 
   return (
-    <div className='rounded-xl'>
+    <RoundedCornerFrame>
       <canvas ref={canvasRef} className="w-full h-full p-2" />
 
       {simControls.length > 0
         ? <MediaControl>{simControls}</MediaControl>
-        : null}
-    </div>
+        : null
+      }
+    </RoundedCornerFrame>
   );
 };
 

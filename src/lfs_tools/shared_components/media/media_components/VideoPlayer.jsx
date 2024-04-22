@@ -17,6 +17,7 @@ import MediaControl from '../MediaControl';
 import { ButtonSecondarySm } from '@/global_ui_components/ui/button';
 import { Slider } from '@/global_ui_components/ui/slider';
 import { Label } from '@/global_ui_components/ui/label';
+import RoundedCornerFrame from '@/global_ui_components/frames/RoundedCornerFrame';
 
 const VideoPlayer = ({
   videoSrc,
@@ -56,7 +57,7 @@ const VideoPlayer = ({
   };
 
   return (
-    <div className='rounded-xl'>
+    <RoundedCornerFrame>
       <video
         ref={videoRef}
         src={videoSrc}
@@ -76,13 +77,13 @@ const VideoPlayer = ({
           {controls.reset ? <ButtonSecondarySm label={'Reset'} onClick={handleReset} /> : null}
           {controls.speed
             ? <div className="flex items-center gap-2 flex-1 w-full">
-                <Label>Speed:</Label>
-                <Slider defaultValue={[10]} min={0} max={100} step={1} onValueChange={handleSpeedChange} />
-              </div>
+              <Label>Speed:</Label>
+              <Slider defaultValue={[10]} min={0} max={100} step={1} onValueChange={handleSpeedChange} />
+            </div>
             : null}
         </MediaControl>
       ) : null}
-    </div>
+    </RoundedCornerFrame>
   );
 };
 

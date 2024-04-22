@@ -2,12 +2,12 @@ import { DataTable } from "@/global_ui_components/ui/table"
 
 
 
-const DataGrid = ({columns, data}) => {
+const DataGrid = ({ columns, data }) => {
 
   return (
-    <div className="w-full">
-      <DataTable columns={columns} data={data} />
-    </div>
+    <>
+      <DataTable columns={columns} data={data}/>
+    </>
   )
 }
 
