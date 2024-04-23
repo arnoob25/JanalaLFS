@@ -12,13 +12,14 @@
 
 import ChoiceComponent from "@/lfs_tools/shared_components/user_response/ChoiceComponent";
 import { useEffect, useState } from "react";
-import { CHOICES, RESPONSE_TYPES } from "../../test_data/test_db";
-import { evaluateChoiceResponse } from "@/lfs_tools/shared_features/user_response/userResponseEvaluation";
+import { CHOICES } from "../../../../test_data/test_db";
+import evaluateChoiceResponse from "@/lfs_tools/shared_features/user_response/evaluateChoiceResponse";
+import { RESPONSE_TYPES } from "../helpers/glaResponseHelpers";
 
 // TODO: work with objects for the time being. Later, we'll decide whether to work with ids or objects
 
 
-const ChoiceResponseComponent = ({ inquiry, onChoiceEvaluation }) => {
+const GlaChoiceResponseComponent = ({ inquiry, onChoiceEvaluation }) => {
 
     const [choices, setChoices] = useState([]);
     const [correctChoices, setCorrectChoices] = useState([]);
@@ -62,6 +63,7 @@ const ChoiceResponseComponent = ({ inquiry, onChoiceEvaluation }) => {
         <>
             <ChoiceComponent
                 choices={choices}
+                // student can select any number of choices when type is CHOICE_AMBIGIOUS
                 maxChoices={inquiry.response_type === RESPONSE_TYPES.CHOICE_AMBIGIOUS ? choices.length : correctChoices.length}
                 onSelectionChange={setSelectedChoices}
                 evaluatedUserResponseData={[
@@ -74,4 +76,4 @@ const ChoiceResponseComponent = ({ inquiry, onChoiceEvaluation }) => {
     );
 };
 
-export default ChoiceResponseComponent;
+export default GlaChoiceResponseComponent;

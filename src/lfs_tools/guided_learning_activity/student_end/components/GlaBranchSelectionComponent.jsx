@@ -3,10 +3,10 @@
 
 import ChoiceComponent from "@/lfs_tools/shared_components/user_response/ChoiceComponent";
 import { useEffect, useState } from "react";
-import { CHOICES } from "../../test_data/test_db";
+import { CHOICES } from "../../../../test_data/test_db";
 
 
-const SelectBranchComponent = ({ inquiry, onBranchSelection }) => {
+const GlaBranchSelectionComponent = ({ inquiry, onBranchSelection }) => {
 
     const [choices, setChoices] = useState([]);
     const [selectedChoice, setSelectedChoice] = useState(''); // choices selected by the user
@@ -38,4 +38,4 @@ const SelectBranchComponent = ({ inquiry, onBranchSelection }) => {
     );
 };
 
-export default SelectBranchComponent;
+export default GlaBranchSelectionComponent;
