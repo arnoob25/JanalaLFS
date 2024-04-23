@@ -13,7 +13,13 @@ export const MEDIA_CONTROL_TYPES = {
     SLIDER: "slider",
 };
 
-export const selectMediaControllerComponent = (providedControl) => {
+/**
+ * places sliders vertically if they don't fit in the row
+ * used in other places for consistent styling
+ */
+export const responsiveSliderContainer = "w-full flex flex-1 gap-2 items-center" 
+
+export default function selectMediaControllerComponent(providedControl) {
     switch (providedControl.type) {
         case MEDIA_CONTROL_TYPES.BUTTON:
             return (
@@ -27,7 +33,7 @@ export const selectMediaControllerComponent = (providedControl) => {
             return (
                 <div
                     key={providedControl.label}
-                    className="flex items-center gap-2 flex-1 w-100%"
+                    className={responsiveSliderContainer}
                 >
                     <Label>{providedControl.label}:</Label>
                     <Slider
@@ -41,4 +47,4 @@ export const selectMediaControllerComponent = (providedControl) => {
         default:
             return null;
     }
-};
+}

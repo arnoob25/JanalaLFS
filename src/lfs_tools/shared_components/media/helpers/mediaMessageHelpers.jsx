@@ -11,7 +11,9 @@ export const MEDIA_MESSAGE_TYPES = {
     FAREWELL: 'farewell',
 };
 
-export const displayMessage = (providedMessage) => {
+// handle success/ failure, Tracked info, and alert/ errors
+
+export default function selectMessageDisplayerComponent(providedMessage) {
     switch (providedMessage.type) {
         case MEDIA_MESSAGE_TYPES.CAPTION:
             return { caption: providedMessage.text }

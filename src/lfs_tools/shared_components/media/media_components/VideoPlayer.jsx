@@ -13,16 +13,19 @@
  */
 
 import { useRef, useEffect } from 'react';
-import MediaControl from '../MediaControl';
+import MediaControls from '../MediaControls';
 import { ButtonSecondarySm } from '@/global_ui_components/ui/button';
 import { Slider } from '@/global_ui_components/ui/slider';
 import { Label } from '@/global_ui_components/ui/label';
 import RoundedCornerFrame from '@/global_ui_components/frames/RoundedCornerFrame';
+import { responsiveSliderContainer } from '../helpers/mediaControlHelpers';
 
 const VideoPlayer = ({
   videoSrc,
   loop = false,
   controls = { play: true, reset: true, speed: true },
+  buttonLabels = { play: 'Play', reset: 'Reset', speed: 'Adjust Speed' },
+  sliderControls = { defaultValue: 0, min: 0, max: 100, step: 1 },
   hideControls = false,
   autoplay = false
 }) => {
@@ -61,27 +64,30 @@ const VideoPlayer = ({
       <video
         ref={videoRef}
         src={videoSrc}
-        controls={false} // hides player settings
-        className='w-full'
-        muted playsInline disablePictureInPicture // so that the browser allows autoplay
+        controls={false}
+        className="w-full rounded-lg overflow-hidden"
+        muted
+        playsInline
+        disablePictureInPicture
       />
 
-      {
-        /**
-         *  TODO: enable configuring the slider. For example, specifying the max, min and steps.
-         */
-      }
       {!hideControls ? (
-        <MediaControl>
-          {controls.play ? <ButtonSecondarySm label={'Simulate'} onClick={handlePlay} /> : null}
-          {controls.reset ? <ButtonSecondarySm label={'Reset'} onClick={handleReset} /> : null}
+        <MediaControls>
+          {controls.play ? <ButtonSecondarySm label={buttonLabels.play} onClick={handlePlay} /> : null}
+          {controls.reset ? <ButtonSecondarySm label={buttonLabels.reset} onClick={handleReset} /> : null}
           {controls.speed
-            ? <div className="flex items-center gap-2 flex-1 w-full">
-              <Label>Speed:</Label>
-              <Slider defaultValue={[10]} min={0} max={100} step={1} onValueChange={handleSpeedChange} />
+            ? <div className={responsiveSliderContainer}>
+              <Label>{buttonLabels.speed}</Label>
+              <Slider
+                defaultValue={[sliderControls.defaultValue]}
+                min={sliderControls.min}
+                max={sliderControls.max}
+                step={sliderControls.step}
+                onValueChange={handleSpeedChange}
+              />
             </div>
             : null}
-        </MediaControl>
+        </MediaControls>
       ) : null}
     </RoundedCornerFrame>
   );
