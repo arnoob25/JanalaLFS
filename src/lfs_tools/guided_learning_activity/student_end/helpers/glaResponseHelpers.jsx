@@ -36,7 +36,7 @@ export default function selectGlaResponseComponent({ inquiry, handleBranchSelect
             return (
                 <GlaTextResponseComponent
                     inquiry={inquiry}
-                    onUserInput={isCorrect => handleInquiryCompletion(isCorrect)}
+                    onMeaningfulInput={isCorrect => handleInquiryCompletion(isCorrect)}
                 />
             )
         default:
