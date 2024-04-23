@@ -15,7 +15,7 @@ const GlaTextResponseComponent = ({ inquiry, onMeaningfulInput }) => {
 
     // TODO: save input, and process if its a meaningful response and then allow progression
     const handleInputChange = input => {
-        onMeaningfulInput(input && input.length > 1)
+        onMeaningfulInput(input && input.length > 0)
     }
 
     return (

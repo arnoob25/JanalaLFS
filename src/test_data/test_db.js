@@ -45,7 +45,8 @@ export const INQUIRIES = [
     prompt: "Did you notice that the wheel rotates in the last 2 attempts!",
     response_type: RESPONSE_TYPES.TEXT,
     media_type: MEDIA_TYPES.VIDEO,
-    media_switch_method: MEDIA_SWITCH_METHODS.TAB
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB,
+
   },
   {
     id: 3,
@@ -235,7 +236,7 @@ export const MEDIA = [
   {
     id: 1, inquiry: 1, type: MEDIA_TYPES.VIDEO, sims: [
       { src: video11, label: 'Towards the center', hideControls: true },
-      { src: video12, label: 'Away from the center', hideControls: true },
+      { src: video12, label: '', hideControls: true },
     ], data: []
   },
   {
@@ -436,11 +437,15 @@ export const MEDIA = [
 ]
 
 export const VIDEO = [
-  { id: 1, inquiry: 1, order: 1, type: MEDIA_TYPES.VIDEO, label: 'Video', src: video11,  },
+  { id: 1, inquiry: 1, order: 1, type: MEDIA_TYPES.VIDEO, label: 'Towards the center', src: video11, conf: { hideControls: true } },
+  { id: 2, inquiry: 1, order: 2, type: MEDIA_TYPES.VIDEO, label: 'Away from the center', src: video12, conf: { hideControls: true } },
+  { id: 3, inquiry: 2, order: 1, src: video21, label: 'Attempt 1', conf: { controls: { play: true, reset: true } }, type: MEDIA_TYPES.VIDEO },
+  { id: 4, inquiry: 2, order: 2, src: video22, label: 'Attempt 2', conf: { controls: { play: true, speed: true }, sliderControls: { defaultValue: 50, step: 20 } }, type: MEDIA_TYPES.VIDEO },
+  { id: 5, inquiry: 2, order: 3, src: video23, label: 'Attempt 3', conf: { buttonLabels: { play: 'Simulate', speed: 'Slider' } }, type: MEDIA_TYPES.VIDEO },
 ]
 
 export const SIMULATION = [
-  { id: 1, inquiry: 1, order: 2, type: MEDIA_TYPES.VIDEO, label: 'Simulation', src: video53, conf: { hideControls: true } },
+
 ]
 
 export const DATA_TABLE = [
