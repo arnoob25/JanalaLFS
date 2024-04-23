@@ -16,9 +16,13 @@ import video111 from './111.mp4';
 import video112 from './112.mp4';
 import video141 from './141.mp4';
 import video142 from './142.mp4';
-
 import { RESPONSE_TYPES } from '@/lfs_tools/guided_learning_activity/student_end/helpers/glaResponseHelpers';
-import { MEDIA_TYPES } from '@/lfs_tools/shared_components/media/helpers/mediaTypes';
+import { MEDIA_SWITCH_METHODS } from '@/lfs_tools/shared_components/media/helpers/mediaRenderHelpers';
+
+export const MEDIA_TYPES = {
+  VIDEO: 'video',
+  DATA_TABLE: 'data_table',
+}
 
 export const INQUIRIES = [
   {
@@ -29,7 +33,8 @@ export const INQUIRIES = [
     context: "Consider applying force to an object on a smooth surface. Apply the same amount of force at two separate points on the object.",
     prompt: "Predict (describe) the motion of the object in these two cases.",
     response_type: RESPONSE_TYPES.TEXT,
-    media_type: MEDIA_TYPES.VIDEO
+    media_type: MEDIA_TYPES.VIDEO,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
   {
     id: 2,
@@ -39,7 +44,8 @@ export const INQUIRIES = [
     context: "Lets simulate the motion of the object to validate our predictions. We'll apply the same amount of force on the object. And repeat it 3 times. In each new attempt, we'll apply the force farther away from the center.",
     prompt: "Did you notice that the wheel rotates in the last 2 attempts!",
     response_type: RESPONSE_TYPES.TEXT,
-    media_type: MEDIA_TYPES.VIDEO
+    media_type: MEDIA_TYPES.VIDEO,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
   {
     id: 3,
@@ -49,7 +55,8 @@ export const INQUIRIES = [
     context: `Newton's second law describes acceleration due to force. The stronger the force is, the faster an object will accelerate (F=ma). Perhaps it can explain the rotation. So, lets try to simulate the wheel's motion using F=ma.`,
     prompt: "Notice that the simulation is inaccurate. But why?",
     response_type: RESPONSE_TYPES.CHOICE,
-    media_type: MEDIA_TYPES.VIDEO
+    media_type: MEDIA_TYPES.VIDEO,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
   {
     id: 4,
@@ -59,7 +66,8 @@ export const INQUIRIES = [
     context: "Apparantly, F=ma doesn't have any quantities that address rotation. How about we investigate some cases involving rotation? Perhaps this could help us find ways to explain rotation due to force.",
     prompt: "Select relevant examples to study.",
     response_type: RESPONSE_TYPES.CHOICE_AMBIGIOUS,
-    media_type: MEDIA_TYPES.VIDEO
+    media_type: MEDIA_TYPES.VIDEO,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
   {
     id: 5,
@@ -69,7 +77,8 @@ export const INQUIRIES = [
     context: "It's always wise to identify the specific conditions that distinguish a category of situations. In our case, situations that involve rotation.",
     prompt: "Which condition(s) differentiate these examples from linear motion?",
     response_type: RESPONSE_TYPES.CHOICE_AMBIGIOUS,
-    media_type: MEDIA_TYPES.VIDEO
+    media_type: MEDIA_TYPES.VIDEO,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
   {
     id: 6,
@@ -79,7 +88,8 @@ export const INQUIRIES = [
     context: `"Fixed Axis Rotation" - seems to describe objects rotating around a fixed pivot/ axis, reasonably well. Observing the effects of force in Fixed Axis Rotation - can be a fine start for building our understanding of it.`,
     prompt: "Lets use the Windmill example for our experiments. Which of the proposed tests would help you observe the effect mentioned in the first scenario?",
     response_type: RESPONSE_TYPES.CHOICE,
-    media_type: MEDIA_TYPES.DATA_TABLE
+    media_type: MEDIA_TYPES.DATA_TABLE,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
   {
     id: 7,
@@ -89,7 +99,8 @@ export const INQUIRIES = [
     context: "We have to observe how force influences rotation when acting on various distances from the axis. So, lets compare the blade's number of rotations per minute.",
     prompt: "Which proposition aligns best with your observation?",
     response_type: RESPONSE_TYPES.CHOICE,
-    media_type: MEDIA_TYPES.VIDEO
+    media_type: MEDIA_TYPES.VIDEO,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
   {
     id: 8,
@@ -99,7 +110,8 @@ export const INQUIRIES = [
     context: `Lets proceed with the experiments to outline rest the effects.`,
     prompt: "Which of the proposed tests with the windmill would help you observe the effect mentioned in the second scenario?",
     response_type: RESPONSE_TYPES.CHOICE,
-    media_type: MEDIA_TYPES.DATA_TABLE
+    media_type: MEDIA_TYPES.DATA_TABLE,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
   {
     id: 9,
@@ -109,7 +121,8 @@ export const INQUIRIES = [
     context: `We want to see how varying force influence rotation. For this, we’ll observe the blade's number of rotations for varying windspeeds.`,
     prompt: "What do you observe?",
     response_type: RESPONSE_TYPES.CHOICE,
-    media_type: MEDIA_TYPES.VIDEO
+    media_type: MEDIA_TYPES.VIDEO,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
   {
     id: 10,
@@ -119,7 +132,8 @@ export const INQUIRIES = [
     context: `Lets complete our outline.`,
     prompt: "Which of the proposed tests would help you observe the effect mentioned in the third scenario?",
     response_type: RESPONSE_TYPES.CHOICE,
-    media_type: MEDIA_TYPES.DATA_TABLE
+    media_type: MEDIA_TYPES.DATA_TABLE,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
   {
     id: 11,
@@ -129,7 +143,8 @@ export const INQUIRIES = [
     context: `To specify how force acting on different angles influence rotation, we'll monitor how fast the blades rotate. In cases where the wind strikes the face of the blade from two different angles relative to it.`,
     prompt: "How does the angle between the blade and the direction of the wind influence rotation?",
     response_type: RESPONSE_TYPES.CHOICE,
-    media_type: MEDIA_TYPES.VIDEO
+    media_type: MEDIA_TYPES.VIDEO,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
   {
     id: 12,
@@ -139,7 +154,8 @@ export const INQUIRIES = [
     context: `Given that F=ma doesn't explain rotation. How about we introduce a new physical quantity based on our findings? Let's call it Torque. Torque will explain the effects of force on Fixed Axis Rotation.`,
     prompt: "Select the propositions you support regarding the nature of Torque.",
     response_type: RESPONSE_TYPES.CHOICE_AMBIGIOUS,
-    media_type: MEDIA_TYPES.DATA_TABLE
+    media_type: MEDIA_TYPES.DATA_TABLE,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
   {
     id: 13,
@@ -149,7 +165,8 @@ export const INQUIRIES = [
     context: `We can't reliably explain and predict Torque unless we have a formula to calculate it with. Lets start by expressing our findings mathematically. Hopefully, combining our findings in an equation might give us the formula for Troque.`,
     prompt: `Let’s simplify the task by initially representing torque without accounting for θ. Now, which of the following equations best represents Torque?`,
     response_type: RESPONSE_TYPES.CHOICE,
-    media_type: MEDIA_TYPES.DATA_TABLE
+    media_type: MEDIA_TYPES.DATA_TABLE,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
 ]
 
@@ -209,10 +226,9 @@ export const CHOICES = [
 
 export const TEXT_LABELS = [
   // inquiry 1
-  { id: 1, inquiry: 1, label: 'Motion of the object when applying force towards the center' },
-  { id: 2, inquiry: 1, label: 'Motion of the object when applying force away from the center' },
+  { id: 1, inquiry: 1, label: 'Motion of the object when applying force towards the center vs away from the center' },
   //inquiry 2
-  { id: 3, inquiry: 2, label: 'Why do you think the wheel is rotating?' },
+  { id: 2, inquiry: 2, label: 'Why do you think the wheel is rotating?' },
 ]
 
 export const MEDIA = [
@@ -413,8 +429,20 @@ export const MEDIA = [
   },
   {
     id: 14, inquiry: 14, type: MEDIA_TYPES.VIDEO, sims: [
-      { src: video141, label: 'Varying force',autoplay: true, hideControls: true },
-      { src: video142, label: 'Varying distance from the axis',autoplay: true, hideControls: true },
+      { src: video141, label: 'Varying force', autoplay: true, hideControls: true },
+      { src: video142, label: 'Varying distance from the axis', autoplay: true, hideControls: true },
     ], data: []
   },
+]
+
+export const VIDEO = [
+  { id: 1, inquiry: 1, order: 1, type: MEDIA_TYPES.VIDEO, label: 'Video', src: video11,  },
+]
+
+export const SIMULATION = [
+  { id: 1, inquiry: 1, order: 2, type: MEDIA_TYPES.VIDEO, label: 'Simulation', src: video53, conf: { hideControls: true } },
+]
+
+export const DATA_TABLE = [
+
 ]
