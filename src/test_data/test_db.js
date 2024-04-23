@@ -1,32 +1,24 @@
-import video11 from '../../guided_learning_activity/test_data/11.mp4';
-import video12 from '../../guided_learning_activity/test_data/12.mp4';
-import video13 from '../../guided_learning_activity/test_data/13.mp4';
-import video14 from '../../guided_learning_activity/test_data/14.mp4';
-import video21 from '../../guided_learning_activity/test_data/21.mp4';
-import video22 from '../../guided_learning_activity/test_data/22.mp4';
-import video23 from '../../guided_learning_activity/test_data/23.mp4';
-import video51 from '../../guided_learning_activity/test_data/51.mp4';
-import video52 from '../../guided_learning_activity/test_data/52.mp4';
-import video53 from '../../guided_learning_activity/test_data/53.mp4';
-import video54 from '../../guided_learning_activity/test_data/54.mp4';
-import video71 from '../../guided_learning_activity/test_data/71.mp4';
-import video72 from '../../guided_learning_activity/test_data/72.mp4';
-import video91 from '../../guided_learning_activity/test_data/91.mp4';
-import video111 from '../../guided_learning_activity/test_data/111.mp4';
-import video112 from '../../guided_learning_activity/test_data/112.mp4';
-import video141 from '../../guided_learning_activity/test_data/141.mp4';
-import video142 from '../../guided_learning_activity/test_data/142.mp4';
+import video11 from './11.mp4';
+import video12 from './12.mp4';
+import video13 from './13.mp4';
+import video14 from './14.mp4';
+import video21 from './21.mp4';
+import video22 from './22.mp4';
+import video23 from './23.mp4';
+import video51 from './51.mp4';
+import video52 from './52.mp4';
+import video53 from './53.mp4';
+import video54 from './54.mp4';
+import video71 from './71.mp4';
+import video72 from './72.mp4';
+import video91 from './91.mp4';
+import video111 from './111.mp4';
+import video112 from './112.mp4';
+import video141 from './141.mp4';
+import video142 from './142.mp4';
 
-export const RESPONSE_TYPES = {
-  TEXT: 'text',
-  CHOICE: 'choice',
-  CHOICE_AMBIGIOUS: 'choice_ambigious',
-}
-
-export const MEDIA_TYPES = {
-  VIDEO: 'video',
-  DATA_TABLE: 'data_table',
-}
+import { RESPONSE_TYPES } from '@/lfs_tools/guided_learning_activity/student_end/helpers/glaResponseHelpers';
+import { MEDIA_TYPES } from '@/lfs_tools/shared_components/media/helpers/mediaTypes';
 
 export const INQUIRIES = [
   {
