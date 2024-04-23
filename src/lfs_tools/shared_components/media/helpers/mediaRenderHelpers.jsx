@@ -26,13 +26,15 @@ export function selectMediaRenderComponent(mediaItem) {
                     loop={mediaConf.loop ? mediaConf.loop : undefined}
                     autoplay={mediaConf.autoplay ? mediaConf.autoplay : undefined}
                     controls={mediaConf.controls ? mediaConf.controls : undefined}
+                    buttonLabels={mediaConf.buttonLabels ? mediaConf.buttonLabels : undefined}
+                    sliderControls={mediaConf.sliderControls ? mediaConf.sliderControls : undefined}
                     hideControls={mediaConf.hideControls ? mediaConf.hideControls : undefined}
                 />
             );
         case MEDIA_TYPES.DATA_TABLE:
             return <DataGrid columns={mediaItem.columns} data={mediaItem.data} />;
         default:
-            return null;
+            return null; // TODO: see if we need to inform the user about the error
     }
 }
 
@@ -57,7 +59,7 @@ export default function renderMediaWithSwitcherComponent(allMedia, switchMethod 
                 <Tabs defaultValue={0} className="w-full">
                     <TabsList>
                         {allMedia.map((mediaItem, index) => (
-                            <TabsTrigger key={index} value={index} className='bg-transparent'> 
+                            <TabsTrigger key={index} value={index} className='bg-transparent'>
                                 {mediaItem.label}
                             </TabsTrigger>
                         ))}
@@ -70,6 +72,6 @@ export default function renderMediaWithSwitcherComponent(allMedia, switchMethod 
                 </Tabs>
             )
         default:
-            return null
+            return null // TODO: see if we need to inform the user about the error
     }
 }
