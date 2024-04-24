@@ -7,7 +7,7 @@
 import ContextComponent from "../student_end/components/ContextComponent";
 import MediaContainer from "../../shared_components/media/MediaContainer";
 import PromptComponent from "../student_end/components/PromptComponent";
-import { BRANCHES } from "../../../test_data/test_db";
+import { BRANCHES } from "../../../assets/test_data/test_db";
 import selectGlaResponseComponent from "../student_end/helpers/glaResponseHelpers";
 
 // positions the context and prompt sections side by side in desktop, but vertically stacked in mobile

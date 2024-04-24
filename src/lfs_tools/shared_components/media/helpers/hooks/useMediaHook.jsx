@@ -1,4 +1,4 @@
-import { DATA_TABLE, SIMULATION, VIDEO } from "@/test_data/test_db";
+import { DATA_TABLE, SIMULATION, VIDEO } from "@/assets/test_data/test_db";
 import { useEffect, useState } from "react";
 
 export default function useMedia(inquiry) {
