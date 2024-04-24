@@ -33,7 +33,7 @@ const GlaPage = () => {
                     <InquiryComponent
                         key={selectedInquiry.id}
                         inquiry={selectedInquiry}
-                        onBranchingRequest={selectedBranch => handleBranchInitialization(selectedBranch)} 
+                        onBranchingRequest={selectedBranch => handleBranchInitialization(selectedBranch)}
                         onProgressionRequest={result => handleAllowingProgression(result)}
                     />
                 </div>

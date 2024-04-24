@@ -1,7 +1,7 @@
 // ChoiceResponseComponent.js
 /* eslint-disable react/prop-types */
 
-import ChoiceComponent from "@/lfs_tools/shared_components/user_response/ChoiceComponent";
+import ChoiceComponent from "@/lfs_tools/shared_features/user_response/components/ChoiceComponent";
 import { useEffect, useState } from "react";
 import { CHOICES } from "../../../../assets/test_data/test_db";
 

@@ -5,7 +5,7 @@
  */
 
 import ContextComponent from "../student_end/components/ContextComponent";
-import MediaContainer from "../../shared_components/media/MediaContainer";
+import MediaContainer from "../../shared_features/media/MediaContainer";
 import PromptComponent from "../student_end/components/PromptComponent";
 import { BRANCHES } from "../../../assets/test_data/test_db";
 import selectGlaResponseComponent from "../student_end/helpers/glaResponseHelpers";
