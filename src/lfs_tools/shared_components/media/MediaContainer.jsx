@@ -1,29 +1,17 @@
-// MediaComponent.js
-import BaseJsSandbox from './media_components/BaseJsSandbox';
+import useMedia from './helpers/hooks/useMediaHook';
 import MediaContainerCard from '@/global_ui_components/cards/MediaContainerCard';
+import renderMediaWithSwitcherComponent from './helpers/mediaRenderHelpers';
+
 
 const MediaContainer = ({ inquiry }) => {
 
-
-
-  /**
-   * TODO: fetch the media.
-   * if more than one exists, 
-   *    check the metadata and render appropriate media selectors 
-   *        (tabs/ carousel/ side-by-side)
-   */
-
-  /**
-   * check media type for each type of media and 
-   *    select appropriate component to display them
-   */
-
-
+  const [allMedia, switchMethod] = useMedia(inquiry)
 
   return (
     <MediaContainerCard>
-      <BaseJsSandbox
-      />
+      {allMedia && allMedia.length > 0
+        ? renderMediaWithSwitcherComponent(allMedia, switchMethod)
+        : null}
     </MediaContainerCard>
   );
 };

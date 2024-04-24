@@ -12,13 +12,14 @@
 
 import ChoiceComponent from "@/lfs_tools/shared_components/user_response/ChoiceComponent";
 import { useEffect, useState } from "react";
-import { CHOICES } from "../../test_data/test_db";
-import { evaluateChoiceResponse } from "@/lfs_tools/shared_features/user_response/userResponseEvaluation";
+import { CHOICES } from "../../../../test_data/test_db";
+import evaluateChoiceResponse from "@/lfs_tools/shared_features/user_response/evaluateChoiceResponse";
+import { RESPONSE_TYPES } from "../helpers/glaResponseHelpers";
 
 // TODO: work with objects for the time being. Later, we'll decide whether to work with ids or objects
 
 
-const ChoiceResponseComponent = ({ inquiry, onChoiceEvaluation }) => {
+const GlaChoiceResponseComponent = ({ inquiry, onChoiceEvaluation }) => {
 
     const [choices, setChoices] = useState([]);
     const [correctChoices, setCorrectChoices] = useState([]);
@@ -27,17 +28,12 @@ const ChoiceResponseComponent = ({ inquiry, onChoiceEvaluation }) => {
     // evaluates user responses
     const [isCorrectResponse, correctResponses, incorrectResponses] = evaluateChoiceResponse(selectedChoices, correctChoices)
 
-
     // setting the choices and correct choices
     // TODO: replace with query client from TanStack
     useEffect(() => {
 
         const choiceArray = CHOICES.filter(
-            choice => {
-                return (
-                    choice.inquiry === inquiry.id
-                )
-            }
+            choice => choice.inquiry === inquiry.id
         )
 
         const correctChoiceArray = choiceArray.filter(
@@ -47,6 +43,8 @@ const ChoiceResponseComponent = ({ inquiry, onChoiceEvaluation }) => {
                 )
             }
         )
+
+
 
         setChoices(choiceArray);
         setCorrectChoices(correctChoiceArray);
@@ -65,15 +63,17 @@ const ChoiceResponseComponent = ({ inquiry, onChoiceEvaluation }) => {
         <>
             <ChoiceComponent
                 choices={choices}
-                maxChoices={correctChoices.length}
+                // student can select any number of choices when type is CHOICE_AMBIGIOUS
+                maxChoices={inquiry.response_type === RESPONSE_TYPES.CHOICE_AMBIGIOUS ? choices.length : correctChoices.length}
                 onSelectionChange={setSelectedChoices}
                 evaluatedUserResponseData={[
                     correctResponses,
                     incorrectResponses
                 ]}
+                show_selection_prompt={!(inquiry.response_type === RESPONSE_TYPES.CHOICE_AMBIGIOUS)}
             />
         </>
     );
 };
 
-export default ChoiceResponseComponent;
+export default GlaChoiceResponseComponent;

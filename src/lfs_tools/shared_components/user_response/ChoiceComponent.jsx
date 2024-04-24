@@ -17,23 +17,25 @@
  */
 
 
-import { Label } from "@/global_ui_components/ui/label";
-import Choice, { CheckboxBase } from "@/global_ui_components/ui/checkbox";
+import Choice from "@/global_ui_components/ui/checkbox";
 import { useEffect, useState } from "react";
-import { TypographyMuted, TypographyP } from "@/global_ui_components/ui/typography";
+import { TypographyMuted } from "@/global_ui_components/ui/typography";
 
 const ChoiceComponent = ({
     choices,
     maxChoices = 1,
     onSelectionChange,
     disabled = false,
+    show_selection_prompt = true,
     evaluatedUserResponseData = ['', '']
 }) => {
 
     const [selectedChoiceIds, setSelectedChoiceIds] = useState([]); // stores the id instead of the object
+    
+    // TODO: apply custom styling for incorrect and correct responses,
     const [correctResponses, incorrectResponses] = evaluatedUserResponseData
 
-    // TODO: apply custom styling for incorrect and correct responses,
+    
     // TODO: disable the component conditionally
     // TODO: display additional info and/ user's explanations
 
@@ -67,7 +69,7 @@ const ChoiceComponent = ({
 
     return (
         <>
-            {!disabled // don't display how many choices can be selected if the component is disabled
+            {!disabled && show_selection_prompt // don't display how many choices can be selected if the component is disabled
                 ? <TypographyMuted text={`Select ${maxChoices} from ${choices.length} options`} />
                 : null
             }

@@ -38,7 +38,7 @@ export function Slider({ className, label, ...props }) {
         defaultValue={50}
         max={100}
         step={1}
-        className={cn("mt-1 w-[100%] min-w-[120px]", className)}
+        className={cn("mt-1 min-w-[120px]", className)}
         {...props}
       />
     </>

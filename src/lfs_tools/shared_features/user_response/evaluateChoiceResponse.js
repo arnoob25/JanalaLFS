@@ -10,36 +10,39 @@
  *                   - `correctChoices` (Array<Object>): An array of the user's selected choices that match the correct choices.
  *                   - `incorrectChoices` (Array<Object>): An array of the user's selected choices that do not match the correct choices.
  */
-export function evaluateChoiceResponse(selectedChoices, correctChoices) {
 
-  const evaluateResponse = () => {
-    const existsInArray = (array, choice) => {
-      return array.some((arrayItem) => arrayItem.id === choice.id);
-    };
 
-    const correctResponses = selectedChoices.filter((selectedChoice) =>
-      existsInArray(correctChoices, selectedChoice)
+export default function evaluateChoiceResponse(selectedChoices, correctChoices) {
+
+  // returns true if item found in the array
+  const itemExistsInArray = (array, choice) => {
+    return array.some(arrayItem => arrayItem.id === choice.id);
+  };
+
+  const evaluateChoice = () => {
+    const correctResponses = selectedChoices.filter(
+      selectedChoice => itemExistsInArray(correctChoices, selectedChoice)
     );
     const incorrectResponses = selectedChoices.filter(
-      (selectedChoice) => !existsInArray(correctResponses, selectedChoice)
+      selectedChoice => !itemExistsInArray(correctResponses, selectedChoice)
     );
 
     return [
-      correctResponses.length === correctChoices.length,
+      /**
+       * evaluates to true when:
+       * all the correct choices are selected
+       * the number of selected choices is exactly same as the number of correct choices 
+       *  */ 
+      correctResponses.length === correctChoices.length && selectedChoices.length === correctChoices.length,
       correctResponses,
       incorrectResponses,
     ];
   };
 
   if (selectedChoices.length > 0 && correctChoices.length > 0) {
-    const [isCorrect, correctChoices, incorrectChoices] = evaluateResponse();
-    return [isCorrect, correctChoices, incorrectChoices];
+    const [isCorrect, correctSelections, incorrectSelections] = evaluateChoice();
+    return [isCorrect, correctSelections, incorrectSelections];
   }
 
   return [false, [], []];
 }
-
-
-// TODO: evaluate text response (text equals a set value) or (is a valid, meaningful text)
-
-// TODO: evaluate responses in the sandbox

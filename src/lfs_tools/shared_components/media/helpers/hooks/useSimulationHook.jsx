@@ -6,11 +6,11 @@ function useSimulation(simCode, canvasRef) {
     const [isRunning, setIsRunning] = useState(false);
 
     useEffect(() => {
-        if (simCode && canvasRef.current) {
-            const [simulationControls, simulationMessages, simulationIsRunning] = simCode(canvasRef);
-            setControls(simulationControls);
-            setMessages(simulationMessages);
-            setIsRunning(simulationIsRunning);
+        if (typeof simCode === 'function' && canvasRef.current) {
+            const simulationResult = simCode(canvasRef);
+            setControls(simulationResult.controls);
+            setMessages(simulationResult.messages);
+            setIsRunning(simulationResult.isRunning);
         }
     }, [simCode, canvasRef]);
 
