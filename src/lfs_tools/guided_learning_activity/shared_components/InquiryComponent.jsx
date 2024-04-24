@@ -13,7 +13,7 @@ import selectGlaResponseComponent from "../student_end/helpers/glaResponseHelper
 // positions the context and prompt sections side by side in desktop, but vertically stacked in mobile
 const responsiveLayoutStyle = "grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-10"
 // vertically stacks the componenets within the context and prompt sections
-const columnSectionStyle = "space-y-4 flex flex-col  gap-5"
+const columnSectionStyle = "space-y-4 flex flex-col gap-5"
 
 const InquiryComponent = ({
     inquiry,
@@ -54,14 +54,18 @@ const InquiryComponent = ({
                     : null}
             </div>
 
-            <div className={columnSectionStyle}>
+            <div className={'space-y-4 flex flex-col gap-5'}>
                 {inquiry.prompt.length > 0
                     ? <div><PromptComponent inquiry={inquiry} /></div>
                     : null}
 
                 {/** renders the appropriate response component */}
                 {inquiry !== undefined
-                    ? selectGlaResponseComponent({ inquiry, handleBranchSelection, handleInquiryCompletion })
+                    ? <div>{selectGlaResponseComponent({
+                        inquiry,
+                        handleBranchSelection,
+                        handleInquiryCompletion
+                    })}</div>
                     : null}
             </div>
 
