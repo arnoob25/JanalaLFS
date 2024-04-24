@@ -10,10 +10,10 @@
 
 /* eslint-disable react/prop-types */
 
-import ChoiceComponent from "@/lfs_tools/shared_components/user_response/ChoiceComponent";
+import ChoiceComponent from "@/lfs_tools/shared_features/user_response/components/ChoiceComponent";
 import { useEffect, useState } from "react";
 import { CHOICES } from "../../../../assets/test_data/test_db";
-import evaluateChoiceResponse from "@/lfs_tools/shared_features/user_response/evaluateChoiceResponse";
+import evaluateChoiceResponse from "@/lfs_tools/shared_features/user_response/helpers/evaluateChoiceResponse";
 import { RESPONSE_TYPES } from "../helpers/glaResponseHelpers";
 
 // TODO: work with objects for the time being. Later, we'll decide whether to work with ids or objects

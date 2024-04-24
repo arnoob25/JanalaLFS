@@ -17,7 +17,7 @@ import video112 from './112.mp4';
 import video141 from './141.mp4';
 import video142 from './142.mp4';
 import { RESPONSE_TYPES } from '@/lfs_tools/guided_learning_activity/student_end/helpers/glaResponseHelpers';
-import { MEDIA_SWITCH_METHODS } from '@/lfs_tools/shared_components/media/helpers/mediaRenderHelpers';
+import { MEDIA_SWITCH_METHODS } from '@/lfs_tools/shared_features/media/helpers/mediaRenderHelpers';
 
 export const MEDIA_TYPES = {
   VIDEO: 'video',
