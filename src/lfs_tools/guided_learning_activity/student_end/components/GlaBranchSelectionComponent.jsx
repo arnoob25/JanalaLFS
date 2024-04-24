@@ -3,7 +3,7 @@
 
 import ChoiceComponent from "@/lfs_tools/shared_components/user_response/ChoiceComponent";
 import { useEffect, useState } from "react";
-import { CHOICES } from "../../../../test_data/test_db";
+import { CHOICES } from "../../../../assets/test_data/test_db";
 
 
 const GlaBranchSelectionComponent = ({ inquiry, onBranchSelection }) => {

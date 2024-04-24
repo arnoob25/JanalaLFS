@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { BRANCHES, INQUIRIES } from "@/test_data/test_db"
+import { BRANCHES, INQUIRIES } from "@/assets/test_data/test_db"
 
 
 /**

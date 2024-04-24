@@ -6,7 +6,7 @@ import { useState } from "react"
 import useProgression from "../helpers/hooks/useProgressionHook";
 import InquiryComponent from "../../shared_components/InquiryComponent"
 import { Button } from "@/global_ui_components/ui/button";
-import { INQUIRIES } from '../../../../test_data/test_db'
+import { INQUIRIES } from '../../../../assets/test_data/test_db'
 
 
 const GlaPage = () => {
