@@ -8,71 +8,76 @@
  * @returns {JSX.Element} - The rendered `ChoiceComponent` with the appropriate choices and evaluation data.
  */
 
-/* eslint-disable react/prop-types */
 
 import ChoiceComponent from "@/lfs_tools/shared_features/user_response/components/ChoiceComponent";
 import { useEffect, useState } from "react";
 import { CHOICES } from "../../../../assets/test_data/test_db";
 import evaluateChoiceResponse from "@/lfs_tools/shared_features/user_response/helpers/evaluateChoiceResponse";
-import { RESPONSE_TYPES } from "../helpers/glaResponseHelpers";
+import { RESPONSE_TYPES, ResponseTemplate } from "../helpers/glaResponseHelpers";
+import GlaButton from "./GlaButton";
+import GlaResponseContainer from "./GlaResponseContainer";
 
-// TODO: work with objects for the time being. Later, we'll decide whether to work with ids or objects
-
-
-const GlaChoiceResponseComponent = ({ inquiry, onChoiceEvaluation }) => {
-
+const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
+    const isAmbigious = inquiry.response_type === RESPONSE_TYPES.CHOICE_AMBIGIOUS;
     const [choices, setChoices] = useState([]);
     const [correctChoices, setCorrectChoices] = useState([]);
-    const [selectedChoices, setSelectedChoices] = useState([]); // choices selected by the user
+    const [selectedChoices, setSelectedChoices] = useState([]);
+    const [isValidResponse, setIsValidResponse] = useState(false);
 
-    // evaluates user responses
-    const [isCorrectResponse, correctResponses, incorrectResponses] = evaluateChoiceResponse(selectedChoices, correctChoices)
+    const [isCorrect, setIsCorrect] = useState(false)
 
-    // setting the choices and correct choices
-    // TODO: replace with query client from TanStack
+    // gets the choices, and answers
     useEffect(() => {
-
-        const choiceArray = CHOICES.filter(
-            choice => choice.inquiry === inquiry.id
-        )
-
-        const correctChoiceArray = choiceArray.filter(
-            choice => {
-                return (
-                    choice.isCorrect === true
-                )
-            }
-        )
-
-
-
+        // setting the choices and correct choices
+        // TODO: replace with query client from TanStack
+        const choiceArray = CHOICES.filter((choice) => choice.inquiry === inquiry.id);
+        const correctChoiceArray = choiceArray.filter((choice) => choice.isCorrect === true);
         setChoices(choiceArray);
         setCorrectChoices(correctChoiceArray);
-
     }, [inquiry]);
 
+    const handleChoiceSelection = (selection) => {
+        if (selection && selection.length > 0) {
+            setSelectedChoices(selection);
+            // for ambigious responses, any number of selections result in true
+            if (isAmbigious || selection.length === correctChoices.length) {
+                setIsValidResponse(true);
+            } else {
+                setIsValidResponse(false);
+            }
+        } else {
+            setIsValidResponse(false);
+        }
+    };
 
-    // TODO: maybe return an event handler that'll send the correct response to the parent
-    // extending on above: keep the callback for now, since I have to manage asking for explanations from this component
-    useEffect(() => {
-        onChoiceEvaluation(isCorrectResponse)
-    }, [isCorrectResponse])
+    const handleEvaluation = () => {
+        const evaluation = evaluateChoiceResponse(selectedChoices, correctChoices);
+        setIsCorrect(evaluation.isCorrect)
+    };
 
+    const handleProgression = () => {
+        const response = new ResponseTemplate()
+        response.type = RESPONSE_TYPES.CHOICE // we won't handle ambigious choices separately
+        response.isCorrect = isCorrect
+        onEvaluation(response)
+    }
+
+    // TODO: reset choices after each response
 
     return (
-        <>
+        <GlaResponseContainer>
             <ChoiceComponent
                 choices={choices}
-                // student can select any number of choices when type is CHOICE_AMBIGIOUS
-                maxChoices={inquiry.response_type === RESPONSE_TYPES.CHOICE_AMBIGIOUS ? choices.length : correctChoices.length}
-                onSelectionChange={setSelectedChoices}
-                evaluatedUserResponseData={[
-                    correctResponses,
-                    incorrectResponses
-                ]}
-                show_selection_prompt={!(inquiry.response_type === RESPONSE_TYPES.CHOICE_AMBIGIOUS)}
+                maxChoices={isAmbigious ? choices.length : correctChoices.length}
+                onSelectionChange={(selection) => handleChoiceSelection(selection)}
+                show_selection_prompt={!isAmbigious}
             />
-        </>
+            <GlaButton
+                label={!isCorrect ? 'Check' : 'Next'}
+                onClick={isValidResponse && !isCorrect ? handleEvaluation : handleProgression}
+                disabled={!isValidResponse}
+            />
+        </GlaResponseContainer>
     );
 };
 
