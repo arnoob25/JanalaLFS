@@ -11,9 +11,9 @@
 
 import ChoiceComponent from "@/lfs_tools/shared_features/user_response/components/ChoiceComponent";
 import { useEffect, useState } from "react";
-import { CHOICES } from "../../../../assets/test_data/test_db";
+import { CHOICES } from "../../../../../assets/test_data/test_db";
 import evaluateChoiceResponse from "@/lfs_tools/shared_features/user_response/helpers/evaluateChoiceResponse";
-import { RESPONSE_TYPES, ResponseTemplate } from "../helpers/glaResponseHelpers";
+import { RESPONSE_TYPES, ResponseTemplate } from "../../helpers/glaResponseHelpers";
 import GlaButton from "./GlaButton";
 import GlaResponseContainer from "./GlaResponseContainer";
 

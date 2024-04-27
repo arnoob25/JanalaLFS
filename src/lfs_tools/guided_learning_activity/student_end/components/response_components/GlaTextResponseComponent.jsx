@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { TEXT_LABELS } from '../../../../assets/test_data/test_db'
+import { TEXT_LABELS } from '../../../../../assets/test_data/test_db'
 import { TextareaWithLabel } from '@/global_ui_components/ui/textarea'
 import GlaButton from './GlaButton'
 import GlaResponseContainer from './GlaResponseContainer'
-import { RESPONSE_TYPES, ResponseTemplate } from '../helpers/glaResponseHelpers'
+import { RESPONSE_TYPES, ResponseTemplate } from '../../helpers/glaResponseHelpers'
 
 const GlaTextResponseComponent = ({ inquiry, onMeaningfulResponse }) => {
 

@@ -3,10 +3,10 @@
 
 import ChoiceComponent from "@/lfs_tools/shared_features/user_response/components/ChoiceComponent";
 import { useEffect, useState } from "react";
-import { BRANCHES, CHOICES } from "../../../../assets/test_data/test_db";
+import { BRANCHES, CHOICES } from "../../../../../assets/test_data/test_db";
 import GlaResponseContainer from "./GlaResponseContainer";
 import GlaButton from "./GlaButton";
-import { RESPONSE_TYPES, ResponseTemplate } from "../helpers/glaResponseHelpers";
+import { RESPONSE_TYPES, ResponseTemplate } from "../../helpers/glaResponseHelpers";
 
 
 

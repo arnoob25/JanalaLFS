@@ -1,6 +1,6 @@
-import GlaBranchSelectionComponent from "../components/GlaBranchSelectionComponent";
-import GlaChoiceResponseComponent from "../components/GlaChoiceResponseComponent";
-import GlaTextResponseComponent from "../components/GlaTextResponseComponent";
+import GlaBranchSelectionComponent from "../components/response_components/GlaBranchSelectionComponent";
+import GlaChoiceResponseComponent from "../components/response_components/GlaChoiceResponseComponent";
+import GlaTextResponseComponent from "../components/response_components/GlaTextResponseComponent";
 
 export const RESPONSE_TYPES = {
     TEXT: 'text',
