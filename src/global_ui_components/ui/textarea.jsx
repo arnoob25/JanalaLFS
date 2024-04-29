@@ -25,7 +25,7 @@ export { Textarea }
 
 export function TextareaWithLabel({ label = '', placeholder = '', onInputChange = input => { } }) {  
   return (
-    <div className="grid w-full gap-1.5">
+    <div className="grid w-full gap-1.5" >
       <Label htmlFor="message">{label}</Label>
       <Textarea placeholder={placeholder} id="message" onChange={event => onInputChange(event.target.value)} />
     </div>

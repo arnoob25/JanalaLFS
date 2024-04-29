@@ -28,39 +28,83 @@ export const INQUIRIES = [
   {
     id: 1,
     branch: null,
-    is_branching: false,
+    is_branching: true, // maybe we don't need it since we have response type
     order: 1,
-    context: "Consider applying force to an object on a smooth surface. Apply the same amount of force at two separate points on the object.",
-    prompt: "Predict (describe) the motion of the object in these two cases.",
-    response_type: RESPONSE_TYPES.TEXT,
+    context: "This inquiry originates a branch",
+    prompt: "First one is incorrect, 2nd one correct",
+    response_type: RESPONSE_TYPES.CHOICE_BRANCH,
     media_type: MEDIA_TYPES.VIDEO,
     media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
   {
     id: 2,
-    branch: null,
+    branch: 1,
     is_branching: false,
-    order: 2,
-    context: "Lets simulate the motion of the object to validate our predictions. We'll apply the same amount of force on the object. And repeat it 3 times. In each new attempt, we'll apply the force farther away from the center.",
-    prompt: "Did you notice that the wheel rotates in the last 2 attempts!",
-    response_type: RESPONSE_TYPES.TEXT,
+    order: 1,
+    context: "First Inquiry",
+    prompt: "Branch 1 (Incorrect branch)",
+    response_type: RESPONSE_TYPES.CHOICE,
     media_type: MEDIA_TYPES.VIDEO,
-    media_switch_method: MEDIA_SWITCH_METHODS.TAB,
-
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
   {
     id: 3,
-    branch: null,
+    branch: 1,
     is_branching: false,
-    order: 3,
-    context: `Newton's second law describes acceleration due to force. The stronger the force is, the faster an object will accelerate (F=ma). Perhaps it can explain the rotation. So, lets try to simulate the wheel's motion using F=ma.`,
-    prompt: "Notice that the simulation is inaccurate. But why?",
+    order: 2,
+    context: "Last Inquiry",
+    prompt: "Branch 1 (Incorrect branch)",
     response_type: RESPONSE_TYPES.CHOICE,
     media_type: MEDIA_TYPES.VIDEO,
     media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
   {
     id: 4,
+    branch: 2,
+    is_branching: false,
+    order: 1,
+    context: "First Inquiry",
+    prompt: "Branch 2 (Correct branch)",
+    response_type: RESPONSE_TYPES.CHOICE_AMBIGIOUS,
+    media_type: MEDIA_TYPES.VIDEO,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
+  },
+  {
+    id: 5,
+    branch: 2,
+    is_branching: false,
+    order: 2,
+    context: "Last Inquiry",
+    prompt: "Branch 2 (Correct branch)",
+    response_type: RESPONSE_TYPES.CHOICE,
+    media_type: MEDIA_TYPES.VIDEO,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
+  },
+  {
+    id: 6,
+    branch: null,
+    is_branching: false,
+    order: 2,
+    context: "Lets simulate the motion of the object to validate our predictions. We'll apply the same amount of force on the object. And repeat it 3 times. In each new attempt, we'll apply the force farther away from the center.",
+    prompt: "Did you notice that the wheel rotates in the last 2 attempts!",
+    response_type: RESPONSE_TYPES.CHOICE,
+    media_type: MEDIA_TYPES.VIDEO,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB,
+
+  },
+  {
+    id: 7,
+    branch: null,
+    is_branching: false,
+    order: 0,
+    context: `Newton's second law describes acceleration due to force. The stronger the force is, the faster an object will accelerate (F=ma). Perhaps it can explain the rotation. So, lets try to simulate the wheel's motion using F=ma.`,
+    prompt: "Notice that the simulation is inaccurate. But why?",
+    response_type: RESPONSE_TYPES.TEXT,
+    media_type: MEDIA_TYPES.VIDEO,
+    media_switch_method: MEDIA_SWITCH_METHODS.TAB
+  },
+  {
+    id: 8,
     branch: null,
     is_branching: false,
     order: 4,
@@ -70,113 +114,21 @@ export const INQUIRIES = [
     media_type: MEDIA_TYPES.VIDEO,
     media_switch_method: MEDIA_SWITCH_METHODS.TAB
   },
-  {
-    id: 5,
-    branch: null,
-    is_branching: false,
-    order: 5,
-    context: "It's always wise to identify the specific conditions that distinguish a category of situations. In our case, situations that involve rotation.",
-    prompt: "Which condition(s) differentiate these examples from linear motion?",
-    response_type: RESPONSE_TYPES.CHOICE_AMBIGIOUS,
-    media_type: MEDIA_TYPES.VIDEO,
-    media_switch_method: MEDIA_SWITCH_METHODS.TAB
-  },
-  {
-    id: 6,
-    branch: null,
-    is_branching: false,
-    order: 6,
-    context: `"Fixed Axis Rotation" - seems to describe objects rotating around a fixed pivot/ axis, reasonably well. Observing the effects of force in Fixed Axis Rotation - can be a fine start for building our understanding of it.`,
-    prompt: "Lets use the Windmill example for our experiments. Which of the proposed tests would help you observe the effect mentioned in the first scenario?",
-    response_type: RESPONSE_TYPES.CHOICE,
-    media_type: MEDIA_TYPES.DATA_TABLE,
-    media_switch_method: MEDIA_SWITCH_METHODS.TAB
-  },
-  {
-    id: 7,
-    branch: null,
-    is_branching: false,
-    order: 7,
-    context: "We have to observe how force influences rotation when acting on various distances from the axis. So, lets compare the blade's number of rotations per minute.",
-    prompt: "Which proposition aligns best with your observation?",
-    response_type: RESPONSE_TYPES.CHOICE,
-    media_type: MEDIA_TYPES.VIDEO,
-    media_switch_method: MEDIA_SWITCH_METHODS.TAB
-  },
-  {
-    id: 8,
-    branch: null,
-    is_branching: false,
-    order: 8,
-    context: `Lets proceed with the experiments to outline rest the effects.`,
-    prompt: "Which of the proposed tests with the windmill would help you observe the effect mentioned in the second scenario?",
-    response_type: RESPONSE_TYPES.CHOICE,
-    media_type: MEDIA_TYPES.DATA_TABLE,
-    media_switch_method: MEDIA_SWITCH_METHODS.TAB
-  },
-  {
-    id: 9,
-    branch: null,
-    is_branching: false,
-    order: 9,
-    context: `We want to see how varying force influence rotation. For this, we’ll observe the blade's number of rotations for varying windspeeds.`,
-    prompt: "What do you observe?",
-    response_type: RESPONSE_TYPES.CHOICE,
-    media_type: MEDIA_TYPES.VIDEO,
-    media_switch_method: MEDIA_SWITCH_METHODS.TAB
-  },
-  {
-    id: 10,
-    branch: null,
-    is_branching: false,
-    order: 10,
-    context: `Lets complete our outline.`,
-    prompt: "Which of the proposed tests would help you observe the effect mentioned in the third scenario?",
-    response_type: RESPONSE_TYPES.CHOICE,
-    media_type: MEDIA_TYPES.DATA_TABLE,
-    media_switch_method: MEDIA_SWITCH_METHODS.TAB
-  },
-  {
-    id: 11,
-    branch: null,
-    is_branching: false,
-    order: 11,
-    context: `To specify how force acting on different angles influence rotation, we'll monitor how fast the blades rotate. In cases where the wind strikes the face of the blade from two different angles relative to it.`,
-    prompt: "How does the angle between the blade and the direction of the wind influence rotation?",
-    response_type: RESPONSE_TYPES.CHOICE,
-    media_type: MEDIA_TYPES.VIDEO,
-    media_switch_method: MEDIA_SWITCH_METHODS.TAB
-  },
-  {
-    id: 12,
-    branch: null,
-    is_branching: false,
-    order: 12,
-    context: `Given that F=ma doesn't explain rotation. How about we introduce a new physical quantity based on our findings? Let's call it Torque. Torque will explain the effects of force on Fixed Axis Rotation.`,
-    prompt: "Select the propositions you support regarding the nature of Torque.",
-    response_type: RESPONSE_TYPES.CHOICE_AMBIGIOUS,
-    media_type: MEDIA_TYPES.DATA_TABLE,
-    media_switch_method: MEDIA_SWITCH_METHODS.TAB
-  },
-  {
-    id: 13,
-    branch: null,
-    is_branching: false,
-    order: 13,
-    context: `We can't reliably explain and predict Torque unless we have a formula to calculate it with. Lets start by expressing our findings mathematically. Hopefully, combining our findings in an equation might give us the formula for Troque.`,
-    prompt: `Let’s simplify the task by initially representing torque without accounting for θ. Now, which of the following equations best represents Torque?`,
-    response_type: RESPONSE_TYPES.CHOICE,
-    media_type: MEDIA_TYPES.DATA_TABLE,
-    media_switch_method: MEDIA_SWITCH_METHODS.TAB
-  },
 ]
 
 export const BRANCHES = [
-
+  {id: 1, choice: 1, isCorrect: false},
+  {id: 2, choice: 2, isCorrect: true},
 ]
 
 export const CHOICES = [
+  // inquiry 1
+  { id: 1, inquiry: 1, label: "The program contains bugs", isCorrect: false, branchId: null },
+  { id: 2, inquiry: 1, label: `F=ma doesn't address rotation`, isCorrect: true, branchId: null },
   // inquiry 2
+  { id: 19, inquiry: 2, label: "The program contains bugs", isCorrect: false, branchId: null },
+  { id: 29, inquiry: 2, label: `F=ma doesn't address rotation`, isCorrect: true, branchId: null },
+  // inquiry 3
   { id: 1, inquiry: 3, label: "The program contains bugs", isCorrect: false, branchId: null },
   { id: 2, inquiry: 3, label: `F=ma doesn't address rotation`, isCorrect: true, branchId: null },
   // inquiry 4
@@ -227,7 +179,7 @@ export const CHOICES = [
 
 export const TEXT_LABELS = [
   // inquiry 1
-  { id: 1, inquiry: 1, label: 'Motion of the object when applying force towards the center vs away from the center' },
+  { id: 1, inquiry: 7, label: 'Motion of the object when applying force towards the center vs away from the center' },
   //inquiry 2
   { id: 2, inquiry: 2, label: 'Why do you think the wheel is rotating?' },
 ]
@@ -437,11 +389,11 @@ export const MEDIA = [
 ]
 
 export const VIDEO = [
-  { id: 1, inquiry: 1, order: 1, type: MEDIA_TYPES.VIDEO, label: 'Towards the center', src: video11, conf: { hideControls: true } },
-  { id: 2, inquiry: 1, order: 2, type: MEDIA_TYPES.VIDEO, label: 'Away from the center', src: video12, conf: { hideControls: true } },
-  { id: 3, inquiry: 2, order: 1, src: video21, label: 'Attempt 1', conf: { controls: { play: true, reset: true } }, type: MEDIA_TYPES.VIDEO },
-  { id: 4, inquiry: 2, order: 2, src: video22, label: 'Attempt 2', conf: { controls: { play: true, speed: true }, sliderControls: { defaultValue: 50, step: 20 } }, type: MEDIA_TYPES.VIDEO },
-  { id: 5, inquiry: 2, order: 3, src: video23, label: 'Attempt 3', conf: { buttonLabels: { play: 'Simulate', speed: 'Slider' } }, type: MEDIA_TYPES.VIDEO },
+  { id: 1, inquiry: 3, order: 1, type: MEDIA_TYPES.VIDEO, label: 'Towards the center', src: video11, conf: { hideControls: true } },
+  { id: 2, inquiry: 3, order: 2, type: MEDIA_TYPES.VIDEO, label: 'Away from the center', src: video12, conf: { hideControls: true } },
+  { id: 3, inquiry: 4, order: 1, src: video21, label: 'Attempt 1', conf: { controls: { play: true, reset: true } }, type: MEDIA_TYPES.VIDEO },
+  { id: 4, inquiry: 4, order: 2, src: video22, label: 'Attempt 2', conf: { controls: { play: true, speed: true }, sliderControls: { defaultValue: 50, step: 20 } }, type: MEDIA_TYPES.VIDEO },
+  { id: 5, inquiry: 4, order: 3, src: video23, label: 'Attempt 3', conf: { buttonLabels: { play: 'Simulate', speed: 'Slider' } }, type: MEDIA_TYPES.VIDEO },
 ]
 
 export const SIMULATION = [

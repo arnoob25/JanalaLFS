@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { BRANCHES, INQUIRIES } from "@/assets/test_data/test_db"
+import { INQUIRIES } from "@/assets/test_data/test_db"
+import { flushSync } from "react-dom"
 
 
 /**
@@ -18,10 +19,6 @@ export default function useProgression(allMainInquiries, manageGlaEnd) {
     const [allBranchInquiries, setAllBranchInquiries] = useState([]) // stores all the inquiries in the active branch
     const [shouldExitBranch, setShouldExitBranch] = useState(false) // dictates if we should return to the main set of inquiries
 
-
-    const handleAllowingProgression = response => {
-        setShouldAllowProgression(response)
-    }
 
     // given a list of inquiries, can set the next inquiry as the selected inquiry. Returns false if next inquiry doesn't exist.
     const selectNextInquiry = (listOfInquiries, indexOfCurrentInquiry = null) => {
@@ -75,8 +72,9 @@ export default function useProgression(allMainInquiries, manageGlaEnd) {
         }
     }
 
-    const handleProgressionRequest = () => {
-        if (shouldAllowProgression) {
+    // optional argument forces progression in special cases. e.g. text responses
+    const handleProgressionRequest = (shouldProgress = false) => {
+        if (shouldAllowProgression || shouldProgress) {
             if (shouldEnterBranch) {
                 enterBranch()
             }
@@ -93,36 +91,35 @@ export default function useProgression(allMainInquiries, manageGlaEnd) {
 
     // for enabling branching progression
 
-    // TODO: replace this with a query
+    // TODO: replace this with a query 
     const getBranchInquiries = selectedBranch => {
-        selectedBranch // TODO: fetch the inquiries using the selected branch (map using the choice made by the user)
-        return INQUIRIES.filter(inquiry => inquiry.branch == 2)
+        selectedBranch
+        return INQUIRIES.filter(inquiry => inquiry.branch == selectedBranch.id) || null
     }
 
     // TODO: dynamically set the selected branch
     const handleBranchInitialization = selectedBranch => {
-
         // only initialize when a branch has been selected
-        if (selectedBranch.length > 0) {
-
-            setShouldAllowProgression(true)
-
-            setShouldEnterBranch(true)
-
-            setSelectedBranch(BRANCHES[1]) // TODO: replace the placeholder
-
-            // current inquiry is the selected branch's inquiry
-            setBranchParentInquiry(selectedInquiry)
-
+        if (selectedBranch) {
             const filteredInquiries = getBranchInquiries(selectedBranch)
 
-            setAllBranchInquiries(filteredInquiries)
+            if (filteredInquiries) {
+                flushSync(() => {
+                    setBranchParentInquiry(selectedInquiry)
+                    setSelectedBranch(selectedBranch)
+                    setShouldEnterBranch(true)
+                    setAllBranchInquiries(filteredInquiries)
+                })
+            }
         }
+
     }
 
     const enterBranch = () => {
-        setSelectedInquiry(allBranchInquiries[0])
-        setShouldEnterBranch(false)
+        flushSync(() => {
+            setSelectedInquiry(allBranchInquiries[0])
+            setShouldEnterBranch(false)
+        })
     }
 
     const manageBranchRepetition = () => {
@@ -140,9 +137,13 @@ export default function useProgression(allMainInquiries, manageGlaEnd) {
 
     return [
         selectedInquiry,
-        shouldAllowProgression,
-        handleAllowingProgression,
         handleProgressionRequest,
         handleBranchInitialization,
+        /**
+         * the following are included in the hook's api, but can be skipped 
+         * by forcing progression with the optional argument in the handleProgresionRequest
+         */
+        shouldAllowProgression,
+        setShouldAllowProgression,
     ]
 }
