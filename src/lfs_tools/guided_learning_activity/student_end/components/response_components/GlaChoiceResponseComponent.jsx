@@ -18,18 +18,22 @@ import GlaButton from "./GlaButton";
 import GlaResponseContainer from "./GlaResponseContainer";
 
 const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
+    // doesn't reveal the number of correct choices, and enables selecting any number of choices
     const isAmbigious = inquiry.response_type === RESPONSE_TYPES.CHOICE_AMBIGIOUS;
+
+    // displays choices, and aids evaluation
     const [choices, setChoices] = useState([]);
     const [correctChoices, setCorrectChoices] = useState([]);
+    // manages user response
     const [selectedChoices, setSelectedChoices] = useState([]);
     const [isValidResponse, setIsValidResponse] = useState(false);
+    const [isCorrectResponse, setIsCorrectResponse] = useState(false)
 
-    const [isCorrect, setIsCorrect] = useState(false)
+    const [reflections, setReflections] = useState([])
 
-    // gets the choices, and answers
+    // TODO: replace with query client from TanStack
     useEffect(() => {
-        // setting the choices and correct choices
-        // TODO: replace with query client from TanStack
+        // gets the choices and correct choices
         const choiceArray = CHOICES.filter((choice) => choice.inquiry === inquiry.id);
         const correctChoiceArray = choiceArray.filter((choice) => choice.isCorrect === true);
         setChoices(choiceArray);
@@ -50,34 +54,59 @@ const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
         }
     };
 
+    const promptReflection = choicesToReflectOn => {
+        console.log('prompting reflection');
+        setReflections(choicesToReflectOn)
+        console.log(reflections);
+    }
+
     const handleEvaluation = () => {
         const evaluation = evaluateChoiceResponse(selectedChoices, correctChoices);
-        setIsCorrect(evaluation.isCorrect)
+        setIsCorrectResponse(evaluation.isCorrect)
+        promptReflection(selectedChoices)
     };
 
     const handleProgression = () => {
         const response = new ResponseTemplate()
         response.type = RESPONSE_TYPES.CHOICE // we won't handle ambigious choices separately
-        response.isCorrect = isCorrect
+        response.isCorrect = isCorrectResponse
         onEvaluation(response)
     }
 
+    const handleButtonClick = () => {
+        if (isValidResponse && !isCorrectResponse) {
+            handleEvaluation()
+        } else {
+            handleProgression()
+        }
+    }
+
     // TODO: reset choices after each response
+    // TODO: indicate the correct and incorrect choices
 
     return (
-        <GlaResponseContainer>
-            <ChoiceComponent
-                choices={choices}
-                maxChoices={isAmbigious ? choices.length : correctChoices.length}
-                onSelectionChange={(selection) => handleChoiceSelection(selection)}
-                show_selection_prompt={!isAmbigious}
-            />
-            <GlaButton
-                label={!isCorrect ? 'Check' : 'Next'}
-                onClick={isValidResponse && !isCorrect ? handleEvaluation : handleProgression}
-                disabled={!isValidResponse}
-            />
-        </GlaResponseContainer>
+        <>
+            <GlaResponseContainer>
+                <ChoiceComponent
+                    choices={choices}
+                    maxChoices={isAmbigious ? choices.length : correctChoices.length}
+                    onSelectionChange={(selection) => handleChoiceSelection(selection)}
+                    show_selection_prompt={!isAmbigious}
+                />
+                <GlaButton
+                    label={!isCorrectResponse ? 'Check' : 'Next'}
+                    onClick={handleButtonClick}
+                    disabled={!isValidResponse}
+                />
+            </GlaResponseContainer>
+            {reflections.length > 0
+                ? <div>
+                    {reflections.map(reflection => {
+                        return <p key={reflection}>{reflection['label']}</p>
+                    })}
+                </div>
+                : null}
+        </>
     );
 };
 
