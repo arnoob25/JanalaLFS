@@ -6,7 +6,7 @@ import { useState } from "react"
 import useProgression from "../helpers/hooks/useProgressionHook";
 import InquiryComponent from "../components/InquiryComponent"
 import { INQUIRIES } from '../../../../assets/test_data/test_db'
-import { ResponseHandlingCommand } from "../helpers/glaResponseHelpers";
+import { ResponseHandlingActions } from "../helpers/glaResponseHelpers";
 
 
 const GlaPage = () => {
@@ -14,19 +14,23 @@ const GlaPage = () => {
     const [allMainInquiries] = useState(INQUIRIES.filter(inquiry => inquiry.branch == null).sort((a, b) => a.order - b.order))
 
     const handleInquiryCompletion = result => {
-        const command = new ResponseHandlingCommand(result)
+        const action = new ResponseHandlingActions(result)
 
-        if (command.proceedToNextInquiry) {
-            handleProgressionRequest(true)
+        if (action.shouldExitBranch) {
+            p.handleProgressionRequest(true, true)
         }
-        else if (command.selectedBranch) {
-            if (command.shouldInitializeBranch) {
-                handleBranchInitialization(command.selectedBranch)
+        else {
+            if (action.proceedToNextInquiry) {
+                p.handleProgressionRequest(true)
             }
-            else if (command.shouldEnterBranch) {
-                handleProgressionRequest(true)
+            else if (action.selectedBranch) {
+                if (action.shouldInitializeBranch) {
+                    p.handleBranchInitialization(action.selectedBranch)
+                }
+                else if (action.shouldEnterBranch) {
+                    p.handleProgressionRequest(true)
+                }
             }
-
         }
     }
 
@@ -34,19 +38,15 @@ const GlaPage = () => {
         console.log('This is the end of the gla'); // TODO: navigate to the summary page
     }
 
-    const [
-        selectedInquiry,
-        handleProgressionRequest,
-        handleBranchInitialization,
-    ] = useProgression(allMainInquiries, manageGlaEnd)
-
+    const p = useProgression(allMainInquiries, manageGlaEnd)
 
     return (
         <div className="min-h-screen grid grid-cols-1">
             <div className="mt-5">
                 <InquiryComponent
-                    key={selectedInquiry.id}
-                    inquiry={selectedInquiry}
+                    key={p.selectedInquiry.id}
+                    inquiry={p.selectedInquiry}
+                    onLastBranchInquiry={p.isLastBranchInquiry.current}
                     onCompletion={result => handleInquiryCompletion(result)}
                 />
             </div>

@@ -16,6 +16,7 @@ import evaluateChoiceResponse from "@/lfs_tools/shared_features/user_response/he
 import { RESPONSE_TYPES, ResponseTemplate } from "../../helpers/glaResponseHelpers";
 import GlaButton from "./GlaButton";
 import GlaResponseContainer from "./GlaResponseContainer";
+import TextReflectionModal from "@/lfs_tools/shared_features/reflection/TextReflectionModal";
 
 const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
     // doesn't reveal the number of correct choices, and enables selecting any number of choices
@@ -55,15 +56,14 @@ const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
     };
 
     const promptReflection = choicesToReflectOn => {
-        console.log('prompting reflection');
         setReflections(choicesToReflectOn)
-        console.log(reflections);
     }
 
+    // TODO: uncomment the prompt reflection below
     const handleEvaluation = () => {
         const evaluation = evaluateChoiceResponse(selectedChoices, correctChoices);
         setIsCorrectResponse(evaluation.isCorrect)
-        promptReflection(selectedChoices)
+        //promptReflection(selectedChoices)
     };
 
     const handleProgression = () => {
@@ -100,11 +100,7 @@ const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
                 />
             </GlaResponseContainer>
             {reflections.length > 0
-                ? <div>
-                    {reflections.map(reflection => {
-                        return <p key={reflection}>{reflection['label']}</p>
-                    })}
-                </div>
+                ? <TextReflectionModal reflections={reflections} />
                 : null}
         </>
     );
