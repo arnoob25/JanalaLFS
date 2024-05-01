@@ -29,72 +29,45 @@ export class ResponseTemplate {
  * allows us to handle responses received from the response components
  * this also offers autocompletion, preventing bugs, and enhancing maintainability
  */
-export class ResponseHandlingCommand {
+export class ResponseHandlingActions {
     constructor(result = {}) {
         this.proceedToNextInquiry = result.proceedToNextInquiry || false;
         this.shouldInitializeBranch = result.shouldInitializeBranch || false;
         this.shouldEnterBranch = result.shouldEnterBranch || false;
+        this.shouldExitBranch = result.shouldExitBranch || false;
         this.selectedBranch = result.selectedBranch || null;
     }
 }
 
-export function handleResponse(response, onCompletionCallback) {
-    const command = new ResponseHandlingCommand()
-
-    if ((response.type === RESPONSE_TYPES.CHOICE) && response.isCorrect) {
-        // we assigned type = choice for ambigious choices as well.
-        command.proceedToNextInquiry = true
-    }
-    else if (response.type === RESPONSE_TYPES.TEXT && response.isMeaningful) {
-        command.proceedToNextInquiry = true
-    }
-    else if (response.type === RESPONSE_TYPES.CHOICE_BRANCH && response.selectedBranch) {
-        if (response.shouldInitializeBranch) {
-            command.shouldInitializeBranch = true
-            command.selectedBranch = response.selectedBranch
-
-        }
-        else if (response.shouldEnterBranch) {
-            command.shouldInitializeBranch = false
-            command.shouldEnterBranch = true
-            command.selectedBranch = response.selectedBranch
-        }
-    }
-    onCompletionCallback(command)
-}
-
-export default function selectGlaResponseComponent({
-    inquiry,
-    onCompletion
-}) {
+const selectGlaResponseComponent = ({ inquiry, handleResponse }) => {
 
     switch (inquiry.response_type) {
         case RESPONSE_TYPES.CHOICE:
             return (
                 <GlaChoiceResponseComponent
                     inquiry={inquiry}
-                    onEvaluation={response => handleResponse(response, onCompletion)}
+                    onEvaluation={response => handleResponse(response)}
                 />
             )
         case RESPONSE_TYPES.CHOICE_AMBIGIOUS:
             return (
                 <GlaChoiceResponseComponent
                     inquiry={inquiry}
-                    onEvaluation={response => handleResponse(response, onCompletion)}
+                    onEvaluation={response => handleResponse(response)}
                 />
             )
         case RESPONSE_TYPES.TEXT:
             return (
                 <GlaTextResponseComponent
                     inquiry={inquiry}
-                    onMeaningfulResponse={response => handleResponse(response, onCompletion)}
+                    onMeaningfulResponse={response => handleResponse(response)}
                 />
             )
         case RESPONSE_TYPES.CHOICE_BRANCH:
             return (
                 <GlaBranchSelectionComponent
                     inquiry={inquiry}
-                    onBranchSelection={response => handleResponse(response, onCompletion)}
+                    onBranchSelection={response => handleResponse(response)}
                 />
             )
         default:
@@ -102,3 +75,4 @@ export default function selectGlaResponseComponent({
     }
 }
 
+export default selectGlaResponseComponent
