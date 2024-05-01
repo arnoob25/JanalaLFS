@@ -1,8 +1,24 @@
+import { ResponsiveModal } from "@/global_ui_components/ui/dialog"
+import { useEffect, useState } from "react"
 
 
-const TextReflectionModal = () => {
+const TextReflectionModal = ({ reflections }) => {
+  const [isModalOpen, setIsModalOpen] = useState(true)
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen)
+  }
+
+  useEffect(() => {
+    setIsModalOpen(true)
+  }, [reflections])
+
   return (
-    <div>TextReflectionModal</div>
+    <>
+      <ResponsiveModal isOpen={isModalOpen} onClose={toggleModal}>
+        <div><p>I needs a hero</p></div>
+      </ResponsiveModal>
+    </>
   )
 }
 

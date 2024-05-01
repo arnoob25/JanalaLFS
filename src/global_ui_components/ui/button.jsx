@@ -49,6 +49,6 @@ export { Button, buttonVariants }
 
 // derived buttons
 
-export function ButtonSecondarySm({ label, onClick }) {
-  return <Button variant="secondary" size='sm' onClick={onClick}>{label}</Button>
+export function ButtonSecondarySm({ children, label, onClick }) {
+  return <Button variant="secondary" size='sm' onClick={onClick}>{label}{children}</Button>
 }
