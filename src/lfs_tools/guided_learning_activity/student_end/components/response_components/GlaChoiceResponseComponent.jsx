@@ -10,7 +10,7 @@
 
 
 import ChoiceComponent from "@/lfs_tools/shared_features/user_response/components/ChoiceComponent";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CHOICES } from "../../../../../assets/test_data/test_db";
 import evaluateChoiceResponse from "@/lfs_tools/shared_features/user_response/helpers/evaluateChoiceResponse";
 import { RESPONSE_TYPES, ResponseTemplate } from "../../helpers/glaResponseHelpers";
@@ -30,7 +30,8 @@ const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
     const [isValidResponse, setIsValidResponse] = useState(false);
     const [isCorrectResponse, setIsCorrectResponse] = useState(false)
 
-    const [reflections, setReflections] = useState([])
+    const attempts = useRef([]) // TODO: maybe we can use refs instead
+    const reflections = useRef([]) // TODO: maybe we can use refs instead
 
     // TODO: replace with query client from TanStack
     useEffect(() => {
@@ -55,15 +56,22 @@ const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
         }
     };
 
-    const promptReflection = choicesToReflectOn => {
-        setReflections(choicesToReflectOn)
-    }
+    const promptReflection = (choicesToReflectOn) => {
+
+        if (attempts.current[0].isCorrect) { // we'll check whether the first attempt is correct or not
+            reflections.current = choicesToReflectOn;
+        }
+    };
 
     // TODO: uncomment the prompt reflection below
     const handleEvaluation = () => {
         const evaluation = evaluateChoiceResponse(selectedChoices, correctChoices);
         setIsCorrectResponse(evaluation.isCorrect)
-        //promptReflection(selectedChoices)
+        attempts.current = [
+            ...attempts.current,
+            { isCorrect: isCorrectResponse, },
+        ]
+        promptReflection(selectedChoices)
     };
 
     const handleProgression = () => {
