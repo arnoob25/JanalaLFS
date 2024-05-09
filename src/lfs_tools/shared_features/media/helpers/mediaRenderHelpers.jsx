@@ -16,13 +16,14 @@ export const MEDIA_SWITCH_METHODS = {
 }
 
 export function selectMediaRenderComponent(mediaItem) {
-    const mediaConf = mediaItem.conf || {} // prevents passing undefined when 'conf' is missing
+    // specified configurations for rendering the media properly
+    const mediaConf = mediaItem.metadata || {} // prevents passing undefined when 'conf' is missing
 
-    switch (mediaItem.type) {
+    switch (mediaItem.media_type) {
         case MEDIA_TYPES.VIDEO:
             return (
                 <VideoPlayer
-                    videoSrc={mediaItem.src}
+                    videoSrc={mediaItem.media_path}
                     loop={mediaConf.loop ? mediaConf.loop : undefined}
                     autoplay={mediaConf.autoplay ? mediaConf.autoplay : undefined}
                     controls={mediaConf.controls ? mediaConf.controls : undefined}
@@ -32,7 +33,7 @@ export function selectMediaRenderComponent(mediaItem) {
                 />
             );
         case MEDIA_TYPES.DATA_TABLE:
-            return <DataGrid columns={mediaItem.columns} data={mediaItem.data} />;
+            return <DataGrid table={mediaItem.table} />;
         default:
             return null; // TODO: see if we need to inform the user about the error
     }
@@ -40,6 +41,7 @@ export function selectMediaRenderComponent(mediaItem) {
 
 
 export default function renderMediaWithSwitcherComponent(allMedia, switchMethod = undefined) {
+    // no switcher required
     if (allMedia.length === 1) {
         const mediaItem = allMedia[0]
         return (
@@ -49,23 +51,25 @@ export default function renderMediaWithSwitcherComponent(allMedia, switchMethod 
             </>
         );
     }
-    switch (switchMethod) {
-        /**
-          * TODO: the tabs need to be contained within a div that can scroll horizontally
-          * in mobile, sometimes the tab names overflow
-          */
+    // select specific switcher
+    else switch (switchMethod) {
+
         case MEDIA_SWITCH_METHODS.TAB:
+            /**
+             * TODO: the tabs need to be contained within a div that can scroll horizontally
+             * in mobile, sometimes the tab names overflow
+             */
             return (
-                <Tabs defaultValue={0} className="w-full">
+                <Tabs defaultValue={1} className="w-full">
                     <TabsList>
-                        {allMedia.map((mediaItem, index) => (
-                            <TabsTrigger key={index} value={index} className='bg-transparent'>
+                        {allMedia.map(mediaItem => (
+                            <TabsTrigger key={mediaItem.id} value={mediaItem.id} className='bg-transparent'>
                                 {mediaItem.label}
                             </TabsTrigger>
                         ))}
                     </TabsList>
-                    {allMedia.map((mediaItem, index) => (
-                        <TabsContent key={index} value={index}>
+                    {allMedia.map(mediaItem => (
+                        <TabsContent key={mediaItem.id} value={mediaItem.id}>
                             {selectMediaRenderComponent(mediaItem)}
                         </TabsContent>
                     ))}
