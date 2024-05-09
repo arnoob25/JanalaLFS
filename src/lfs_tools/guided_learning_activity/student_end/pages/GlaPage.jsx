@@ -16,7 +16,7 @@ const manageGlaEnd = () => {
     console.log("This is the end of the gla");
 };
 
-const GlaPage = ({ gla = { id: 1 } }) => {
+const GlaPage = ({ gla = { id: 2 } }) => {
     // Fetch the main inquiries using TanStack Query
     const { data: allMainInquiries } = useQuery({
         queryKey: ['allMainInquiries', gla.id],
