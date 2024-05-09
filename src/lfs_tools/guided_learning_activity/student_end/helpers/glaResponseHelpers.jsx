@@ -1,6 +1,6 @@
-import GlaBranchSelectionComponent from "../components/response_components/GlaBranchSelectionComponent";
-import GlaChoiceResponseComponent from "../components/response_components/GlaChoiceResponseComponent";
-import GlaTextResponseComponent from "../components/response_components/GlaTextResponseComponent";
+import GlaBranchSelectionComponent from "../components/response_types/GlaBranchSelectionComponent";
+import GlaChoiceResponseComponent from "../components/response_types/GlaChoiceResponseComponent";
+import GlaTextResponseComponent from "../components/response_types/GlaTextResponseComponent";
 
 export const RESPONSE_TYPES = {
     TEXT: 'text',
@@ -39,7 +39,7 @@ export class ResponseHandlingActions {
     }
 }
 
-const selectGlaResponseComponent = ({ inquiry, handleResponse }) => {
+const selectGlaResponseComponent = ( inquiry, handleResponse ) => {
 
     switch (inquiry.response_type) {
         case RESPONSE_TYPES.CHOICE:

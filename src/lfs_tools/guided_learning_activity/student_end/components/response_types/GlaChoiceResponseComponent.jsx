@@ -10,11 +10,11 @@
 
 
 import ChoiceComponent from "@/lfs_tools/shared_features/user_response/components/ChoiceComponent";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import evaluateChoiceResponse from "@/lfs_tools/shared_features/user_response/helpers/evaluateChoiceResponse";
 import { RESPONSE_TYPES, ResponseTemplate } from "../../helpers/glaResponseHelpers";
-import GlaButton from "./GlaButton";
-import TextReflectionModal from "@/lfs_tools/shared_features/reflection/TextReflectionModal";
+import GlaButton from "../GlaButton";
+
 import { useQuery } from "@tanstack/react-query";
 import { fetchChoicesForInquiry } from "../../helpers/queryHelpers";
 
@@ -22,18 +22,29 @@ const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
     // doesn't reveal the number of correct choices, and enables selecting any number of choices
     const isAmbigious = inquiry.response_type === RESPONSE_TYPES.CHOICE_AMBIGIOUS;
 
-    // displays choices, and aids evaluation
-    const [selectedChoices, setSelectedChoices] = useState([]);
-    const [isValidResponse, setIsValidResponse] = useState(false);
-    const [isCorrectResponse, setIsCorrectResponse] = useState(false)
-
-    const attempts = useRef([]) // TODO: maybe we can use refs instead
-    const reflections = useRef([]) // TODO: maybe we can use refs instead
-
+    // gets the choice list, and correct choices
     const { data, error } = useQuery({
         queryKey: ['choices', inquiry.id],
         queryFn: () => fetchChoicesForInquiry(inquiry.id)
     })
+
+    // enable evaluation
+    // TODO: see if we can replace states with refs
+    const [selectedChoices, setSelectedChoices] = useState([]);
+    const [isValidResponse, setIsValidResponse] = useState(false);
+    const [isCorrectResponse, setIsCorrectResponse] = useState(false)
+
+    const manageEvaluation = () => {
+        const evaluation = evaluateChoiceResponse(selectedChoices, data.correctChoices);
+        setIsCorrectResponse(evaluation.isCorrect)
+    };
+
+    const manageProgression = () => {
+        const response = new ResponseTemplate()
+        response.type = RESPONSE_TYPES.CHOICE // we won't handle ambigious choices separately
+        response.isCorrect = isCorrectResponse
+        onEvaluation(response)
+    }
 
     const handleChoiceSelection = (selection) => {
         if (selection && selection.length > 0) {
@@ -49,39 +60,15 @@ const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
         }
     };
 
-    const promptReflection = (choicesToReflectOn) => {
-
-        if (attempts.current[0].isCorrect) { // we'll check whether the first attempt is correct or not
-            reflections.current = choicesToReflectOn;
-        }
-    };
-
-    // TODO: uncomment the prompt reflection below
-    const handleEvaluation = () => {
-        const evaluation = evaluateChoiceResponse(selectedChoices, data.correctChoices);
-        setIsCorrectResponse(evaluation.isCorrect)
-        attempts.current = [
-            ...attempts.current,
-            { isCorrect: isCorrectResponse, },
-        ]
-        promptReflection(selectedChoices)
-    };
-
-    const handleProgression = () => {
-        const response = new ResponseTemplate()
-        response.type = RESPONSE_TYPES.CHOICE // we won't handle ambigious choices separately
-        response.isCorrect = isCorrectResponse
-        onEvaluation(response)
-    }
-
     const handleButtonClick = () => {
         if (isValidResponse && !isCorrectResponse) {
-            handleEvaluation()
+            manageEvaluation()
         } else {
-            handleProgression()
+            manageProgression()
         }
     }
 
+    // TODO: disable selecting choices once correct. and when we require explanation, but it hasn't been provided yet.
     // TODO: reset choices after each response
     // TODO: indicate the correct and incorrect choices
 
@@ -100,9 +87,6 @@ const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
                         onClick={handleButtonClick}
                         disabled={!isValidResponse}
                     />
-                    {reflections.length > 0
-                        ? <TextReflectionModal reflections={reflections} />
-                        : null}
                 </>
                 : null}
         </>

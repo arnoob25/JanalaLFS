@@ -123,7 +123,7 @@ export const ResponsiveModal = ({ isOpen, onClose, children }) => {
           </DialogContent>
         </Dialog>
 
-      : <Drawer open={open} onOpenChange={onClose}>
+      : <Drawer open={isOpen} onOpenChange={onClose}>
           <DrawerContent>
             {children}
           </DrawerContent>

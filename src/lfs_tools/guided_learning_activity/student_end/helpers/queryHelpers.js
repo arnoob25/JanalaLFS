@@ -14,6 +14,7 @@ export async function fetchAllMainInquiries(gla_id) {
         .select()
         .is('branch', null)
         .eq('gla', gla_id)
+        .order('order')
 
     if (error) throw error;
     return data
@@ -22,11 +23,12 @@ export async function fetchAllMainInquiries(gla_id) {
 // fetches the branch inquiries for the branch
 export async function fetchAllBranchInquiriesForBranch(branch_id) {
     if (!branch_id) throw new Error('Invalid branch_id provided');
-    
+
     const { data, error } = await supabase
         .from('inquiry')
         .select()
         .eq('branch', branch_id)
+        .order('order')
 
     if (error) throw error
     return data
@@ -82,13 +84,15 @@ export async function fetchChoicesForInquiry(inquiry_id) {
 
 // fetch the corresponding branch that maps to the user's selected choice
 export async function fetchCorrespondingBranchFromChoice(choice_id) {
+    if (!choice_id) throw new Error('Invalid choice_id provided')
+
     const { data, error } = await supabase
         .from('branch')
         .select()
         .eq('choice', choice_id)
 
     if (error) throw error
-    return data
+    return data[0]
 }
 
 // fetch the open ended question's label for an inquiry
