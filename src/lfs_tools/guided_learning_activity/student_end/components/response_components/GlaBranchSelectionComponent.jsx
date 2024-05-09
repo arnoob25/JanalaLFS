@@ -2,51 +2,39 @@
 /* eslint-disable react/prop-types */
 
 import ChoiceComponent from "@/lfs_tools/shared_features/user_response/components/ChoiceComponent";
-import { useEffect, useState } from "react";
-import { BRANCHES, CHOICES } from "../../../../../assets/test_data/test_db";
-import GlaResponseContainer from "./GlaResponseContainer";
+import { useState } from "react";
 import GlaButton from "./GlaButton";
 import { RESPONSE_TYPES, ResponseTemplate } from "../../helpers/glaResponseHelpers";
-
+import { useQuery } from "@tanstack/react-query";
+import { fetchChoicesForInquiry, fetchCorrespondingBranchFromChoice } from "../../helpers/queryHelpers";
 
 
 const GlaBranchSelectionComponent = ({ inquiry, onBranchSelection }) => {
 
-    const [choices, setChoices] = useState([]);
-    const [selectedChoice, setSelectedChoice] = useState(undefined); // choices selected by the user
+    // choices selected by the user
+    const [selectedChoice, setSelectedChoice] = useState(undefined);
 
-    // getting the choices and correct choices
-    useEffect(() => {
-        // TODO: replace with query client from TanStack
-        const choiceArray = CHOICES.filter(
-            choice => {
-                return (
-                    choice.inquiry === inquiry.id
-                )
-            }
-        )
+    // gets the current inquiry's choices
+    const choices = useQuery({
+        queryKey: ['choices', inquiry.id],
+        queryFn: () => fetchChoicesForInquiry(inquiry.id)
+    })
 
-        setChoices(choiceArray);
-    }, [inquiry]);
+    // gets the branch that maps to the user's selected choice
+    const selectedBranch = useQuery({
+        queryKey: ['branch', selectedChoice.id],
+        queryFn: () => fetchCorrespondingBranchFromChoice(selectedChoice.id)
+    })
 
-    // TODO: replace with query
-    const getCorrespondingBranch = (selectedChoice) => {
-        if (selectedChoice) {
-            const branch = BRANCHES.filter(branch => branch.choice === selectedChoice.id)[0]
-            return branch || null
-        }
-        return null
-    }
-
+    // setup for responding to user interaction
     const response = new ResponseTemplate()
     response.type = RESPONSE_TYPES.CHOICE_BRANCH
 
     const handleBranchSelection = (selectedChoice) => {
         setSelectedChoice(selectedChoice)
-        const selectedBranch = getCorrespondingBranch(selectedChoice)
 
-        if (selectedBranch) {
-            response.selectedBranch = selectedBranch
+        if (!selectedBranch.error) {
+            response.selectedBranch = selectedBranch.data
             response.shouldInitializeBranch = true
 
             onBranchSelection(response)
@@ -54,9 +42,9 @@ const GlaBranchSelectionComponent = ({ inquiry, onBranchSelection }) => {
     }
 
     const handleBranchEntry = () => {
-        const selectedBranch = getCorrespondingBranch(selectedChoice)
-        if (selectedBranch) {
-            response.selectedBranch = selectedBranch
+
+        if (!selectedBranch.error) {
+            response.selectedBranch = selectedBranch.data
             response.shouldInitializeBranch = false
             response.shouldEnterBranch = true
 
@@ -65,13 +53,13 @@ const GlaBranchSelectionComponent = ({ inquiry, onBranchSelection }) => {
     }
 
     return (
-        <GlaResponseContainer>
+        <>
             <ChoiceComponent
-                choices={choices}
+                choices={choices.data}
                 onSelectionChange={selectedChoice => handleBranchSelection(selectedChoice[0])}
             />
             <GlaButton label={'Next'} onClick={handleBranchEntry} disabled={!selectedChoice} />
-        </GlaResponseContainer>
+        </>
     );
 };
 

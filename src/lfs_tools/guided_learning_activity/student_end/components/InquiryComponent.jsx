@@ -11,16 +11,17 @@ import MediaComponent from "@/lfs_tools/shared_features/media/MediaComponent";
 import { DialogFooter, DialogHeader, ResponsiveModal } from "@/global_ui_components/ui/dialog";
 import { useRef, useState } from "react";
 import { Button, ButtonSecondarySm } from "@/global_ui_components/ui/button";
+import GlaResponseContainer from "./response_components/GlaResponseContainer";
 
 // positions the context and prompt sections side by side in desktop, but vertically stacked in mobile
-const responsiveLayoutStyle = "grid grid-cols-1 md:grid-cols-2 md:gap-8 lg:gap-10 md:h-full"
+const responsiveLayoutStyle = "grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 md:h-full"
 // vertically stacks the components within the context and prompt sections
 const columnSectionStyle = "flex flex-col gap-5"
 
 
 const InquiryComponent = ({
     inquiry,
-    onLastBranchInquiry,
+    onFinalBranchInquiry,
     onCompletion = () => { },
 }) => {
 
@@ -38,7 +39,8 @@ const InquiryComponent = ({
      * TODO: allow exiting branch only when the current branch is the only correct one, or the user attempted the minimum amount of 
      *      corrent branches specified by the author
      */
-    const handleResponse = (response) => {
+    const handleResponse = response => {
+        // suggest actions to the parent in response to user interactions
         const action = new ResponseHandlingActions
 
         if ((response.type === RESPONSE_TYPES.CHOICE) && response.isCorrect) {
@@ -62,7 +64,7 @@ const InquiryComponent = ({
         }
 
         // decide how to proceed when on the last branch
-        if (onLastBranchInquiry) {
+        if (onFinalBranchInquiry) {
             console.log(shouldExitBranch.current);
             // when we specify whether to exit the branch or not
             if (shouldExitBranch.current === true || shouldExitBranch.current === false) {
@@ -101,14 +103,19 @@ const InquiryComponent = ({
 
                     {/** renders the appropriate response component */}
                     {inquiry !== undefined
-                        ? <div className="flex-grow">{selectGlaResponseComponent({
-                            inquiry,
-                            handleResponse,
-                        })}
+                        ? <div className="flex-grow">
+                            <GlaResponseContainer>
+                                {selectGlaResponseComponent({
+                                    inquiry,
+                                    handleResponse,
+                                })}
+                            </GlaResponseContainer>
                         </div>
                         : null}
                 </div>
             </div >
+
+
             <ResponsiveModal isOpen={isModalOpen} onClose={toggleModal}>
                 <DialogHeader>
                     {`Now that you've completed the branch, how do you want to proceed?`}

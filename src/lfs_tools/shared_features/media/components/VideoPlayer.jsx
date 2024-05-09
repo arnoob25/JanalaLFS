@@ -28,6 +28,8 @@ import { Slider } from '@/global_ui_components/ui/slider';
 import { Label } from '@/global_ui_components/ui/label';
 import RoundedCornerFrame from '@/global_ui_components/frames/RoundedCornerFrame';
 import { responsiveSliderContainer } from '../helpers/mediaControlHelpers';
+import { useQuery } from '@tanstack/react-query';
+import { fetchVideoUrlFromSource } from '@/lfs_tools/guided_learning_activity/student_end/helpers/queryHelpers';
 
 const defaultButtonLabels = { play: 'Play', reset: 'Reset', speed: 'Adjust Speed' };
 const defaultSliderControls = { defaultValue: 0, min: 0, max: 100, step: 1 };
@@ -43,6 +45,12 @@ const VideoPlayer = ({
 }) => {
   const videoRef = useRef(null);
 
+  const { data: video_url } = useQuery({
+    queryKey: ['video_url', videoSrc],
+    queryFn: () => fetchVideoUrlFromSource(videoSrc)
+  })
+
+
   useEffect(() => {
     const video = videoRef.current;
     video.loop = loop;
@@ -51,16 +59,16 @@ const VideoPlayer = ({
     }
   }, [loop, autoplay]);
 
-  const handlePlay = () => {videoRef.current.play()};
+  function handlePlay() { videoRef.current.play() };
 
-  const handlePause = () => {videoRef.current.pause()};
+  function handlePause() { videoRef.current.pause() };
 
-  const handleReset = () => {
+  function handleReset() {
     videoRef.current.currentTime = 0;
     handlePause();
   };
 
-  const handleSpeedChange = (value) => {
+  function handleSpeedChange(value) {
     const playbackRate = value[0] / 10;
     videoRef.current.playbackRate = playbackRate;
   };
@@ -70,7 +78,7 @@ const VideoPlayer = ({
     <RoundedCornerFrame>
       <video
         ref={videoRef}
-        src={videoSrc}
+        src={video_url}
         controls={false}
         className="w-full rounded-lg overflow-hidden"
         muted

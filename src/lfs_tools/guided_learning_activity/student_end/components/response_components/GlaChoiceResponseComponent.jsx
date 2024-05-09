@@ -10,22 +10,19 @@
 
 
 import ChoiceComponent from "@/lfs_tools/shared_features/user_response/components/ChoiceComponent";
-import { useEffect, useRef, useState } from "react";
-import { CHOICES } from "../../../../../assets/test_data/test_db";
+import { useRef, useState } from "react";
 import evaluateChoiceResponse from "@/lfs_tools/shared_features/user_response/helpers/evaluateChoiceResponse";
 import { RESPONSE_TYPES, ResponseTemplate } from "../../helpers/glaResponseHelpers";
 import GlaButton from "./GlaButton";
-import GlaResponseContainer from "./GlaResponseContainer";
 import TextReflectionModal from "@/lfs_tools/shared_features/reflection/TextReflectionModal";
+import { useQuery } from "@tanstack/react-query";
+import { fetchChoicesForInquiry } from "../../helpers/queryHelpers";
 
 const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
     // doesn't reveal the number of correct choices, and enables selecting any number of choices
     const isAmbigious = inquiry.response_type === RESPONSE_TYPES.CHOICE_AMBIGIOUS;
 
     // displays choices, and aids evaluation
-    const [choices, setChoices] = useState([]);
-    const [correctChoices, setCorrectChoices] = useState([]);
-    // manages user response
     const [selectedChoices, setSelectedChoices] = useState([]);
     const [isValidResponse, setIsValidResponse] = useState(false);
     const [isCorrectResponse, setIsCorrectResponse] = useState(false)
@@ -33,20 +30,16 @@ const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
     const attempts = useRef([]) // TODO: maybe we can use refs instead
     const reflections = useRef([]) // TODO: maybe we can use refs instead
 
-    // TODO: replace with query client from TanStack
-    useEffect(() => {
-        // gets the choices and correct choices
-        const choiceArray = CHOICES.filter((choice) => choice.inquiry === inquiry.id);
-        const correctChoiceArray = choiceArray.filter((choice) => choice.isCorrect === true);
-        setChoices(choiceArray);
-        setCorrectChoices(correctChoiceArray);
-    }, [inquiry]);
+    const { data, error } = useQuery({
+        queryKey: ['choices', inquiry.id],
+        queryFn: () => fetchChoicesForInquiry(inquiry.id)
+    })
 
     const handleChoiceSelection = (selection) => {
         if (selection && selection.length > 0) {
             setSelectedChoices(selection);
             // for ambigious responses, any number of selections result in true
-            if (isAmbigious || selection.length === correctChoices.length) {
+            if (isAmbigious || selection.length === data.correctChoices.length) {
                 setIsValidResponse(true);
             } else {
                 setIsValidResponse(false);
@@ -65,7 +58,7 @@ const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
 
     // TODO: uncomment the prompt reflection below
     const handleEvaluation = () => {
-        const evaluation = evaluateChoiceResponse(selectedChoices, correctChoices);
+        const evaluation = evaluateChoiceResponse(selectedChoices, data.correctChoices);
         setIsCorrectResponse(evaluation.isCorrect)
         attempts.current = [
             ...attempts.current,
@@ -94,21 +87,23 @@ const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
 
     return (
         <>
-            <GlaResponseContainer>
-                <ChoiceComponent
-                    choices={choices}
-                    maxChoices={isAmbigious ? choices.length : correctChoices.length}
-                    onSelectionChange={(selection) => handleChoiceSelection(selection)}
-                    show_selection_prompt={!isAmbigious}
-                />
-                <GlaButton
-                    label={!isCorrectResponse ? 'Check' : 'Next'}
-                    onClick={handleButtonClick}
-                    disabled={!isValidResponse}
-                />
-            </GlaResponseContainer>
-            {reflections.length > 0
-                ? <TextReflectionModal reflections={reflections} />
+            {data
+                ? <>
+                    <ChoiceComponent
+                        choices={data.choices}
+                        maxChoices={isAmbigious ? data.choices.length : data.correctChoices.length}
+                        onSelectionChange={(selection) => handleChoiceSelection(selection)}
+                        show_selection_prompt={!isAmbigious}
+                    />
+                    <GlaButton
+                        label={!isCorrectResponse ? 'Check' : 'Next'}
+                        onClick={handleButtonClick}
+                        disabled={!isValidResponse}
+                    />
+                    {reflections.length > 0
+                        ? <TextReflectionModal reflections={reflections} />
+                        : null}
+                </>
                 : null}
         </>
     );

@@ -1,24 +1,21 @@
-import { useEffect, useState } from 'react'
-import { TEXT_LABELS } from '../../../../../assets/test_data/test_db'
+import { useState } from 'react'
 import { TextareaWithLabel } from '@/global_ui_components/ui/textarea'
 import GlaButton from './GlaButton'
-import GlaResponseContainer from './GlaResponseContainer'
 import { RESPONSE_TYPES, ResponseTemplate } from '../../helpers/glaResponseHelpers'
+import { useQuery } from '@tanstack/react-query'
+import { fetchQuestionLabelForInquiry } from '../../helpers/queryHelpers'
 
 const GlaTextResponseComponent = ({ inquiry, onMeaningfulResponse }) => {
 
-    // we'll only display a single textarea
-    const [textArea, setTextArea] = useState(undefined)
+    const { data: textArea, error } = useQuery({
+        queryKey: ['textArea', inquiry.id],
+        queryFn: () => fetchQuestionLabelForInquiry(inquiry.id)
+    })
+
     const [inputValue, setInputValue] = useState('')
 
-    // TODO: replace with a proper query
-    useEffect(() => {
-        const items = TEXT_LABELS.filter(item => item.inquiry === inquiry.id)
-        setTextArea(items[0])
-    }, [inquiry])
-
+    // TODO: save input
     const handleResponse = () => {
-        // TODO: save input
         const response = new ResponseTemplate()
         response.type = RESPONSE_TYPES.TEXT
         response.isMeaningful = true // TODO: check if its meaningful
@@ -26,8 +23,8 @@ const GlaTextResponseComponent = ({ inquiry, onMeaningfulResponse }) => {
     }
 
     return (
-        <GlaResponseContainer>
-            {textArea !== undefined
+        <>
+            {textArea
                 ? <TextareaWithLabel
                     key={textArea.id}
                     label={textArea.label}
@@ -37,7 +34,7 @@ const GlaTextResponseComponent = ({ inquiry, onMeaningfulResponse }) => {
                 : null
             }
             <GlaButton label={'Next'} onClick={handleResponse} disabled={!inputValue.length > 0} />
-        </GlaResponseContainer>
+        </>
     )
 }
 

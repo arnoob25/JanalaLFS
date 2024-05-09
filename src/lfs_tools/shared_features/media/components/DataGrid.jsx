@@ -1,10 +1,9 @@
 import { DataTable } from "@/global_ui_components/ui/table"
 
-const DataGrid = ({ columns, data }) => {
-
+const DataGrid = ({ table }) => {
   return (
     <>
-      <DataTable columns={columns} data={data}/>
+      <DataTable columns={table.columns} data={table.data} />
     </>
   )
 }
