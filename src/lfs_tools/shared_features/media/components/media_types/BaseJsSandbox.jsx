@@ -1,7 +1,7 @@
 import { useRef } from 'react';
-import useSimulation from '../helpers/hooks/useSimulationHook';
-import selectMediaControllerComponent from '../helpers/mediaControlHelpers';
-import MediaControls from './MediaControls';
+import useSimulation from '../../helpers/hooks/useSimulationHook';
+import selectMediaControllerComponent from '../../helpers/mediaControlHelpers';
+import MediaControls from '../MediaControls';
 import RoundedCornerFrame from '@/global_ui_components/frames/RoundedCornerFrame';
 
 

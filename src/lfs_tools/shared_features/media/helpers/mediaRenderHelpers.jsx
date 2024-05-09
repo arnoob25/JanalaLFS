@@ -1,5 +1,5 @@
-import DataGrid from "../components/DataGrid";
-import VideoPlayer from "../components/VideoPlayer";
+import DataGrid from "../components/media_types/DataGrid";
+import VideoPlayer from "../components/media_types/VideoPlayer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/global_ui_components/ui/tabs';
 import { TypographySmall } from "@/global_ui_components/ui/typography";
 

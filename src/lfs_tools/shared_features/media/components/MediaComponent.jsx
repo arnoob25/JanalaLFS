@@ -1,5 +1,5 @@
 import MediaContainerCard from '@/global_ui_components/cards/MediaContainerCard';
-import renderMediaWithSwitcherComponent from './helpers/mediaRenderHelpers';
+import renderMediaWithSwitcherComponent from '../helpers/mediaRenderHelpers';
 import { fetchAllMedia } from "@/lfs_tools/guided_learning_activity/student_end/helpers/queryHelpers";
 import { useQuery } from "@tanstack/react-query";
 

@@ -1,18 +1,18 @@
 import { useState } from 'react'
 import { TextareaWithLabel } from '@/global_ui_components/ui/textarea'
-import GlaButton from './GlaButton'
+import GlaButton from '../GlaButton'
 import { RESPONSE_TYPES, ResponseTemplate } from '../../helpers/glaResponseHelpers'
 import { useQuery } from '@tanstack/react-query'
 import { fetchQuestionLabelForInquiry } from '../../helpers/queryHelpers'
 
 const GlaTextResponseComponent = ({ inquiry, onMeaningfulResponse }) => {
 
+    const [inputValue, setInputValue] = useState('')
+
     const { data: textArea, error } = useQuery({
         queryKey: ['textArea', inquiry.id],
         queryFn: () => fetchQuestionLabelForInquiry(inquiry.id)
     })
-
-    const [inputValue, setInputValue] = useState('')
 
     // TODO: save input
     const handleResponse = () => {
@@ -31,8 +31,7 @@ const GlaTextResponseComponent = ({ inquiry, onMeaningfulResponse }) => {
                     placeholder={textArea.placeholder !== undefined ? textArea.placeholder : 'Type your response here'}
                     onInputChange={input => setInputValue(input)}
                 />
-                : null
-            }
+                : null}
             <GlaButton label={'Next'} onClick={handleResponse} disabled={!inputValue.length > 0} />
         </>
     )
