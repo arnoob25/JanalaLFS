@@ -1,6 +1,7 @@
-import { useRef, useState } from "react"
-import { INQUIRIES } from "@/assets/test_data/test_db"
+import { useQuery } from "@tanstack/react-query"
+import { useEffect, useRef, useState } from "react"
 import { flushSync } from "react-dom"
+import { fetchAllBranchInquiriesForBranch } from "../queryHelpers"
 
 /**
  * TODO: convert this hook into a generalized hook 
@@ -8,7 +9,7 @@ import { flushSync } from "react-dom"
  */
 
 export default function useProgression(allMainInquiries, manageGlaEnd) {
-    const [selectedInquiry, setSelectedInquiry] = useState(allMainInquiries[0])
+    const [selectedInquiry, setSelectedInquiry] = useState(null)
     const [shouldAllowProgression, setShouldAllowProgression] = useState(false) // set by the inquiry component
 
     // states for enabling branching progression
@@ -19,6 +20,10 @@ export default function useProgression(allMainInquiries, manageGlaEnd) {
     const isLastBranchInquiry = useRef(false)
     const [shouldExitBranch, setShouldExitBranch] = useState(false) // dictates if we should return to the main set of inquiries
 
+    // initialize the new gla with the first inquiry
+    useEffect(() => {
+        setSelectedInquiry(allMainInquiries[0])
+    }, [allMainInquiries])
 
     // given a list of inquiries, can set the next inquiry as the selected inquiry. Returns false if next inquiry doesn't exist.
     const selectNextInquiry = (listOfInquiries, indexOfCurrentInquiry = null) => {
@@ -93,17 +98,16 @@ export default function useProgression(allMainInquiries, manageGlaEnd) {
      *  we won't have query functions. Or maybe we can pass the query functions. 
      *  in that case, we can also query the corresponding branch from the selected choice.
      */
-    const getBranchInquiries = selectedBranch => {
-        selectedBranch
-        return INQUIRIES.filter(inquiry => inquiry.branch == selectedBranch.id) || null
-    }
+    // TODO: make the query dependent
+    const { data: branchInquiries } = useQuery({
+        queryKey: ['branchInquiries', selectedBranch.id],
+        queryFn: () => fetchAllBranchInquiriesForBranch(selectedBranch.id)
+    })
 
     const handleBranchInitialization = selectedBranch => {
         // only initialize when a branch has been selected
         if (selectedBranch) {
-            const filteredInquiries = getBranchInquiries(selectedBranch)
-
-            if (filteredInquiries) {
+            if (branchInquiries) {
                 /**
                  * schedules the state updates after the current render cycle ends.
                  * this prevents warnings in the console, and potential bugs and infinite loops.
@@ -118,7 +122,7 @@ export default function useProgression(allMainInquiries, manageGlaEnd) {
                         setBranchParentInquiry(selectedInquiry)
                         setSelectedBranch(selectedBranch)
                         setShouldEnterBranch(true)
-                        setAllBranchInquiries(filteredInquiries)
+                        setAllBranchInquiries(branchInquiries)
                     })
                 })
             }
