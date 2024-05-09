@@ -100,8 +100,8 @@ export default function useProgression(allMainInquiries, manageGlaEnd) {
      */
     // TODO: make the query dependent
     const { data: branchInquiries } = useQuery({
-        queryKey: ['branchInquiries', selectedBranch.id],
-        queryFn: () => fetchAllBranchInquiriesForBranch(selectedBranch.id)
+        queryKey: ['branchInquiries', selectedBranch?.id],
+        queryFn: () => fetchAllBranchInquiriesForBranch(selectedBranch?.id)
     })
 
     const handleBranchInitialization = selectedBranch => {

@@ -21,11 +21,13 @@ export async function fetchAllMainInquiries(gla_id) {
 
 // fetches the branch inquiries for the branch
 export async function fetchAllBranchInquiriesForBranch(branch_id) {
+    if (!branch_id) throw new Error('Invalid branch_id provided');
+    
     const { data, error } = await supabase
         .from('inquiry')
         .select()
         .eq('branch', branch_id)
-    
+
     if (error) throw error
     return data
 }
