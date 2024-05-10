@@ -2,10 +2,13 @@ import TextContainerCard from "@/global_ui_components/cards/TextContainerCard";
 
 const ContextComponent = ({ inquiry }) => {
     return (
-        <TextContainerCard
-            label='Context'
-            text={inquiry.context}
-        />
+        <>{inquiry.context.length > 0
+            ? <TextContainerCard
+                label='Context'
+                text={inquiry.context}
+            />
+            : null}
+        </>
     );
 };
 

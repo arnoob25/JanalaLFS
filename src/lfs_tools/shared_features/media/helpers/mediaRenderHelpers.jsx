@@ -1,5 +1,5 @@
-import DataGrid from "../components/DataGrid";
-import VideoPlayer from "../components/VideoPlayer";
+import DataGrid from "../components/media_types/DataGrid";
+import VideoPlayer from "../components/media_types/VideoPlayer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/global_ui_components/ui/tabs';
 import { TypographySmall } from "@/global_ui_components/ui/typography";
 
@@ -60,16 +60,16 @@ export default function renderMediaWithSwitcherComponent(allMedia, switchMethod 
              * in mobile, sometimes the tab names overflow
              */
             return (
-                <Tabs defaultValue={1} className="w-full">
+                <Tabs defaultValue={0} className="w-full">
                     <TabsList>
-                        {allMedia.map(mediaItem => (
-                            <TabsTrigger key={mediaItem.id} value={mediaItem.id} className='bg-transparent'>
+                        {allMedia.map((mediaItem, index) => (
+                            <TabsTrigger key={mediaItem.id} value={index} className='bg-transparent'>
                                 {mediaItem.label}
                             </TabsTrigger>
                         ))}
                     </TabsList>
-                    {allMedia.map(mediaItem => (
-                        <TabsContent key={mediaItem.id} value={mediaItem.id}>
+                    {allMedia.map((mediaItem, index) => (
+                        <TabsContent key={mediaItem.id} value={index}>
                             {selectMediaRenderComponent(mediaItem)}
                         </TabsContent>
                     ))}
