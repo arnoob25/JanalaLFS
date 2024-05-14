@@ -5,7 +5,7 @@ import { RESPONSE_TYPES, ResponseTemplate } from '../../helpers/glaResponseHelpe
 import { useQuery } from '@tanstack/react-query'
 import { fetchQuestionLabelForInquiry } from '../../helpers/queryHelpers'
 
-const GlaTextResponseComponent = ({ inquiry, onMeaningfulResponse }) => {
+const GlaTextResponseComponent = ({ inquiry, onMeaningfulResponse, isDisabled = false }) => {
 
     const [inputValue, setInputValue] = useState('')
 
@@ -32,7 +32,7 @@ const GlaTextResponseComponent = ({ inquiry, onMeaningfulResponse }) => {
                     onInputChange={input => setInputValue(input)}
                 />
                 : null}
-            <GlaButton label={'Next'} onClick={handleResponse} disabled={!inputValue.length > 0} />
+            <GlaButton label={'Next'} onClick={handleResponse} disabled={!inputValue.length > 0 || isDisabled} isSecondary={isDisabled} />
         </>
     )
 }

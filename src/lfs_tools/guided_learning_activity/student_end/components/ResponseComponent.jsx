@@ -3,7 +3,7 @@ import selectGlaResponseComponent from "../helpers/glaResponseHelpers"
 import TextReflectionModal from "@/lfs_tools/shared_features/reflection/TextReflectionModal";
 
 
-const ResponseComponent = ({ inquiry, onResponse }) => {
+const ResponseComponent = ({ inquiry, shouldDisable = false, onResponse }) => {
 
     const attempts = useRef([]) // TODO: maybe we can use refs instead
     const reflections = useRef([]) // TODO: maybe we can use refs instead
@@ -16,10 +16,9 @@ const ResponseComponent = ({ inquiry, onResponse }) => {
     };
 
     return (
-        // the bottom margin ensures the gap between the button and choices when we have many choices in larger screens
         <>{inquiry.response_type
-            ? <div className="flex flex-col h-full md:mb-5">
-                {selectGlaResponseComponent(inquiry, onResponse)}
+            ? <div className="flex flex-col h-full gap-5">
+                {selectGlaResponseComponent(inquiry, onResponse, shouldDisable)}
             </div>
             : null}
 

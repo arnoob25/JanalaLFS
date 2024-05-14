@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchChoicesForInquiry } from "../../helpers/queryHelpers";
 
 
-const GlaBranchSelectionComponent = ({ inquiry, onBranchSelection }) => {
+const GlaBranchSelectionComponent = ({ inquiry, onBranchSelection, isDisabled = false }) => {
 
     const [selectedChoice, setSelectedChoice] = useState(null)
 
@@ -48,7 +48,7 @@ const GlaBranchSelectionComponent = ({ inquiry, onBranchSelection }) => {
                     choices={data.choices}
                     onSelectionChange={selectedChoice => handleBranchSelection(selectedChoice[0])}
                 />
-                <GlaButton label={'Next'} onClick={handleBranchEntry} disabled={!selectedChoice} />
+                <GlaButton label={'Next'} onClick={handleBranchEntry} disabled={!selectedChoice || isDisabled} isSecondary={isDisabled} />
             </>
             : null}
         </>

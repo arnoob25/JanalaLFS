@@ -5,7 +5,7 @@ import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { TypographyP } from "./typography"
 
-const CheckboxBase = React.forwardRef(({ className, ...props }, ref) => (
+const CheckboxBase = React.forwardRef(({ className, color, ...props }, ref) => (
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(
@@ -14,7 +14,7 @@ const CheckboxBase = React.forwardRef(({ className, ...props }, ref) => (
     )}
     {...props}>
     <CheckboxPrimitive.Indicator className={cn("flex items-center justify-center text-current")}>
-      <Check className="h-4 w-4" />
+      <Check className={cn("h-4 w-4", color)} strokeWidth={2}/>
     </CheckboxPrimitive.Indicator>
   </CheckboxPrimitive.Root>
 ))
@@ -25,7 +25,7 @@ export { CheckboxBase }
 
 // derived checkboxes
 
-const Choice = ({id, label, checked, onCheckedChange }) => {
+const Choice = ({ id, label, checked, onCheckedChange }) => {
   return (
     <label
       htmlFor={id}
@@ -43,3 +43,14 @@ const Choice = ({id, label, checked, onCheckedChange }) => {
 }
 
 export default Choice
+
+export const Checkbox = ({ label, muted = false, isChecked, onClick }) => {
+  return (
+    <label
+      className="flex justify-start mt-[3px] ml-0.5 items-center gap-2 cursor-pointer select-none"
+    >
+      <CheckboxBase id='checkbox' checked={isChecked} onCheckedChange={onClick} className='opacity-70 data-[state=checked]:opacity-90' />
+      <TypographyP text={label} small muted={muted} />
+    </label>
+  )
+}

@@ -18,7 +18,7 @@ import GlaButton from "../GlaButton";
 import { useQuery } from "@tanstack/react-query";
 import { fetchChoicesForInquiry } from "../../helpers/queryHelpers";
 
-const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
+const GlaChoiceResponseComponent = ({ inquiry, onEvaluation, isDisabled = false }) => {
     // doesn't reveal the number of correct choices, and enables selecting any number of choices
     const isAmbigious = inquiry.response_type === RESPONSE_TYPES.CHOICE_AMBIGIOUS;
 
@@ -85,7 +85,8 @@ const GlaChoiceResponseComponent = ({ inquiry, onEvaluation }) => {
                     <GlaButton
                         label={!isCorrectResponse ? 'Check' : 'Next'}
                         onClick={handleButtonClick}
-                        disabled={!isValidResponse}
+                        disabled={!isValidResponse || isDisabled}
+                        isSecondary={isDisabled}
                     />
                 </>
                 : null}

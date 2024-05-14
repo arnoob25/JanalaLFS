@@ -10,13 +10,14 @@ import {
     fetchCorrespondingBranchFromChoice
 } from "../helpers/queryHelpers";
 import { useQuery } from "@tanstack/react-query";
+import BasicPageContainer from "@/global_ui_components/layouts/page_layout/BasicPageContainer";
 
 const manageGlaEnd = () => {
     // TODO: navigate to the summary page
     console.log("This is the end of the gla");
 };
 
-const GlaPage = ({ gla = { id: 2 } }) => {
+const GlaPage = ({ gla, previewInquiry = false, previewStep = false }) => {
     // Fetch the main inquiries using TanStack Query
     const { data: allMainInquiries } = useQuery({
         queryKey: ['allMainInquiries', gla.id],
@@ -53,16 +54,15 @@ const GlaPage = ({ gla = { id: 2 } }) => {
 
     return (
         <>{p.selectedStep
-            ? <div className="min-h-screen grid grid-cols-1">
-                <div className="mt-5">
-                    <InquiryComponent
-                        key={p.selectedStep.id}
-                        inquiry={p.selectedStep}
-                        isFinalBranchInquiry={p.isFinalBranchStep}
-                        onCompletion={result => handleGlaProgression(result)}
-                    />
-                </div>
-            </div>
+            ? <BasicPageContainer previewMode={previewInquiry || previewStep}>
+                <InquiryComponent
+                    key={p.selectedStep.id}
+                    inquiry={p.selectedStep}
+                    shouldPreview={[previewInquiry, previewStep]}
+                    isFinalBranchInquiry={p.isFinalBranchStep}
+                    onCompletion={result => handleGlaProgression(result)}
+                />
+            </BasicPageContainer>
             : null}
         </>
     );
