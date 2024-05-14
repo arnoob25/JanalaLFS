@@ -20,6 +20,7 @@
 import Choice from "@/global_ui_components/ui/checkbox";
 import { useEffect, useState } from "react";
 import { TypographyMuted } from "@/global_ui_components/ui/typography";
+import { ScrollArea } from "@/global_ui_components/ui/scroll-area";
 
 const ChoiceComponent = ({
     choices,
@@ -31,11 +32,11 @@ const ChoiceComponent = ({
 }) => {
 
     const [selectedChoiceIds, setSelectedChoiceIds] = useState([]); // stores the id instead of the object
-    
+
     // TODO: apply custom styling for incorrect and correct responses,
     const [correctResponses, incorrectResponses] = evaluatedUserResponseData
 
-    
+
     // TODO: disable the component conditionally
     // TODO: display additional info and/ user's explanations
 
@@ -68,26 +69,28 @@ const ChoiceComponent = ({
     }, [selectedChoiceIds])
 
     return (
-        <>
+        <div className="overflow-hidden">
             {!disabled && show_selection_prompt // don't display how many choices can be selected if the component is disabled
                 ? <TypographyMuted text={`Select ${maxChoices} from ${choices.length} options`} />
                 : null
             }
 
-            <div className="flex flex-col space-y-3 mt-1">
-                {choices.map(choice => {
-                    return (
-                        <Choice
-                            key={choice.id}
-                            id={choice.id}
-                            label={choice.label}
-                            checked={selectedChoiceIds.includes(choice.id)}
-                            onCheckedChange={() => handleChoiceSelection(choice.id)}
-                        />
-                    )
-                })}
-            </div>
-        </>
+            <ScrollArea>
+                <div className="flex flex-col space-y-3 mt-1 overflow-hidden">
+                    {choices.map(choice => {
+                        return (
+                            <Choice
+                                key={choice.id}
+                                id={choice.id}
+                                label={choice.label}
+                                checked={selectedChoiceIds.includes(choice.id)}
+                                onCheckedChange={() => handleChoiceSelection(choice.id)}
+                            />
+                        )
+                    })}
+                </div>
+            </ScrollArea>
+        </div>
     );
 
 

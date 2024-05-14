@@ -3,6 +3,7 @@ import { Slot } from "@radix-ui/react-slot"
 import { cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils"
+import { Plus, X } from "lucide-react";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
@@ -49,6 +50,35 @@ export { Button, buttonVariants }
 
 // derived buttons
 
-export function ButtonSecondarySm({ children, label, onClick }) {
-  return <Button variant="secondary" size='sm' onClick={onClick}>{label}{children}</Button>
+export function ButtonSecondarySm({ children, label, onClick, className }) {
+  return (
+    <Button variant="secondary" size='sm' onClick={onClick} className={className}>
+      {children ? children : label}
+    </Button>
+  )
+}
+
+export function ButtonGhost({ icon = false, children, onClick, className }) {
+  return (
+    <Button variant="ghost" size={icon ? 'icon' : 'sm'} onClick={onClick} className={className}>
+      {children}
+    </Button>
+  )
+}
+
+
+export function CloseIcon({ onClose }) {
+  return (
+    <Button variant="ghost" size="icon" className='rounded-full' onClick={onClose}>
+      <X size={24} />
+    </Button>
+  )
+}
+
+export function AddIcon({ onAdd }) {
+  return (
+    <Button variant="ghost" size="icon" className='rounded-full' onClick={onAdd}>
+      <Plus size={24} />
+    </Button>
+  )
 }

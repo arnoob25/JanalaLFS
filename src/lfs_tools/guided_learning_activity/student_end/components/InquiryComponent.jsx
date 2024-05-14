@@ -12,12 +12,6 @@ import { useRef, useState } from "react";
 import { Button, ButtonSecondarySm } from "@/global_ui_components/ui/button";
 import ResponseComponent from "./ResponseComponent";
 
-// positions the context and prompt sections side by side in desktop, but vertically stacked in mobile
-const responsiveLayoutStyle = "grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 md:h-full"
-// vertically stacks the components within the context and prompt sections
-const columnSectionStyle = "flex flex-col gap-5"
-
-
 // TODO: track and manage scaffoldings
 
 /**
@@ -28,6 +22,7 @@ const columnSectionStyle = "flex flex-col gap-5"
 
 const InquiryComponent = ({
     inquiry,
+    shouldPreview = [],
     isFinalBranchInquiry,
     onCompletion = () => { },
 }) => {
@@ -35,7 +30,8 @@ const InquiryComponent = ({
     const [isModalOpen, setIsModalOpen] = useState(false)
     const shouldExitBranch = useRef(null)
 
-    //console.log('is final branch inquiry: ', isFinalBranchInquiry);
+    // for previewing inquiries in the authoring wizard
+    const [previewInquiry, previewStep] = shouldPreview
 
     function handleInquiryCompletion(response) {
         // suggest actions to the parent in response to user interactions
@@ -80,25 +76,25 @@ const InquiryComponent = ({
         }
     }
 
-
+    // TODO: instead of scrolling, make the choices scroll in desktop when the choices overflow
+    
     return (
         <>
-            <div className={responsiveLayoutStyle}>
-                <div className={columnSectionStyle}>
+            <div className={`${!(previewInquiry || previewStep) ? 'md:grid-cols-2' : ''} grid grid-cols-1 md:h-full gap-8 lg:gap-10`}>
+                <div className='flex flex-col gap-5'>
                     <div><ContextComponent inquiry={inquiry} /></div>
 
                     <div><MediaComponent inquiry={inquiry} /></div>
                 </div>
 
-                <div className={columnSectionStyle}>
+                <div className='flex flex-col gap-5'>
                     <div><PromptComponent inquiry={inquiry} /></div>
 
-                    <div className="flex-grow"> {/**this util class makes the gle button stick to the bottom */}
-                        <ResponseComponent inquiry={inquiry} onResponse={handleInquiryCompletion} />
+                    <div className="flex-grow">
+                        <ResponseComponent inquiry={inquiry} onResponse={handleInquiryCompletion} shouldDisable={previewInquiry && !previewStep} />
                     </div>
                 </div>
             </div >
-
 
             <ResponsiveModal isOpen={isModalOpen} onClose={() => setIsModalOpen(!isModalOpen)}>
                 <DialogHeader>

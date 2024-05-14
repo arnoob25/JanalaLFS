@@ -26,7 +26,6 @@ import MediaControls from '../MediaControls';
 import { ButtonSecondarySm } from '@/global_ui_components/ui/button';
 import { Slider } from '@/global_ui_components/ui/slider';
 import { Label } from '@/global_ui_components/ui/label';
-import RoundedCornerFrame from '@/global_ui_components/frames/RoundedCornerFrame';
 import { responsiveSliderContainer } from '../../helpers/mediaControlHelpers';
 import { useQuery } from '@tanstack/react-query';
 import { fetchVideoUrlFromSource } from '@/lfs_tools/guided_learning_activity/student_end/helpers/queryHelpers';
@@ -75,7 +74,7 @@ const VideoPlayer = ({
 
 
   return (
-    <RoundedCornerFrame>
+    <>
       <video
         ref={videoRef}
         src={video_url}
@@ -115,7 +114,7 @@ const VideoPlayer = ({
           )}
         </MediaControls>
       )}
-    </RoundedCornerFrame>
+    </>
   );
 };
 

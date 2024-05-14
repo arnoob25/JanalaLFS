@@ -1,10 +1,10 @@
 
 import { Button } from "@/global_ui_components/ui/button";
 
-const GlaButton = ({ label, onClick, disabled }) => {
+const GlaButton = ({ label, isSecondary = false, onClick, disabled }) => {
     return (
-        <div className="mt-5 md:mt-auto ml-auto mb-5">
-            <Button onClick={onClick} disabled={disabled}>{label}</Button>
+        <div className="md:mt-auto ml-auto">
+            <Button variant={isSecondary ? 'secondary' : ''} onClick={onClick} disabled={disabled}>{label}</Button>
         </div>
     )
 }

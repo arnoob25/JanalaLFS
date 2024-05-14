@@ -39,13 +39,14 @@ export class ResponseHandlingActions {
     }
 }
 
-const selectGlaResponseComponent = ( inquiry, handleResponse ) => {
+const selectGlaResponseComponent = (inquiry, handleResponse, shouldDisable = false) => {
 
     switch (inquiry.response_type) {
         case RESPONSE_TYPES.CHOICE:
             return (
                 <GlaChoiceResponseComponent
                     inquiry={inquiry}
+                    isDisabled={shouldDisable}
                     onEvaluation={response => handleResponse(response)}
                 />
             )
@@ -53,6 +54,7 @@ const selectGlaResponseComponent = ( inquiry, handleResponse ) => {
             return (
                 <GlaChoiceResponseComponent
                     inquiry={inquiry}
+                    isDisabled={shouldDisable}
                     onEvaluation={response => handleResponse(response)}
                 />
             )
@@ -60,6 +62,7 @@ const selectGlaResponseComponent = ( inquiry, handleResponse ) => {
             return (
                 <GlaTextResponseComponent
                     inquiry={inquiry}
+                    isDisabled={shouldDisable}
                     onMeaningfulResponse={response => handleResponse(response)}
                 />
             )
@@ -67,6 +70,7 @@ const selectGlaResponseComponent = ( inquiry, handleResponse ) => {
             return (
                 <GlaBranchSelectionComponent
                     inquiry={inquiry}
+                    isDisabled={shouldDisable}
                     onBranchSelection={response => handleResponse(response)}
                 />
             )
