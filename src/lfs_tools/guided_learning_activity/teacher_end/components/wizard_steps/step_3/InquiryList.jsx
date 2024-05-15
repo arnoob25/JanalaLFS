@@ -44,7 +44,7 @@ const smData = [
 
 // TODO: use badges to indicate inquiries that originate a branch, and those that are branches of an inquiry
 
-const GlaInquiryList = ({ steps = groups, data = smData }) => {
+const InquiryList = ({ steps = groups, data = smData }) => {
     return (
         <div className="flex flex-col gap-3">{groups.map(group => {
             return (
@@ -87,4 +87,4 @@ const GlaInquiryList = ({ steps = groups, data = smData }) => {
     )
 }
 
-export default GlaInquiryList
+export default InquiryList

@@ -1,14 +1,15 @@
 import {
+    WizardAction,
     WizardBody,
+    WizardContext,
     WizardForm,
-    WizardItemDetail,
-    WizardItemList,
-    WizardSidebar
+    ItemDetail,
+    ItemList,
 } from "@/global_ui_components/layouts/wizard_layout/WizardBody"
-import GlaDetailForm from "../../components/wizard/add_steps/GlaDetailForm"
-import GlaStepList from "../../components/wizard/add_steps/GlaStepList"
+import GlaDetailForm from "./GlaDetailForm"
+import StepList from "./StepList"
 import { Button } from "@/global_ui_components/ui/button"
-import GlaStepDetailForm from "../../components/wizard/add_steps/GlaStepDetailForm"
+import StepDetailForm from "./StepDetailForm"
 
 // TODO: remove them
 const smData = [
@@ -27,23 +28,22 @@ const data = [
 
 const AddSteps = () => {
     return (
-        <WizardBody
-            content={<>
-                <WizardSidebar heading={'Gla Details'}>
-                    <GlaDetailForm />
-                </WizardSidebar>
-                <WizardForm>
-                    <WizardItemList heading={'Steps'}>
-                        <GlaStepList data={smData} />
-                    </WizardItemList>
-                    <WizardItemDetail heading={'Step Details'}>
-                        <GlaStepDetailForm />
-                    </WizardItemDetail>
-                </WizardForm>
-            </>}
-
-            action={<Button>Next</Button>}
-        />
+        <WizardBody>
+            <WizardContext heading={'Gla Details'}>
+                <GlaDetailForm />
+            </WizardContext>
+            <WizardForm>
+                <ItemList heading={'Steps'}>
+                    <StepList data={smData} />
+                </ItemList>
+                <ItemDetail heading={'Step Details'}>
+                    <StepDetailForm />
+                </ItemDetail>
+            </WizardForm>
+            <WizardAction>
+                <Button>Next</Button>
+            </WizardAction>
+        </WizardBody>
     )
 }
 

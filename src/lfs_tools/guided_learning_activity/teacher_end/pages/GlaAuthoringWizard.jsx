@@ -1,8 +1,8 @@
-import { WizardHeader } from "@/global_ui_components/layouts/wizard_layout/WizardHeader"
-import AddSteps from "./authoring_wizard_steps/AddSteps"
 import BasicPageContainer from "@/global_ui_components/layouts/page_layout/BasicPageContainer"
-import ListInquiries from "./authoring_wizard_steps/ListInquiries"
-import DesignInquiries from "./authoring_wizard_steps/DesignInquiries"
+import { WizardHeader } from "@/global_ui_components/layouts/wizard_layout/WizardHeader"
+import AddSteps from "../components/wizard_steps/step_1/AddSteps"
+import ListInquiries from "../components/wizard_steps/step_2/ListInquiries"
+import DesignInquiries from "../components/wizard_steps/step_3/DesignInquiries"
 
 //<AddSteps />
 
@@ -16,8 +16,8 @@ const GlaAuthoringWizard = () => {
                     { label: 'List Inquiries', route: '/page2' },
                     { label: 'Design Inquiries', route: '/page3' }
                 ]}
-                page={'/page3'}
-                onClose={()=>console.log('Close wizard')}
+                page={'/page2'}
+                onClose={() => console.log('Close wizard')}
             />
             <DesignInquiries />
         </BasicPageContainer>

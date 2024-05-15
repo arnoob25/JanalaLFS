@@ -7,7 +7,7 @@ import {
 import { TypographyLarge, TypographyP } from "@/global_ui_components/ui/typography"
 
 
-const GlaStepList = ({ data }) => {
+const StepList = ({ data }) => {
     return (
         <Accordion type="single" collapsible>
             <div className="flex flex-col gap-2">{data?.map(item => {
@@ -32,4 +32,4 @@ const GlaStepList = ({ data }) => {
     )
 }
 
-export default GlaStepList
+export default StepList

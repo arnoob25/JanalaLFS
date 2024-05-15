@@ -18,7 +18,7 @@ const inquiries = [
     { id: 6, branch: 2, header: 'Branch Inquiry 4', isBranching: true, goal: 'Enable Lift Mode to automatically "lift" smaller components from a block template for copy and paste.', description: 'Blocks are ready-made components that you can use to build your apps. They are fully responsive, accessible, and composable, meaning they are built using the same principles as the rest of the components in shadcn/ui.' },
 ]
 
-const InquiryBranchList = () => {
+const BranchList = () => {
     return (
         <div className="flex flex-col border-l-2 pl-5 gap-1">
             {branches.map(branch => {
@@ -50,4 +50,4 @@ const InquiryBranchList = () => {
     )
 }
 
-export default InquiryBranchList
+export default BranchList

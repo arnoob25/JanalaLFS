@@ -9,7 +9,7 @@ import { TypographyP } from "@/global_ui_components/ui/typography"
 import { Plus } from "lucide-react"
 
 
-const GlaInquiryDetailForm = () => {
+const InquiryDetailForm = () => {
   return (
     <>
       <div>
@@ -48,4 +48,4 @@ const GlaInquiryDetailForm = () => {
   )
 }
 
-export default GlaInquiryDetailForm
+export default InquiryDetailForm

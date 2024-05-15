@@ -3,7 +3,7 @@ import { Label } from "@/global_ui_components/ui/label"
 import { TextareaWithLabel } from "@/global_ui_components/ui/textarea"
 
 
-const GlaStepDetailForm = () => {
+const StepDetailForm = () => {
     return (
         <>
             <div>
@@ -11,10 +11,10 @@ const GlaStepDetailForm = () => {
                 <Input type='text' id='goal' placeholder='goal of the step' />
             </div>
             <div>
-                <TextareaWithLabel label="Narrative" placeholder="Describe how the narrative will unfold in the step"/>
+                <TextareaWithLabel label="Narrative" placeholder="Describe how the narrative will unfold in the step" />
             </div>
         </>
     )
 }
 
-export default GlaStepDetailForm
+export default StepDetailForm

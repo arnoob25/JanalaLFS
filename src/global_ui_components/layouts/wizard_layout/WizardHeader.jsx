@@ -11,7 +11,6 @@ import { TypographyLarge, TypographyMuted, TypographySmall } from "@/global_ui_c
 import { Fragment } from "react";
 
 export const WizardHeader = ({ title, steps, page, onClose }) => {
-    // TODO: the active page isn't aligned with other labels
     return (
         <div className="grid grid-cols-3 content-center items-baseline">
             <div className="md:mr-auto">
@@ -30,7 +29,7 @@ export const WizardHeader = ({ title, steps, page, onClose }) => {
                                             </BreadcrumbPage>
                                         ) : (
                                             <BreadcrumbLink href={step.route}>
-                                                <p className="text-sm text-nowrap">{step.label}</p>
+                                                <p className="text-sm text-nowrap truncate max-w-[120px]">{step.label}</p>
                                             </BreadcrumbLink>
                                         )}
                                     </BreadcrumbItem>
