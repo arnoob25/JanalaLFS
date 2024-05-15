@@ -49,7 +49,7 @@ export const Checkbox = ({ label, muted = false, isChecked, onClick }) => {
     <label
       className="flex justify-start mt-[3px] ml-0.5 items-center gap-2 cursor-pointer select-none"
     >
-      <CheckboxBase id='checkbox' checked={isChecked} onCheckedChange={onClick} className='opacity-70 data-[state=checked]:opacity-90' />
+      <CheckboxBase id='checkbox' checked={isChecked} onCheckedChange={onClick} className='opacity-50 data-[state=checked]:opacity-90' />
       <TypographyP text={label} small muted={muted} />
     </label>
   )
