@@ -20,28 +20,30 @@ const GlaInquiryDetailForm = () => {
         <TextareaWithLabel label="Narrative" placeholder="Describe how the narrative will unfold in the inquiry" />
       </div>
 
-      <Collapsible className="flex flex-col gap-5">
+      <div>
         <div className="flex justify-between items-center">
           <Label htmlFor="originateBranch">Originate Branches</Label>
-          <CollapsibleTrigger><Switch id="originateBranch" /></CollapsibleTrigger>
+          <Switch id="originateBranch" />
         </div>
-        <CollapsibleContent className="flex flex-col gap-4">
-          <div>
-            <TypographyP text="Branch 1" small muted />
-            <Input type='text' id='branch1' placeholder='Title of Branch 1' />
-            <Checkbox muted label='Should Attempt' />
-          </div>
-          <div>
-            <TypographyP text="Branch 2" small muted />
-            <Input type='text' id='branch2' placeholder='Title of Branch 2' />
-            <Checkbox muted label='Should Attempt' />
-          </div>
-          <ButtonGhost className='w-full mt-2.5 items-center gap-1'>
-            <Plus size={18} />
-            Add Branch
-          </ButtonGhost>
-        </CollapsibleContent>
-      </Collapsible>
+        <Collapsible className="flex flex-col gap-5">
+          <CollapsibleContent className="flex flex-col gap-4">
+            <div>
+              <TypographyP text="Branch 1" small muted />
+              <Input type='text' id='branch1' placeholder='Title of Branch 1' />
+              <Checkbox muted label='Should Attempt' />
+            </div>
+            <div>
+              <TypographyP text="Branch 2" small muted />
+              <Input type='text' id='branch2' placeholder='Title of Branch 2' />
+              <Checkbox muted label='Should Attempt' />
+            </div>
+            <ButtonGhost className='w-full mt-2.5 items-center gap-1'>
+              <Plus size={18} />
+              Add Branch
+            </ButtonGhost>
+          </CollapsibleContent>
+        </Collapsible>
+      </div>
     </>
   )
 }

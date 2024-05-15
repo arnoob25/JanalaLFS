@@ -55,8 +55,8 @@ const InquiryDetailForm = () => {
               </div>
             </div>
           </CollapsibleContent>
-          <CollapsibleTrigger className="w-full mt-5">
-            <ButtonGhost className='w-full items-center gap-1'><Plus size={18} />Add Media</ButtonGhost>
+          <CollapsibleTrigger className="flex w-full justify-center mt-5 items-center gap-1">
+            <Plus size={18} />Add Media
           </CollapsibleTrigger>
           <CollapsibleContent className="mt-6"><div>
             <TypographyP text="Media Switch Method" small muted />
@@ -71,7 +71,7 @@ const InquiryDetailForm = () => {
           <div className="flex flex-row justify-between">
             <Combobox selectionType={'Response Type'} data={responseTypes} />
             <CollapsibleTrigger>
-              <ButtonGhost>expand</ButtonGhost>
+              expand
             </CollapsibleTrigger>
           </div>
           <CollapsibleContent className="flex flex-col gap-5">
