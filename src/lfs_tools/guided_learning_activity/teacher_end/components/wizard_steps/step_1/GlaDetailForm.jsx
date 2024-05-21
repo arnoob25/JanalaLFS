@@ -1,9 +1,7 @@
+import { TextInput } from "@/global_ui_components/form/TextInput"
+import { ComboboxField } from "@/global_ui_components/form/Combobox"
 
-import { Combobox } from "@/global_ui_components/ui/combobox"
-import { Input } from "@/global_ui_components/ui/input"
-import { Label } from "@/global_ui_components/ui/label"
-import { TextareaWithLabel } from "@/global_ui_components/ui/textarea"
-
+// TODO: think of a way to display long ILOs on the popover with a sizeable width
 const ILOs = [
   {
     value: "Define the steps involved in a specialized",
@@ -27,47 +25,17 @@ const ILOs = [
   },
 ]
 
-const smallILOs = [
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-]
-
 const GlaDetailForm = () => {
   return (
-    <div className="flex flex-col gap-8">
-      <div>
-        <Label htmlFor={'title'}>Title</Label>
-        <Input type='text' id='title' placeholder='Title of the Gla' />
-      </div>
+    <>
+      <TextInput fieldName='glaTitle' label='Title' placeholder='Title of the Gla' />
 
-      <div>
-        <Label htmlFor={'primaryIlo'}>Primary ILO</Label>
-        <Combobox selectionType={'ILO'} data={ILOs} id='primaryIlo' />
-      </div>
+      <ComboboxField fieldName='primaryIlo' label='Primary ILO' selectionType={'ILO'} options={ILOs} id='primaryIlo' />
 
-      <div>
-        <Label htmlFor={'secondaryIlo'}>Secondary ILO</Label>
-        <Combobox selectionType={'ILO'} data={smallILOs}  id='secondaryIlo' />
-      </div>
+      <ComboboxField fieldName='secondaryIlo' label='Secondary ILO' selectionType={'ILO'} options={ILOs} id='secondaryIlo' />
 
-      <div>
-        <TextareaWithLabel label="Narrative" placeholder="Describe the narrative" />
-      </div>
-    </div>
+      <TextInput textArea fieldName='glaNarrative' label='Narrative' placeholder='Describe the narrative' />
+    </>
   )
 }
 

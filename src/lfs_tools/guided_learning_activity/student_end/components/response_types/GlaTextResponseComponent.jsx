@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { TextareaWithLabel } from '@/global_ui_components/ui/textarea'
+import { Textarea } from '@/global_ui_components/ui/textarea'
 import GlaButton from '../GlaButton'
 import { RESPONSE_TYPES, ResponseTemplate } from '../../helpers/glaResponseHelpers'
 import { useQuery } from '@tanstack/react-query'
@@ -25,11 +25,11 @@ const GlaTextResponseComponent = ({ inquiry, onMeaningfulResponse, isDisabled = 
     return (
         <>
             {textArea
-                ? <TextareaWithLabel
+                ? <Textarea
                     key={textArea.id}
                     label={textArea.label}
                     placeholder={textArea.placeholder !== undefined ? textArea.placeholder : 'Type your response here'}
-                    onInputChange={input => setInputValue(input)}
+                    onChange={input => setInputValue(input)}
                 />
                 : null}
             <GlaButton label={'Next'} onClick={handleResponse} disabled={!inputValue.length > 0 || isDisabled} isSecondary={isDisabled} />
