@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { v4 as uuidv4 } from 'uuid'
 import {
     WizardControl,
     WizardBody,
@@ -11,12 +12,11 @@ import StepList from "./StepList"
 import GlaDetailForm from "./GlaDetailForm"
 import StepDetailForm from "./StepDetailForm"
 import { Button } from "@/global_ui_components/ui/button"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 
 //#region form setup
 
-// TODO : skip creating steps
-/**
+/** TODO : skip creating steps
  *  when gla details are in order, the next button is enabled
  *  when clicked on the next button without creating any steps
  *      an alert dialog would ask if the user wants to continue without creating steps
@@ -25,13 +25,6 @@ import { useRef } from "react"
  *  when clicked on the next button with only 1 step created
  *      the alert dialog will ask for confirmation whether to continue with a single step, or not.
  */
-
-// TODO: replace with query
-const smData = [
-    { id: 1, header: 'Step 1', goal: 'Enable Lift Mode to automatically "lift" smaller components from a block template for copy and paste.', description: 'Blocks are ready-made components that you can use to build your apps. They are fully responsive, accessible, and composable, meaning they are built using the same principles as the rest of the components in shadcn/ui.' },
-    { id: 2, header: 'Step 2', goal: 'Enable Lift Mode to automatically "lift" smaller components from a block template for copy and paste.', description: 'Blocks are ready-made components that you can use to build your apps. They are fully responsive, accessible, and composable, meaning they are built using the same principles as the rest of the components in shadcn/ui.' },
-    { id: 3, header: 'Step 3', goal: 'Enable Lift Mode to automatically "lift" smaller components from a block template for copy and paste.', description: 'Blocks are ready-made components that you can use to build your apps. They are fully responsive, accessible, and composable, meaning they are built using the same principles as the rest of the components in shadcn/ui.' },
-]
 
 // form schemas 
 const GlaDetailFormSchema = z.object({
@@ -42,6 +35,7 @@ const GlaDetailFormSchema = z.object({
 })
 
 const StepDetailFormSchema = z.object({
+    id: z.string().optional(),
     stepGoal: z.string().min(10, 'Please define a meaningful goal'),
     stepNarrative: z.string()
 })
@@ -58,18 +52,15 @@ const StepDetailDefaultValues = {
     stepGoal: '',
     stepNarrative: ''
 }
-
-// form submission handlers
-
-const handleGlaDetailFormSubmission = data => console.log(data);
-
-const handleStepDetailFormSubmission = data => console.log(data);
-
-
 //#endregion
 
 const AddSteps = ({ gla }) => {
 
+    // #region logic
+    const [steps, setSteps] = useState([])
+    const [selectedStepId, setSelectedStepId] = useState(null)
+    const currentStepIndex = steps.findIndex(step => step.id === selectedStepId)
+    //const currentStep = steps[currentStepIndex]
     // for using the next button to submit the form
     const glaDetailFormRef = useRef(null);
 
@@ -81,19 +72,55 @@ const AddSteps = ({ gla }) => {
      */
 
     /**
+     * 
      * activate next button when 
         form validation for gla details approves of progression
         we have at least one inquiry
      */
 
+    // TODO: updating and deleting steps
+    const handleFormSubmission = data => {
+        const submissionData = data
+        submissionData.steps = steps
+        console.log(submissionData)
+    };
+
+    const handleStepDetailFormSubmission = data => {
+        setSteps(prevSteps => {
+            const stepIndex = prevSteps.findIndex(step => step.id === selectedStepId);
+
+            if (stepIndex !== -1) {
+                // Create a new array with the updated step
+                const updatedSteps = prevSteps.map((step, index) =>
+                    index === stepIndex ? { ...step, ...data } : step
+                );
+                return updatedSteps;
+            }
+
+            // This should not happen in your context, but if it does, add a new step
+            return [...prevSteps, { ...data, id: selectedStepId }];
+        });
+
+        // Clear the selected step
+        setSelectedStepId(null);
+    };
+
+    const handleAddNewStep = () => {
+        const newStep = { ...StepDetailDefaultValues, id: uuidv4() }
+        setSteps(prevSteps => [...prevSteps, newStep])
+        setSelectedStepId(newStep.id)
+    }
+
+    // #endregion
+
     return (
         <WizardBody>
             <WizardContext heading={'Gla Details'}>
                 <ItemForm
-                    wizardContex
+                    wizardContext
                     schema={GlaDetailFormSchema}
-                    onSubmit={handleGlaDetailFormSubmission}
                     defaultValues={GlaDetailFormDefaultValues}
+                    onSubmit={handleFormSubmission}
                     ref={glaDetailFormRef}
                     save={false}
                 >
@@ -101,20 +128,25 @@ const AddSteps = ({ gla }) => {
                 </ItemForm>
             </WizardContext>
             <WizardFocusArea>
-                <ItemList heading={'Steps'}>
-                    <StepList data={smData} />
+                <ItemList heading={'Steps'} onItemAdd={handleAddNewStep} selectedItemId={selectedStepId}>
+                    <StepList data={steps} selectedItemId={selectedStepId} onItemSelect={setSelectedStepId} />
                 </ItemList>
+
                 <ItemForm
-                    heading={'Step Details'}
+                    heading={`Step Details${selectedStepId ? `: Step ${currentStepIndex < 9 ? `0${currentStepIndex + 1}` : currentStepIndex + 1}` : ''}`}
                     schema={StepDetailFormSchema}
                     onSubmit={handleStepDetailFormSubmission}
                     defaultValues={StepDetailDefaultValues}
+                    existingValues={steps[steps.findIndex(step => step.id === selectedStepId)]}
+                    save={!!selectedStepId}
                 >
-                    <StepDetailForm />
+                    <StepDetailForm step={selectedStepId} />
                 </ItemForm>
             </WizardFocusArea>
             <WizardControl>
-                <Button onClick={() => glaDetailFormRef.current?.handleSubmit(handleGlaDetailFormSubmission)()}>
+                <Button
+                    onClick={() => glaDetailFormRef.current?.handleSubmit(handleFormSubmission)()}
+                >
                     Next
                 </Button>
             </WizardControl>

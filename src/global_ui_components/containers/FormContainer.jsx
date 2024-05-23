@@ -1,9 +1,10 @@
 import { cn } from "@/lib/utils"
 
-export const FormContainer = ({ children, scroll = false }) => {
+export const FormContainer = ({ children, scroll = false, sidebar = false }) => {
     return (
         <div className={cn('flex flex-col gap-8 mb-5',
-            scroll ? 'mr-7' : ''
+            scroll ? 'mr-7' : '',
+            sidebar ? 'w-64 xl:w-72' : ''
         )}>
             {children}
         </div>
