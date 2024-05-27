@@ -55,7 +55,7 @@ const InquiryList = ({ steps = groups, data = smData }) => {
                     </div>
 
                     <CollapsibleContent>
-                        <Accordion type="single" collapsible>
+                        <Accordion type="single" className='w-full' collapsible>
                             <div className="flex flex-col space-y-1.5 mb-2">{data?.filter(item => item.step === group.id).map(item => {
                                 return (
                                     <AccordionItem key={item.id} value={item.id}>

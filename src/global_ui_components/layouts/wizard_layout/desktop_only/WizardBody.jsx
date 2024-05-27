@@ -6,7 +6,7 @@ import { Separator } from "@/global_ui_components/ui/separator"
 import { TypographyH2, TypographyH4, TypographyMuted } from "@/global_ui_components/ui/typography"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { forwardRef, useImperativeHandle } from "react"
+import { forwardRef, useEffect, useImperativeHandle } from "react"
 import { useForm } from "react-hook-form"
 
 // parent component that composes context, form, and action to create the wizard body.
@@ -63,13 +63,13 @@ WizardControl.displayName = 'WizardControl'
 // for composing inside the form
 
 // displays the list of items created with the form
-export const ItemList = ({ heading, children }) => {
+export const ItemList = ({ heading, children, selectedItemId, onItemAdd }) => {
     // TODO: replace index with uuid
     return (
         <div className="min-w-64 max-h-full overflow-hidden flex flex-col pt-5 bg-[var(--card)] rounded-tl-2xl rounded-bl-2xl rounded-tr-md rounded-br-md">
             <div className="flex flex-row justify-between mb-3.5 mx-5">
                 <TypographyH2 text={heading} />
-                <AddIcon />
+                <AddIcon onClick={onItemAdd} disabled={selectedItemId ? true : false} />
             </div>
             <Separator />
             <ScrollArea>
@@ -104,34 +104,72 @@ ItemPreview.displayName = 'ItemPreview'
 
 
 // the primary form. The secondary form is placed inside the sidebar.
-export const ItemForm = forwardRef(({ heading, schema, defaultValues = {}, onSubmit, children, wizardContext = false, save = true }, ref) => {
+// TODO: decide whether to add an option to select whether we reset the form upon submission or not. 
+// Alternatively, the option can be to optimistically update the form. 
+// this can be the option, since we'll generally move on the form page once updated, and won't need to display new values.
+export const ItemForm = forwardRef(({
+    heading,
+    schema,
+    defaultValues = {},
+    existingValues,
+    onSubmit,
+    children,
+    wizardContext = false,
+    save = true
+}, ref) => {
 
     const form = useForm({
         resolver: zodResolver(schema),
-        defaultValues: defaultValues
+        defaultValues
     })
+
+    const { isSubmitSuccessful } = form.formState
 
     // Exposes the handleSubmit function to the parent component
     useImperativeHandle(ref, () => ({
         handleSubmit: () => form.handleSubmit(onSubmit),
     }));
 
+    // prefill the form with existing values
+    useEffect(() => {
+        if (existingValues) {
+            form.reset(existingValues)
+        }
+    }, [form, existingValues])
+
+    // resets the form after successful submit
+    useEffect(() => {
+        if (isSubmitSuccessful) {
+            form.reset()
+        }
+    }, [form, isSubmitSuccessful])
+
     return (
-        <div className={cn("flex flex-col relative overflow-hidden gap-4",
-            !wizardContext
-                ? 'min-w-72 max-w-2xl h-full p-5 pr-0 bg-[var(--card)] rounded-tr-2xl rounded-br-2xl rounded-tl-md rounded-bl-md '
-                : ''
-        )}>
+        <div
+            className={cn("flex flex-col relative overflow-hidden gap-4",
+                !wizardContext
+                    ? 'min-w-72 h-full p-5 pr-0 bg-[var(--card)] rounded-tr-2xl rounded-br-2xl rounded-tl-md rounded-bl-md '
+                    : ''
+            )}>
+
             {heading ? <TypographyMuted text={heading} /> : null}
+
             <ScrollArea>
                 <Form {...form}><form onSubmit={form.handleSubmit(onSubmit)}>
-                    <FormContainer scroll>{children}</FormContainer>
+                    <FormContainer scroll sidebar={wizardContext}>{children}</FormContainer>
                 </form></Form>
                 <ScrollBar />
             </ScrollArea>
+
             {save
                 ? <div className="flex flex-grow justify-end items-end mr-7">
-                    <Button variant='secondary' size='sm' type='submit' onClick={() => form.handleSubmit(onSubmit)()}>Save</Button>
+                    <Button
+                        variant='secondary'
+                        size='sm'
+                        type='submit'
+                        onClick={() => form.handleSubmit(onSubmit)()}>
+                        Save
+                    </Button>
                 </div>
                 : null}
         </div>

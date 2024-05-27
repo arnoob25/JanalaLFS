@@ -23,7 +23,7 @@ const Inquiries = [
 
 const InquiryList = ({ data = smInquiries }) => {
     return (
-        <Accordion type="single" collapsible>
+        <Accordion type="single" className='w-full' collapsible>
             <div className="flex flex-col gap-2 mb-3">{data?.map(item => {
                 return (
                     <AccordionItem key={item.id} value={item.id}>

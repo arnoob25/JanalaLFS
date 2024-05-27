@@ -16,10 +16,10 @@ const GlaAuthoringWizard = () => {
                     { label: 'List Inquiries', route: '/page2' },
                     { label: 'Design Inquiries', route: '/page3' }
                 ]}
-                page={'/page3'}
+                page={'/page1'}
                 onClose={() => console.log('Close wizard')}
             />
-            <DesignInquiries />
+            <AddSteps />
         </BasicPageContainer>
     )
 }

@@ -75,10 +75,32 @@ export function CloseIcon({ onClose }) {
   )
 }
 
-export function AddIcon({ onAdd }) {
+export function AddIcon({ onClick, disabled = false }) {
   return (
-    <Button variant="ghost" size="icon" className='rounded-full' onClick={onAdd}>
+    <Button
+      variant="ghost"
+      size="icon"
+      disabled={disabled}
+      className={cn('rounded-full',
+        disabled ? 'opacity-50' : ''
+      )}
+      onClick={onClick}>
       <Plus size={24} />
+    </Button>
+  )
+}
+
+// TODO: take icons as child
+export function IconButton({ name, onClick, disabled = false, children, ...props }) {
+  return (
+    <Button
+      variant="icon"
+      size="icon"
+      disabled={disabled}
+      className={cn('rounded-full')}
+      onClick={onClick}
+    >
+      {children}
     </Button>
   )
 }

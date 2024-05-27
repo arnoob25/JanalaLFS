@@ -4,7 +4,7 @@ import { TypographyLarge, TypographyP } from "@/global_ui_components/ui/typograp
 export const BranchInquiryList = ({ data }) => {
     return (
         <div className="border-l-2 mb-4 pl-5 hover:border-muted-foreground">
-            <Accordion type="single" collapsible>
+            <Accordion type="single" className='w-full' collapsible>
                 <div className="flex flex-col gap-3">{data?.map(item => {
                     return (
                         <AccordionItem key={item.id} value={item.id}>
