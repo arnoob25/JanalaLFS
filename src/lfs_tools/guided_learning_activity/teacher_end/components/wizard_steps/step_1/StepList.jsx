@@ -13,6 +13,9 @@ import { useState } from "react"
 const StepList = ({ data, selectedItemId, onItemSelect }) => {
     const [selectedStepId, setSelectedStepId] = useState(selectedItemId)
 
+    // this determines when we're adding a new step and disables selecting any other step
+    const addingNewStep = !!selectedItemId && !data.find(item => item.id === selectedItemId)?.stepGoal
+
     const toggleAccordion = (currentId) => {
         setSelectedStepId(prevId => prevId === currentId ? null : currentId);
     };
@@ -31,12 +34,14 @@ const StepList = ({ data, selectedItemId, onItemSelect }) => {
                                 <TypographyLarge text={`Step ${index < 9 ? `0${index + 1}` : index + 1}`} />
                                 <span className="flex justify-end items-center gap-3">
                                     {/** replace with a icon button*/}
-                                    <IconButton onClick={() => toggleSelectedStep(item.id)} disabled={!item.stepGoal && (item.stepGoal && selectedItemId === selectedStepId)}>
+                                    <IconButton
+                                        onClick={() => toggleSelectedStep(item.id)}
+                                        disabled={!item.stepGoal || addingNewStep}>
                                         <SquarePen
                                             size={14} strokeWidth={2.5}
                                             className="text-muted-foreground hover:cursor-pointer hover:text-foreground" />
                                     </IconButton>
-                                    <AccordionTrigger iconSize={22} onClick={() => toggleAccordion(item.id)} disabled={!item.stepNarrative} />
+                                    <AccordionTrigger iconSize={22} onClick={() => toggleAccordion(item.id)} disabled={!item.stepNarrative || addingNewStep} />
                                 </span>
                             </div>
 
