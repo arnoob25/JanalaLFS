@@ -1,3 +1,5 @@
+import FallbackText from "@/global_ui_components/fallbacks/FallbackText"
+import { WizardFocusAreaContext } from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardContext"
 import {
     Accordion,
     AccordionContent,
@@ -7,54 +9,68 @@ import {
 import { IconButton } from "@/global_ui_components/ui/button"
 import { TypographyLarge, TypographyP } from "@/global_ui_components/ui/typography"
 import { SquarePen } from "lucide-react"
-import { useState } from "react"
+import { useContext, useState } from "react"
+import { useFormContext, useWatch } from "react-hook-form"
 
 
-const StepList = ({ data, selectedItemId, onItemSelect }) => {
-    const [selectedStepId, setSelectedStepId] = useState(selectedItemId)
+const StepList = () => {
 
-    // this determines when we're adding a new step and disables selecting any other step
-    const addingNewStep = !!selectedItemId && !data.find(item => item.id === selectedItemId)?.stepGoal
+    const data = useWatch({ name: 'steps' })
 
-    const toggleAccordion = (currentId) => {
-        setSelectedStepId(prevId => prevId === currentId ? null : currentId);
-    };
+    const { selectedItemId, setSelectedItemId } = useContext(WizardFocusAreaContext)
+    const { formState: { isValid } } = useFormContext()
 
-    const toggleSelectedStep = (currentId) => {
-        onItemSelect(prevId => prevId === currentId ? null : currentId);
+    const selectCurrentStep = currentId => {
+        if (isValid) setSelectedItemId(prevId => prevId === currentId ? null : currentId);
     }
 
     return (
-        <Accordion type="single" value={selectedItemId ? selectedItemId : selectedStepId} className='w-full' collapsible>
-            <div className="flex flex-col gap-2 mx-0">{data?.map((item, index) => {
-                return (
-                    <AccordionItem key={item.id} value={item.id}>
-                        <div className="pb-6 rounded-xl">
+        <>{data && data.length > 0
+            ? <Accordion type="single" value={selectedItemId} collapsible className='w-full'>
+                <div className="flex flex-col gap-2 mx-0">{data?.map((item, index) => {
+
+                    const isGoalDefined = !!item.stepGoal
+                    const isSelectedStep = item.itemId === selectedItemId
+
+                    const shouldDisplayDestructiveText = !isGoalDefined && !isSelectedStep
+
+                    const stepTitle = `Step ${index < 9 ? `0${index + 1}` : index + 1}`
+
+                    return (
+                        <AccordionItem
+                            key={item.itemId}
+                            value={item.itemId}
+                            className={`px-3 pb-6`}
+                        >
                             <div className="flex flex-row justify-between items-center">
-                                <TypographyLarge text={`Step ${index < 9 ? `0${index + 1}` : index + 1}`} />
-                                <span className="flex justify-end items-center gap-3">
-                                    {/** replace with a icon button*/}
-                                    <IconButton
-                                        onClick={() => toggleSelectedStep(item.id)}
-                                        disabled={!item.stepGoal || addingNewStep}>
-                                        <SquarePen
-                                            size={14} strokeWidth={2.5}
-                                            className="text-muted-foreground hover:cursor-pointer hover:text-foreground" />
-                                    </IconButton>
-                                    <AccordionTrigger iconSize={22} onClick={() => toggleAccordion(item.id)} disabled={!item.stepNarrative || addingNewStep} />
-                                </span>
+                                <TypographyLarge text={stepTitle} />
+                                <AccordionTrigger
+                                    value={item.itemId}
+                                    iconSize={22}
+                                    onClick={() => selectCurrentStep(item.itemId)}
+                                />
                             </div>
 
-                            <TypographyP text={`Goal: ${item.stepGoal ? item.stepGoal : 'Undefined'}`} muted={!item.stepGoal} className='mt-3' />
+                            <TypographyP
+                                text={isGoalDefined ? `Goal: ${item.stepGoal}` : 'Goal not defined'}
+                                muted={!isGoalDefined}
+                                destructive={shouldDisplayDestructiveText}
+                                className='mt-3'
+                            />
 
                             <AccordionContent className='pt-2.5 pb-0.5'>
-                                <TypographyP text={`Narrative: ${item.stepNarrative ? item.stepNarrative : 'Undefined'}`} small muted />
+                                <TypographyP
+                                    text={item.stepNarrative ? `Narrative: ${item.stepNarrative}` : 'Narrative not defined'}
+                                    small muted
+                                />
                             </AccordionContent>
-                        </div>
-                    </AccordionItem>
-                )
-            })}</div>
-        </Accordion>
+                        </AccordionItem>
+                    )
+                }
+                )}</div>
+            </Accordion>
+
+            : <FallbackText compact text="You haven't created any steps yet" />}</>
     )
 }
 

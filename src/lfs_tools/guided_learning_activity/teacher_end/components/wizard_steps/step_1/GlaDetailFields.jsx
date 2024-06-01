@@ -1,5 +1,6 @@
 import { TextInput } from "@/global_ui_components/form/TextInput"
 import { ComboboxField } from "@/global_ui_components/form/Combobox"
+import { FormContainer } from "@/global_ui_components/containers/FormContainer"
 
 // TODO: think of a way to display long ILOs on the popover with a sizeable width
 const ILOs = [
@@ -25,9 +26,9 @@ const ILOs = [
   },
 ]
 
-const GlaDetailForm = () => {
+const GlaDetailFields = () => {
   return (
-    <>
+    <FormContainer sidebar scroll>
       <TextInput fieldName='glaTitle' label='Title' placeholder='Title of the Gla' />
 
       <ComboboxField fieldName='primaryIlo' label='Primary ILO' selectionType={'ILO'} options={ILOs} id='primaryIlo' />
@@ -35,8 +36,8 @@ const GlaDetailForm = () => {
       <ComboboxField fieldName='secondaryIlo' label='Secondary ILO' selectionType={'ILO'} options={ILOs} id='secondaryIlo' />
 
       <TextInput textArea fieldName='glaNarrative' label='Narrative' placeholder='Describe the narrative' />
-    </>
+    </FormContainer>
   )
 }
 
-export default GlaDetailForm
+export default GlaDetailFields

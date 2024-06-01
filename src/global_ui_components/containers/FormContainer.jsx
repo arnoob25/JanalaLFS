@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"
 
+// a different name than sidebar
 export const FormContainer = ({ children, scroll = false, sidebar = false }) => {
     return (
         <div className={cn('flex flex-col gap-8 mb-5',

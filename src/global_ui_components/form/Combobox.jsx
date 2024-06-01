@@ -9,7 +9,7 @@ import {
 import Combobox from "../ui/combobox"
 import { useFormContext } from "react-hook-form"
 
-
+// TODO: the combobox should not exceed the width of the container component
 export function ComboboxField({ fieldName, label, selectionType, options, description, secondary = false }) {
     const { control, setValue, trigger } = useFormContext()
 

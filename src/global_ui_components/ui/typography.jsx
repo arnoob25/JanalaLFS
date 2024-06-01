@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 
 // TODO: combine h1-h4 into one component
@@ -39,6 +40,7 @@ export function TypographyP({
   text,
   children,
   muted = false,
+  destructive = false,
   small = false,
   underline = false,
   uOffset = '',
@@ -48,36 +50,42 @@ export function TypographyP({
   numLines = 5,
 }) {
   const [showFullText, setShowFullText] = useState(false);
-  const truncateClasses = `overflow-hidden ${singleLine ? 'line-clamp-1' : `line-clamp-${numLines}`
-    } max-w-${maxWidth}`;
-  const applyUnderline = underline
-    ? uOffset
-      ? `underline underline-offset-${uOffset}`
-      : `underline underline-offset-8`
-    : '';
-  const noWrapClass = noWrap ? 'whitespace-nowrap' : '';
+
   const toggleTextVisibility = () => {
     setShowFullText(!showFullText);
   };
 
   return (
     <div className={`${showFullText ? '' : `flex flex-row`} justify-start items-baseline`}>
-      <p
-        className={`${small ? 'text-sm' : 'leading-7'} ${muted ? 'text-muted-foreground' : 'text-foreground'} ${showFullText ? '' : truncateClasses
-          } ${applyUnderline} ${noWrapClass} [&:not(:first-child)]:mt-6`}
+      <p className={cn(
+        '[&:not(:first-child)]:mt-6 text-foreground',
+        small ? 'text-sm' : 'leading-7',
+        muted && !destructive ? 'text-muted-foreground' : '',
+        destructive ? 'text-destructive' : '',
+        // truncates text
+        !showFullText ? `overflow-hidden ${singleLine ? 'line-clamp-1' : `line-clamp-${numLines}`} max-w-${maxWidth}` : '',
+        underline
+          ? uOffset
+            ? `underline underline-offset-${uOffset}`
+            : `underline underline-offset-8`
+          : '',
+        noWrap ? 'whitespace-nowrap' : '',
+      )}
       >
         {text}
         {children}
       </p>
-      {singleLine
-        ? <span
-          className={`${small ? 'text-sm min-w-[70px]' : 'min-w-[80px]'} text-muted-foreground hover:text-foreground cursor-pointer`}
-          onClick={toggleTextVisibility}
-        >
-          {showFullText ? 'Show less.' : 'read more.'}
-        </span>
-        : null}
-    </div>
+      {
+        singleLine
+          ? <span
+            className={`${small ? 'text-sm min-w-[70px]' : 'min-w-[80px]'} text-muted-foreground hover:text-foreground cursor-pointer`}
+            onClick={toggleTextVisibility}
+          >
+            {showFullText ? 'Show less.' : 'read more.'}
+          </span>
+          : null
+      }
+    </div >
   );
 }
 
