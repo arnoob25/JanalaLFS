@@ -9,8 +9,6 @@ import { createContext, useState } from "react";
 // composes the sidebar, focus area, and control sections.
 export const WizardBody = ({ schema, defaultValues, children, onSubmit }) => {
 
-    console.log('parent rendered');
-
     return (
         <Form schema={schema} defaultValues={defaultValues} onSubmit={onSubmit} className="flex flex-col h-screen overflow-hidden gap-5">
             <div className="h-full grid grid-cols-[1.2fr,3.5fr] gap-5 justify-stretch overflow-hidden">
@@ -28,8 +26,6 @@ export const WizardBody = ({ schema, defaultValues, children, onSubmit }) => {
 
 // a sidebar for displaying secondary forms or list of items.
 export const WizardSidebar = ({ heading, children }) => {
-
-    console.log('sidebar rendered');
 
     return (
         <div className="min-w-64 max-w-96 h-full relative flex flex-col py-5 rounded-2xl gap-4 overflow-hidden ">
@@ -72,8 +68,6 @@ export const WizardFocusAreaContextProvider = ({ fieldArrayName, children, value
 // creates a fieldArray to enable multiple item creation.
 // And composes item detail fields with either item list or item preview.
 export const WizardFocusArea = ({ children, fieldArrayName, fieldItemDefaultValues }) => {
-
-    console.log('focus area rendered');
 
     return (<div className="w-full max-h-full grid grid-cols-[3fr,2fr] gap-1 overflow-hidden">
         {/* already provides fields array, field methods and states for selecting items */}
