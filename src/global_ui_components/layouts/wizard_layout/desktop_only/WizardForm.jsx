@@ -7,19 +7,24 @@ import { useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { WizardFocusAreaContext } from "./WizardBody";
 import FallbackText from "@/global_ui_components/fallbacks/FallbackText";
-import { useFormContext, useWatch } from "react-hook-form";
 
 // displays the list of items created with the form
 export const ItemList = ({ heading, renderList, children }) => {
 
-    const { append, selectedItemId, setSelectedItemId, fieldItemDefaultValues } = useContext(WizardFocusAreaContext)
-    const data = useWatch({ name: 'steps' })
+    const {
+        append,
+        isValid,
+        itemListData,
+        selectedItemId,
+        setSelectedItemId,
+        fieldItemDefaultValues
+    } = useContext(WizardFocusAreaContext)
 
     // TODO: allow updating and deleting steps
 
     const addNewField = () => {
         // doesn't append when previous fields aren't filled out
-        //if (!isValid) return
+        if (!isValid) return
 
         // TODO: see if we can use the field.id instead of itemId
         fieldItemDefaultValues.itemId = uuidv4()
@@ -38,8 +43,8 @@ export const ItemList = ({ heading, renderList, children }) => {
             <Separator />
             < ScrollArea >
                 <div className="max-h-full flex flex-col-1 my-5 ml-4 mr-7 overflow-hidden">
-                    {data?.length > 0
-                        ? renderList(data, selectedItemId, setSelectedItemId)
+                    {itemListData?.length > 0
+                        ? renderList(itemListData, isValid, selectedItemId, setSelectedItemId)
                         : <FallbackText comfortable text="You haven't created any steps yet" />}
                 </div>
             </ScrollArea>
@@ -67,7 +72,7 @@ export const ItemPreview = ({ heading, children }) => {
 }
 
 // displays the fields that define the item
-export const ItemDetailFields = ({ heading, renderField, children }) => {
+export const ItemDetails = ({ heading, renderField, children }) => {
     const { fields, fieldArrayName, selectedItemId } = useContext(WizardFocusAreaContext)
 
     return (<div className='flex flex-col min-w-72 h-full relative overflow-hidden gap-4 p-5 pr-0 bg-[var(--card)] rounded-tr-2xl rounded-br-2xl rounded-tl-md rounded-bl-md'>

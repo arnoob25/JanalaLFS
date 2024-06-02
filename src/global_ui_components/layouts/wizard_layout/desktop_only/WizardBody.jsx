@@ -1,7 +1,7 @@
 import { Form } from "@/global_ui_components/form/form"
 import { ScrollArea, ScrollBar } from "@/global_ui_components/ui/scroll-area"
 import { TypographyMuted } from "@/global_ui_components/ui/typography"
-import { useFieldArray } from "react-hook-form"
+import { useFieldArray, useFormContext } from "react-hook-form"
 import { createContext, useState } from "react";
 
 // Note: in this file, "items" refer to stuff that are created using the wizard. i.e. an inquiry.
@@ -45,16 +45,24 @@ export const WizardFocusAreaContext = createContext(null)
 and propagates the fields array, and fieldArray methods to item list, item preview, and item detail
 also propagates selectedItemId and setSelectedItemId to for selecting items */
 export const WizardFocusAreaContextProvider = ({ fieldArrayName, children, value = {} }) => {
+    // for getting itemListData programmatically using the getValues instead of useWatch
+    const { getValues, formState: { errors, isDirty } } = useFormContext()
     const { fields, append } = useFieldArray({ name: fieldArrayName });
 
     // managing the state in the provider reduces the number of re renders
     const [selectedItemId, setSelectedItemId] = useState(null)
+
+    /* can't use isValid from the formState because it triggers a bad state warning, 
+    so we determine it manually */
+    const isValid = isDirty && Object.keys(errors).length === 0
 
     return (
         <WizardFocusAreaContext.Provider
             value={{
                 selectedItemId,
                 setSelectedItemId,
+                itemListData: getValues(fieldArrayName),
+                isValid,
                 fieldArrayName,
                 fields,
                 append,

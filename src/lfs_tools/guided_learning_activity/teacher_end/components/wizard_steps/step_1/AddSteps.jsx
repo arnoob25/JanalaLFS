@@ -9,7 +9,7 @@ import StepList from "./StepList"
 import GlaDetailFields from "./GlaDetailFields"
 import StepDetailFields from "./StepDetailFields"
 import { Button } from "@/global_ui_components/ui/button"
-import { ItemDetailFields, ItemList } from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardForm"
+import { ItemDetails, ItemList } from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardForm"
 
 //#region form setup
 
@@ -55,7 +55,7 @@ const AddSteps = ({ gla }) => {
 
             <WizardFocusArea fieldArrayName='steps' fieldItemDefaultValues={StepDefaultValues}>
                 <ItemList heading='Steps' renderList={StepList} />
-                <ItemDetailFields heading='Step Details' renderField={StepDetailFields} />
+                <ItemDetails heading='Step Details' renderField={StepDetailFields} />
             </WizardFocusArea>
 
             <WizardControl>
