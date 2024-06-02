@@ -1,5 +1,5 @@
 import FallbackText from "@/global_ui_components/fallbacks/FallbackText"
-import { WizardFocusAreaContext } from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardContext"
+import { WizardFocusAreaContext } from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardBody"
 import {
     Accordion,
     AccordionContent,
@@ -14,14 +14,13 @@ import { useFormContext, useWatch } from "react-hook-form"
 
 
 const StepList = () => {
-
     const data = useWatch({ name: 'steps' })
 
     const { selectedItemId, setSelectedItemId } = useContext(WizardFocusAreaContext)
-    const { formState: { isValid } } = useFormContext()
+    //const { formState: { isValid } } = useFormContext()
 
     const selectCurrentStep = currentId => {
-        if (isValid) setSelectedItemId(prevId => prevId === currentId ? null : currentId);
+        setSelectedItemId(prevId => prevId === currentId ? null : currentId); // TODO: implement -  if (isValid) 
     }
 
     return (

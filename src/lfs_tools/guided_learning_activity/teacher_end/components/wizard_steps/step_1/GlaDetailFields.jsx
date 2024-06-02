@@ -27,15 +27,34 @@ const ILOs = [
 ]
 
 const GlaDetailFields = () => {
+
   return (
     <FormContainer sidebar scroll>
-      <TextInput fieldName='glaTitle' label='Title' placeholder='Title of the Gla' />
+      <TextInput
+        fieldName='glaTitle'
+        label='Title'
+        placeholder='Title of the Gla'
+      />
 
-      <ComboboxField fieldName='primaryIlo' label='Primary ILO' selectionType={'ILO'} options={ILOs} id='primaryIlo' />
-
-      <ComboboxField fieldName='secondaryIlo' label='Secondary ILO' selectionType={'ILO'} options={ILOs} id='secondaryIlo' />
-
-      <TextInput textArea fieldName='glaNarrative' label='Narrative' placeholder='Describe the narrative' />
+      <ComboboxField
+        fieldName='primaryIlo'
+        label='Primary ILO'
+        selectionType={'ILO'}
+        options={ILOs}
+        id='primaryIlo'
+      />
+      <ComboboxField
+        fieldName='secondaryIlo'
+        label='Secondary ILO'
+        selectionType={'ILO'}
+        options={ILOs}
+        id='secondaryIlo'
+      />
+      <TextInput textArea
+        fieldName='glaNarrative'
+        label='Narrative'
+        placeholder='Describe the narrative'
+      />
     </FormContainer>
   )
 }

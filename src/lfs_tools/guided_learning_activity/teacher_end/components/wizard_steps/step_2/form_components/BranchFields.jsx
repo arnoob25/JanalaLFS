@@ -1,7 +1,7 @@
 import { useFieldArray } from 'react-hook-form';
 import { TextInput } from '@/global_ui_components/form/TextInput';
 import { InquiryDetailFormDefaultValues } from '../ListInquiries';
-import { CheckboxSecondary } from '@/global_ui_components/form/Checkbox';
+import { CheckboxFieldSecondary } from '@/global_ui_components/form/Checkbox';
 import FieldArrayAddButton from '@/global_ui_components/form/FieldArrayAddButton';
 
 
@@ -22,7 +22,7 @@ const BranchFields = () => {
                         label={`Branch ${index <= 9 ? `0${index + 1}` : `${index + 1}`}`}
                         placeholder='Title of the branch'
                     />
-                    <CheckboxSecondary
+                    <CheckboxFieldSecondary
                         {...field}
                         fieldName={`branches.${index}.shouldAttempt`}
                         label='Should attempt'
