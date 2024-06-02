@@ -27,6 +27,7 @@ const ILOs = [
 ]
 
 const GlaDetailFields = () => {
+
   return (
     <FormContainer sidebar scroll>
       <TextInput
