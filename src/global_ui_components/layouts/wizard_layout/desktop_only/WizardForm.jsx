@@ -1,13 +1,13 @@
 import { FormContainer } from "@/global_ui_components/containers/FormContainer";
-import { AddIcon, Button } from "@/global_ui_components/ui/button";
+import { AddIcon } from "@/global_ui_components/ui/button";
 import { ScrollArea, ScrollBar } from "@/global_ui_components/ui/scroll-area";
 import { Separator } from "@/global_ui_components/ui/separator";
 import { TypographyH2, TypographyH4, TypographyMuted, TypographyP } from "@/global_ui_components/ui/typography";
-import { useContext } from "react";
-import { ItemDetailContext, WizardFocusAreaContext } from "./WizardContext";
+import { createContext, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import FallbackText from "@/global_ui_components/fallbacks/FallbackText";
+import { WizardFocusAreaContext } from "./WizardBody";
 
 // displays the list of items created with the form
 export const ItemList = ({ heading, children }) => {
@@ -21,6 +21,7 @@ export const ItemList = ({ heading, children }) => {
         // doesn't append when previous fields aren't filled out
         if (!isValid) return
 
+        // TODO: see if we can use the field.id instead of itemId
         fieldItemDefaultValues.itemId = uuidv4()
 
         // sets the new feild as the selected item
@@ -63,20 +64,24 @@ export const ItemPreview = ({ heading, children }) => {
     );
 }
 
+// context
+export const ItemDetailContext = createContext(null);
+
 // displays the fields that define the item
 export const ItemDetailFields = ({ heading, children }) => {
 
     const { fields, fieldArrayName, selectedItemId } = useContext(WizardFocusAreaContext)
 
-    return (
-        <div className='flex flex-col min-w-72 h-full relative overflow-hidden gap-4 p-5 pr-0 bg-[var(--card)] rounded-tr-2xl rounded-br-2xl rounded-tl-md rounded-bl-md'>
-            {heading ? <TypographyMuted text={heading} /> : null}
+    return (<div className='flex flex-col min-w-72 h-full relative overflow-hidden gap-4 p-5 pr-0 bg-[var(--card)] rounded-tr-2xl rounded-br-2xl rounded-tl-md rounded-bl-md'>
+        {heading ? <TypographyMuted text={heading} /> : null}
 
-            {fields && fields.length > 0
-                ? <>{selectedItemId
-                    ? <ScrollArea>
-                        <FormContainer scroll>{fields?.map((field, index) => {
+        {fields?.length > 0
+            ? <>{selectedItemId
+                ? <ScrollArea>
+                    <FormContainer scroll>
+                        {fields?.map((field, index) => {
                             const fieldItemNamePrefix = `${fieldArrayName}.${index}`
+
                             return (
                                 <ItemDetailContext.Provider
                                     key={field.id}
@@ -85,17 +90,18 @@ export const ItemDetailFields = ({ heading, children }) => {
                                     {children}
                                 </ItemDetailContext.Provider>
                             )
-                        })}</FormContainer>
-                        <ScrollBar />
-                    </ScrollArea>
-                    
-                    : <FallbackText compact text='Expand an item to modify it' />}</>
+                        })}
+                    </FormContainer>
+                    <ScrollBar />
+                </ScrollArea>
 
-                : <FallbackText text='Add a new item to get started' />}
+                : <FallbackText compact text='Expand an item to modify it' />}</>
 
-            {/**TODO: review the controls */}
-            <div className="flex flex-grow justify-end items-end mr-7">
-                {/**controls 
+            : <FallbackText text='Add a new item to get started' />}
+
+        {/**TODO: review the controls */}
+        <div className="flex flex-grow justify-end items-end mr-7">
+            {/**controls 
              * 
              * instead of the save button, allow the delete button
              * 
@@ -111,7 +117,6 @@ export const ItemDetailFields = ({ heading, children }) => {
              * 
              * 
             */}
-            </div>
         </div>
-    )
+    </div>)
 }

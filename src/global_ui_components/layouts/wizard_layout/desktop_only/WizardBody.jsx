@@ -1,32 +1,36 @@
-import { Form } from "@/global_ui_components/ui/form"
+import { Form } from "@/global_ui_components/form/form"
 import { ScrollArea, ScrollBar } from "@/global_ui_components/ui/scroll-area"
 import { TypographyMuted } from "@/global_ui_components/ui/typography"
-import { useFieldArray } from "react-hook-form"
-import { WizardFocusAreaContextProvider } from "./WizardContext"
+import { useFieldArray, useFormContext } from "react-hook-form"
+import { createContext, useState } from "react";
+
+// Note: in this file, "items" refer to stuff that are created using the wizard. i.e. an inquiry.
 
 // composes the sidebar, focus area, and control sections.
-export const WizardBody = ({ form, children, onSubmit }) => {
+export const WizardBody = ({ schema, defaultValues, children, onSubmit }) => {
+
+    console.log('parent rendered');
+
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-screen overflow-hidden gap-5">
-                <div className="h-full grid grid-cols-[1.2fr,3.5fr] gap-5 justify-stretch overflow-hidden">
-                    {children.filter(
-                        child => child.type.displayName === 'WizardSidebar'
-                            || child.type.displayName === 'WizardFocusArea')
-                    }
-                </div>
-                <div className="ml-auto">
-                    {children.find(child => child.type.displayName === 'WizardControl')}
-                </div>
-            </form>
+        <Form schema={schema} defaultValues={defaultValues} onSubmit={onSubmit} className="flex flex-col h-screen overflow-hidden gap-5">
+            <div className="h-full grid grid-cols-[1.2fr,3.5fr] gap-5 justify-stretch overflow-hidden">
+                {children.filter(
+                    child => child.type.displayName === 'WizardSidebar'
+                        || child.type.displayName === 'WizardFocusArea')
+                }
+            </div>
+            <div className="ml-auto">
+                {children.find(child => child.type.displayName === 'WizardControl')}
+            </div>
         </Form>
     )
 }
 
-// Note: in this file, "items" refer to stuff that are created using the wizard. i.e. an inquiry.
-
 // a sidebar for displaying secondary forms or list of items.
 export const WizardSidebar = ({ heading, children }) => {
+
+    console.log('sidebar rendered');
+
     return (
         <div className="min-w-64 max-w-96 h-full relative flex flex-col py-5 rounded-2xl gap-4 overflow-hidden ">
             {heading ? <TypographyMuted text={heading} /> : null}
@@ -38,29 +42,48 @@ export const WizardSidebar = ({ heading, children }) => {
     )
 }
 
+// context 
+export const WizardFocusAreaContext = createContext(null)
+
+/* creates the field array, 
+and propagates the fields array, and fieldArray methods to item list, item preview, and item detail
+also propagates selectedItemId and setSelectedItemId to for selecting items */
+export const WizardFocusAreaContextProvider = ({ fieldArrayName, children, value = {} }) => {
+    const { fields, append } = useFieldArray({ name: fieldArrayName });
+
+    // managing the state in the provider reduces the number of re renders
+    //const [selectedItemId, setSelectedItemId] = useState(null)
+
+    return (
+        <WizardFocusAreaContext.Provider
+            value={{
+                //selectedItemId,
+                //setSelectedItemId,
+                fieldArrayName,
+                fields,
+                append,
+                ...value,
+            }}>
+            {children}
+        </WizardFocusAreaContext.Provider >
+    )
+}
+
 // creates a fieldArray to enable multiple item creation.
 // And composes item detail fields with either item list or item preview.
 export const WizardFocusArea = ({ children, fieldArrayName, fieldItemDefaultValues }) => {
-    const { fields, append } = useFieldArray({
-        name: fieldArrayName
-    })
 
-    return (
-        <div className="w-full max-h-full grid grid-cols-[3fr,2fr] gap-1 overflow-hidden">
-            <WizardFocusAreaContextProvider
-                // manages the states for selecting an item
-                // provides selectedItem and setSelectedItem
-                value={{
-                    fieldArrayName,
-                    fieldItemDefaultValues, // default values for each item
-                    fields,
-                    append
-                }}
-            >
-                {children}
-            </WizardFocusAreaContextProvider>
-        </div>
-    )
+    console.log('focus area rendered');
+
+    return (<div className="w-full max-h-full grid grid-cols-[3fr,2fr] gap-1 overflow-hidden">
+        {/* already provides fields array, field methods and states for selecting items */}
+        <WizardFocusAreaContextProvider
+            fieldArrayName={fieldArrayName}
+            value={{ fieldItemDefaultValues }} // default values for each item
+        >
+            {children}
+        </WizardFocusAreaContextProvider>
+    </div>)
 }
 
 // primary buttons for submission, and navigation to the next phase of the wizard

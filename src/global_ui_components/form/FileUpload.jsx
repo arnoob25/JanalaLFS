@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { FormDescription, FormField, FormLabel, FormMessage } from "./form";
 import { Input } from "../ui/input";
 
 
@@ -9,25 +9,21 @@ export const FileUpload = ({
     description,
     secondary = false,
 }) => {
-    const { control, trigger } = useFormContext()
+    const { register, trigger } = useFormContext()
 
     return (
-        <FormField control={control} name={fieldName}
-            render={({ field }) => (
-                <FormItem>
-                    {label && <FormLabel secondary={secondary}>{label}</FormLabel>}
-                    <FormControl>
-                        <Input
-                            {...field}
-                            type='file'
-                            // onChange={() => trigger(fieldName)} TODO: apply when validation is available
-                        />
-                    </FormControl>
-                    {description && <FormDescription>{description}</FormDescription>}
-                    <FormMessage />
-                </FormItem>
-            )}
-        />
+        <FormField name={fieldName}>
+            {label && <FormLabel secondary={secondary}>{label}</FormLabel>}
+
+            <Input
+                {...register(fieldName)}
+                type='file'
+                // onChange={() => trigger(fieldName)} TODO: apply when validation is available
+            />
+
+            {description && <FormDescription>{description}</FormDescription>}
+            <FormMessage />
+        </FormField>
     )
 }
 

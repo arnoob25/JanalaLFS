@@ -1,7 +1,7 @@
 import { FormComposedFieldContainer } from "@/global_ui_components/containers/FormContainer"
-import { CheckboxSecondary } from "@/global_ui_components/form/Checkbox"
+import { CheckboxFieldSecondary } from "@/global_ui_components/form/Checkbox"
 import { TextInput } from "@/global_ui_components/form/TextInput"
-import { FormLabel } from "@/global_ui_components/ui/form"
+//import { FormLabel } from "@/global_ui_components/form/form-old"
 
 // used to craete both the choices and branches
 const ChoiceField = ({ label, textInputName, placeholder = '', checkBoxName, checkboxLabel = '' }) => {
@@ -14,7 +14,7 @@ const ChoiceField = ({ label, textInputName, placeholder = '', checkBoxName, che
                 fieldName={textInputName}
                 placeholder={placeholder ? placeholder : 'Label of the Choice'}
             />
-            <CheckboxSecondary
+            <CheckboxFieldSecondary
                 fieldName={checkBoxName}
                 label={checkboxLabel ? checkboxLabel : 'Correct choice'}
             />
