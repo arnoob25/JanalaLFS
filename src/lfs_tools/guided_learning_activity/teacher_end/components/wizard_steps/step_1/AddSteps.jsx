@@ -14,13 +14,13 @@ import { ItemDetailFields, ItemList } from "@/global_ui_components/layouts/wizar
 //#region form setup
 
 const AddStepsSchema = z.object({
-    glaTitle: z.string().min(5, 'Please provide a meaningful Title'),
-    primaryIlo: z.string().min(1, 'Please select an ILO'),
-    secondaryIlo: z.string().min(1, 'Please select an ILO'),
+    glaTitle: z.string(),//.min(5, 'Please provide a meaningful Title'),
+    primaryIlo: z.string(),//.min(1, 'Please select an ILO'),
+    secondaryIlo: z.string(),//.min(1, 'Please select an ILO'),
     glaNarrative: z.string(),
     steps: z.array(
         z.object({
-            stepGoal: z.string().min(10, 'Please define a meaningful goal'),
+            stepGoal: z.string(),//.min(10, 'Please define a meaningful goal'),
             stepNarrative: z.string()
         })
     )
