@@ -9,7 +9,7 @@ import { WizardFocusAreaContext } from "./WizardBody";
 import FallbackText from "@/global_ui_components/fallbacks/FallbackText";
 
 // displays the list of items created with the form
-export const ItemList = ({ heading, renderList, children }) => {
+export const ItemList = ({ heading, renderList }) => {
 
     const {
         append,

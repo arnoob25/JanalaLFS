@@ -7,8 +7,7 @@ import { createContext, useState } from "react";
 // Note: in this file, "items" refer to stuff that are created using the wizard. i.e. an inquiry.
 
 // composes the sidebar, focus area, and control sections.
-export const WizardBody = ({ schema, defaultValues, children, onSubmit }) => {
-
+export const WizardBody = ({ schema, defaultValues, onSubmit, children }) => {
     return (
         <Form schema={schema} defaultValues={defaultValues} onSubmit={onSubmit} className="flex flex-col h-screen overflow-hidden gap-5">
             <div className="h-full grid grid-cols-[1.2fr,3.5fr] gap-5 justify-stretch overflow-hidden">
@@ -44,7 +43,7 @@ export const WizardFocusAreaContext = createContext(null)
 /* creates the field array, 
 and propagates the fields array, and fieldArray methods to item list, item preview, and item detail
 also propagates selectedItemId and setSelectedItemId to for selecting items */
-export const WizardFocusAreaContextProvider = ({ fieldArrayName, children, value = {} }) => {
+export const WizardFocusAreaContextProvider = ({ fieldArrayName, value = {}, children }) => {
     // for getting itemListData programmatically using the getValues instead of useWatch
     const { getValues, formState: { errors, isDirty } } = useFormContext()
     const { fields, append } = useFieldArray({ name: fieldArrayName });
@@ -98,7 +97,7 @@ export const WizardControl = ({ children }) => {
 }
 
 
-// display names 
+// display names - for placing components appropriately in the WizardBody
 WizardSidebar.displayName = 'WizardSidebar'
 WizardFocusArea.displayName = 'WizardFocusArea'
 WizardControl.displayName = 'WizardControl'

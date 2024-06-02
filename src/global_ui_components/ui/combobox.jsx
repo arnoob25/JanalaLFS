@@ -11,6 +11,7 @@ import {
 } from "./command"
 import { cn } from "@/lib/utils"
 
+// TODO: the combobox should not exceed the width of the container component
 const Combobox = ({ field, selectionType, options, onSelect }) => {
     const [open, setOpen] = useState(false)
 
