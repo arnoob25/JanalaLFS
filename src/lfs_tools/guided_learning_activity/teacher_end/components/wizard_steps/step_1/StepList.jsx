@@ -1,5 +1,5 @@
 import FallbackText from "@/global_ui_components/fallbacks/FallbackText"
-import { WizardFocusAreaContext } from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardContext"
+import { WizardFocusAreaContext } from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardBody"
 import {
     Accordion,
     AccordionContent,

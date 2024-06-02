@@ -15,7 +15,7 @@ import { ItemDetailFields, ItemList } from "@/global_ui_components/layouts/wizar
 
 //#region form setup
 
-const formSchema = z.object({
+export const AddStepsSchema = z.object({
     glaTitle: z.string().min(5, 'Please provide a meaningful Title'),
     primaryIlo: z.string().min(1, 'Please select an ILO'),
     secondaryIlo: z.string().min(1, 'Please select an ILO'),
@@ -28,7 +28,7 @@ const formSchema = z.object({
     )
 })
 
-const formDefaultValues = {
+const AddStepsDefaultValues = {
     glaTitle: '',
     primaryIlo: '',
     secondaryIlo: '',
@@ -44,12 +44,6 @@ const StepDefaultValues = {
 //#endregion
 
 const AddSteps = ({ gla }) => {
-    const form = useForm({
-        resolver: zodResolver(formSchema),
-        defaultValues: formDefaultValues // TODO: conditionally use queried steps when available
-    })
-
-    const { isValid } = form.formState
 
     const handleFormSubmission = data => {
         const submissionData = data
@@ -57,7 +51,7 @@ const AddSteps = ({ gla }) => {
     };
 
     return (
-        <WizardBody form={form} onSubmit={handleFormSubmission}>
+        <WizardBody schema={AddStepsSchema} onSubmit={handleFormSubmission}>
             <WizardSidebar heading='Gla Details'>
                 <GlaDetailFields />
             </WizardSidebar>
@@ -73,7 +67,7 @@ const AddSteps = ({ gla }) => {
             </WizardFocusArea>
 
             <WizardControl>
-                <Button disabled={!isValid}>Next</Button>
+                <Button>Next</Button>
             </WizardControl>
         </WizardBody>
     )

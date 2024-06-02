@@ -2,13 +2,13 @@ import {
     FormControl,
     FormDescription,
     FormField,
-    FormItem,
     FormLabel,
     FormMessage,
-} from "../ui/form"
+} from "./form"
 import Combobox from "../ui/combobox"
 import { useFormContext } from "react-hook-form"
 
+// TODO: make the combobox uncontrolled by default
 // TODO: the combobox should not exceed the width of the container component
 export function ComboboxField({ fieldName, label, selectionType, options, description, secondary = false }) {
     const { control, setValue, trigger } = useFormContext()
@@ -19,18 +19,26 @@ export function ComboboxField({ fieldName, label, selectionType, options, descri
     }
 
     return (
-        <FormField
-            control={control}
+        <FormField controlledForm
             name={fieldName}
+            control={control}
             render={({ field }) => (
-                <FormItem className="flex flex-col">
+                <div>
                     {label ? <FormLabel secondary={secondary}>{label}</FormLabel> : null}
+
                     <FormControl>
-                        <Combobox field={field} selectionType={selectionType} options={options} onSelect={handleSelection} />
+                        <Combobox
+                            field={field}
+                            selectionType={selectionType}
+                            options={options}
+                            onSelect={handleSelection}
+                        />
                     </FormControl>
-                    {description && <FormDescription>{description}</FormDescription>}
+
+                    {description ? <FormDescription>{description}</FormDescription> : null}
                     <FormMessage />
-                </FormItem>)}
+                </div>
+            )}
         />
     )
 }
