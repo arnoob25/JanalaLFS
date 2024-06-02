@@ -1,7 +1,7 @@
 import { Form } from "@/global_ui_components/form/form"
 import { ScrollArea, ScrollBar } from "@/global_ui_components/ui/scroll-area"
 import { TypographyMuted } from "@/global_ui_components/ui/typography"
-import { useFieldArray, useFormContext } from "react-hook-form"
+import { useFieldArray } from "react-hook-form"
 import { createContext, useState } from "react";
 
 // Note: in this file, "items" refer to stuff that are created using the wizard. i.e. an inquiry.
@@ -52,13 +52,13 @@ export const WizardFocusAreaContextProvider = ({ fieldArrayName, children, value
     const { fields, append } = useFieldArray({ name: fieldArrayName });
 
     // managing the state in the provider reduces the number of re renders
-    //const [selectedItemId, setSelectedItemId] = useState(null)
+    const [selectedItemId, setSelectedItemId] = useState(null)
 
     return (
         <WizardFocusAreaContext.Provider
             value={{
-                //selectedItemId,
-                //setSelectedItemId,
+                selectedItemId,
+                setSelectedItemId,
                 fieldArrayName,
                 fields,
                 append,
