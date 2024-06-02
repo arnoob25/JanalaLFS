@@ -6,12 +6,14 @@ import { TypographyH2, TypographyH4, TypographyMuted } from "@/global_ui_compone
 import { useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { WizardFocusAreaContext } from "./WizardBody";
+import FallbackText from "@/global_ui_components/fallbacks/FallbackText";
+import { useFormContext, useWatch } from "react-hook-form";
 
 // displays the list of items created with the form
-export const ItemList = ({ heading, children }) => {
+export const ItemList = ({ heading, renderList, children }) => {
 
-    const { append, setSelectedItemId, fieldItemDefaultValues } = useContext(WizardFocusAreaContext)
-    //const { formState: { isValid } } = useFormContext()
+    const { append, selectedItemId, setSelectedItemId, fieldItemDefaultValues } = useContext(WizardFocusAreaContext)
+    const data = useWatch({ name: 'steps' })
 
     // TODO: allow updating and deleting steps
 
@@ -34,13 +36,15 @@ export const ItemList = ({ heading, children }) => {
                 <AddIcon onClick={addNewField} />
             </div>
             <Separator />
-            <ScrollArea>
+            < ScrollArea >
                 <div className="max-h-full flex flex-col-1 my-5 ml-4 mr-7 overflow-hidden">
-                    {children}
-                    <ScrollBar />
+                    {data?.length > 0
+                        ? renderList(data, selectedItemId, setSelectedItemId)
+                        : <FallbackText comfortable text="You haven't created any steps yet" />}
                 </div>
             </ScrollArea>
-        </div>
+
+        </div >
     );
 }
 
@@ -63,16 +67,33 @@ export const ItemPreview = ({ heading, children }) => {
 }
 
 // displays the fields that define the item
-export const ItemDetailFields = ({ heading, children }) => {
+export const ItemDetailFields = ({ heading, renderField, children }) => {
+    const { fields, fieldArrayName, selectedItemId } = useContext(WizardFocusAreaContext)
 
     return (<div className='flex flex-col min-w-72 h-full relative overflow-hidden gap-4 p-5 pr-0 bg-[var(--card)] rounded-tr-2xl rounded-br-2xl rounded-tl-md rounded-bl-md'>
         {heading ? <TypographyMuted text={heading} /> : null}
 
-        <ScrollArea>
-            <FormContainer scroll>
-                {children}
-            </FormContainer>
-            <ScrollBar />
-        </ScrollArea>
+        {fields?.length > 0
+            ? <>{selectedItemId
+                ? <>{fields?.map((field, index) => {
+                    if (field.itemId !== selectedItemId) return null
+
+                    const fieldItemNamePrefix = `${fieldArrayName}.${index}`
+
+                    return (
+                        <ScrollArea key={field.id}>
+                            <FormContainer scroll>
+                                {renderField(fieldItemNamePrefix)}
+                            </FormContainer>
+                            <ScrollBar />
+                        </ScrollArea>
+                    )
+                })}</>
+
+                : <FallbackText compact text='Expand an item to modify it' />}</>
+
+            : <FallbackText text='Add a new item to get started' />}
+
+
     </div>)
 }

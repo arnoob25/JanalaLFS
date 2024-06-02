@@ -54,13 +54,8 @@ const AddSteps = ({ gla }) => {
             </WizardSidebar>
 
             <WizardFocusArea fieldArrayName='steps' fieldItemDefaultValues={StepDefaultValues}>
-                <ItemList heading='Steps'>
-                    <StepList />
-                </ItemList>
-
-                <ItemDetailFields heading='Step Details'>
-                    <StepDetailFields />
-                </ItemDetailFields>
+                <ItemList heading='Steps' renderList={StepList} />
+                <ItemDetailFields heading='Step Details' renderField={StepDetailFields} />
             </WizardFocusArea>
 
             <WizardControl>
