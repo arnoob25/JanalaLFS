@@ -25,7 +25,7 @@ export const ItemList = ({ heading, children }) => {
         fieldItemDefaultValues.itemId = uuidv4()
 
         // sets the new feild as the selected item
-        setSelectedItemId(prevId => prevId === fieldItemDefaultValues.itemId ? null : fieldItemDefaultValues.itemId)
+        //setSelectedItemId(prevId => prevId === fieldItemDefaultValues.itemId ? null : fieldItemDefaultValues.itemId)
         append(fieldItemDefaultValues)
     }
 
