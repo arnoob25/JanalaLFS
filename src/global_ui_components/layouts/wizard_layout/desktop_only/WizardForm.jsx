@@ -67,7 +67,7 @@ export const ItemPreview = ({ heading, children }) => {
 }
 
 // displays the fields that define the item
-export const ItemDetailFields = ({ heading, renderField, children }) => {
+export const ItemDetails = ({ heading, renderField, children }) => {
     const { fields, fieldArrayName, selectedItemId } = useContext(WizardFocusAreaContext)
 
     return (<div className='flex flex-col min-w-72 h-full relative overflow-hidden gap-4 p-5 pr-0 bg-[var(--card)] rounded-tr-2xl rounded-br-2xl rounded-tl-md rounded-bl-md'>
