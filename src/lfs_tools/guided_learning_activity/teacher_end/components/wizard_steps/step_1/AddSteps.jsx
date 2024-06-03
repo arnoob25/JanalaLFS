@@ -8,7 +8,6 @@ import {
 import StepList from "./StepList"
 import GlaDetailFields from "./GlaDetailFields"
 import StepDetailFields from "./StepDetailFields"
-import { Button } from "@/global_ui_components/ui/button"
 import { ItemDetails, ItemList } from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardForm"
 
 //#region form setup
@@ -58,9 +57,7 @@ const AddSteps = ({ gla }) => {
                 <ItemDetails heading='Step Details' renderField={StepDetailFields} />
             </WizardFocusArea>
 
-            <WizardControl>
-                <Button>Next</Button>
-            </WizardControl>
+            <WizardControl />
         </WizardBody>
     )
 }

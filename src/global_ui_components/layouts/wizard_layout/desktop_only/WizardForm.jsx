@@ -45,7 +45,7 @@ export const ItemList = ({ heading, renderList }) => {
                 <div className="max-h-full flex flex-col-1 my-5 ml-4 mr-7 overflow-hidden">
                     {itemListData?.length > 0
                         ? renderList(itemListData, isValid, selectedItemId, setSelectedItemId)
-                        : <FallbackText comfortable text="You haven't created any steps yet" />}
+                        : <FallbackText comfortable text="Tap the plus icon to add a new item" />}
                 </div>
             </ScrollArea>
 

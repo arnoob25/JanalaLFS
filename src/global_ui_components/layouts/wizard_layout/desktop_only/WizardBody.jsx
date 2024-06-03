@@ -2,7 +2,8 @@ import { Form } from "@/global_ui_components/form/form"
 import { ScrollArea, ScrollBar } from "@/global_ui_components/ui/scroll-area"
 import { TypographyMuted } from "@/global_ui_components/ui/typography"
 import { useFieldArray, useFormContext } from "react-hook-form"
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { Button } from "@/global_ui_components/ui/button";
 
 // Note: in this file, "items" refer to stuff that are created using the wizard. i.e. an inquiry.
 
@@ -88,10 +89,13 @@ export const WizardFocusArea = ({ children, fieldArrayName, fieldItemDefaultValu
 }
 
 // primary buttons for submission, and navigation to the next phase of the wizard
-export const WizardControl = ({ children }) => {
+export const WizardControl = ({ children, next = true, previous = false, renderCustomButton }) => {
+
     return (
         <div className="flex justify-end gap-3">
-            {children}
+            {next ? <Button>Next</Button> : null}
+            {previous ? <Button>Previous</Button> : null}
+            {renderCustomButton ? renderCustomButton() : null}
         </div>
     )
 }
