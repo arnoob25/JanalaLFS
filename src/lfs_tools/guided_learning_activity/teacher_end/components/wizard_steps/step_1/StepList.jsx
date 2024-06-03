@@ -8,8 +8,6 @@ import { TypographyLarge, TypographyP } from "@/global_ui_components/ui/typograp
 
 
 const StepList = (data, isValid, selectedItemId, setSelectedItemId) => {
-
-
     const selectCurrentStep = currentId => {
         if (isValid) setSelectedItemId(prevId => prevId === currentId ? null : currentId);
     }
