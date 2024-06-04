@@ -1,10 +1,8 @@
-import {
-    WizardBody,
-} from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardBody"
-import { Button } from "@/global_ui_components/ui/button"
 import InquiryList from "./InquiryList"
 import GlaPage from "@/lfs_tools/guided_learning_activity/student_end/pages/GlaPage"
 import InquiryDetailForm from "./form_components/InquiryDetailForm"
+import { WizardBody, WizardControl, WizardFocusArea, WizardSidebar } from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardBody"
+import { ItemDetails, ItemPreview } from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardForm"
 import { z } from "zod"
 
 // #region form setup
@@ -84,27 +82,21 @@ const handleInquiryDetailFormSubmission = (data) => console.log(data);
 
 const DesignInquiries = () => {
     return (
-        <WizardBody>
-            <WizardContext heading='Inquiries'>
+        <WizardBody schema={inquiryDetailsFormSchema}
+            defaultValues={inquiryDetailsFormDefaultValues}
+            onSubmit={handleInquiryDetailFormSubmission}
+        >
+            <WizardSidebar heading='Inquiries'>
                 <InquiryList />
-            </WizardContext>
+            </WizardSidebar>
+
             <WizardFocusArea>
-                <ItemPreview heading={'Inquiry 1'}>
-                    <GlaPage gla={{ id: 1 }} previewInquiry />
-                </ItemPreview>
-                <ItemForm
-                    heading='Inquiry Details'
-                    schema={inquiryDetailsFormSchema}
-                    defaultValues={inquiryDetailsFormDefaultValues}
-                    onSubmit={handleInquiryDetailFormSubmission}
-                >
-                    <InquiryDetailForm />
-                </ItemForm>
+                <ItemPreview heading={'Inquiry 1'} renderPage={GlaPage} renderPageProp='gla' otherProps={{ previewInquiry: true }} />
+
+                <ItemDetails heading='Inquiry Details' renderField={InquiryDetailForm} />
             </WizardFocusArea>
-            <WizardControl>
-                <Button variant='secondary' disabled>Preview the Step</Button>
-                <Button>Next</Button>
-            </WizardControl>
+
+            <WizardControl />
         </WizardBody>
     )
 }

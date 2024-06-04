@@ -2,10 +2,12 @@ import { Form } from "@/global_ui_components/form/form"
 import { ScrollArea, ScrollBar } from "@/global_ui_components/ui/scroll-area"
 import { TypographyMuted } from "@/global_ui_components/ui/typography"
 import { useFieldArray, useFormContext } from "react-hook-form"
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 import { Button } from "@/global_ui_components/ui/button";
 
 // Note: in this file, "items" refer to stuff that are created using the wizard. i.e. an inquiry.
+
+// TODO: Wizard Body should have a context that'll provide form isValid and stuff... so that it reaches the control as well allowing us to enable/ disable next button
 
 // composes the sidebar, focus area, and control sections.
 export const WizardBody = ({ schema, defaultValues, onSubmit, children }) => {
@@ -52,9 +54,9 @@ export const WizardFocusAreaContextProvider = ({ fieldArrayName, value = {}, chi
     // managing the state in the provider reduces the number of re renders
     const [selectedItemId, setSelectedItemId] = useState(null)
 
-    /* can't use isValid from the formState because it triggers a bad state warning, 
+    /* can't use isValid from the formState because it causes a bad state warning, 
     so we determine it manually */
-    const isValid = isDirty && Object.keys(errors).length === 0
+    const isFormValid = Object.keys(errors).length === 0
 
     return (
         <WizardFocusAreaContext.Provider
@@ -62,7 +64,8 @@ export const WizardFocusAreaContextProvider = ({ fieldArrayName, value = {}, chi
                 selectedItemId,
                 setSelectedItemId,
                 itemListData: getValues(fieldArrayName),
-                isValid,
+                isFormValid,
+                isDirty,
                 fieldArrayName,
                 fields,
                 append,
@@ -75,13 +78,13 @@ export const WizardFocusAreaContextProvider = ({ fieldArrayName, value = {}, chi
 
 // creates a fieldArray to enable multiple item creation.
 // And composes item detail fields with either item list or item preview.
-export const WizardFocusArea = ({ children, fieldArrayName, fieldItemDefaultValues }) => {
+export const WizardFocusArea = ({ children, fieldArrayName, fieldItemDefaultValues, requireSidebarFormToAddItems = false }) => {
 
     return (<div className="w-full max-h-full grid grid-cols-[3fr,2fr] gap-1 overflow-hidden">
         {/* already provides fields array, field methods and states for selecting items */}
         <WizardFocusAreaContextProvider
             fieldArrayName={fieldArrayName}
-            value={{ fieldItemDefaultValues }} // default values for each item
+            value={{ fieldItemDefaultValues, requireSidebarFormToAddItems }} // default values for each item
         >
             {children}
         </WizardFocusAreaContextProvider>
