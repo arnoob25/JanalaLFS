@@ -52,7 +52,11 @@ const AddSteps = ({ gla }) => {
                 <GlaDetailFields />
             </WizardSidebar>
 
-            <WizardFocusArea fieldArrayName='steps' fieldItemDefaultValues={StepDefaultValues}>
+            <WizardFocusArea
+                requireSidebarFormToAddItems
+                fieldArrayName='steps'
+                fieldItemDefaultValues={StepDefaultValues}
+            >
                 <ItemList heading='Steps' renderList={StepList} />
                 <ItemDetails heading='Step Details' renderField={StepDetailFields} />
             </WizardFocusArea>

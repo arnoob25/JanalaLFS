@@ -1,22 +1,22 @@
 import { useFormContext, useWatch } from "react-hook-form"
 
 
-const CollapsibleFormSection = ({ triggerField, match = false, matchWith, children }) => {
+const CollapsibleFormSection = ({ triggerFieldName, shouldMatch = false, matchWithValue, children }) => {
     const { control } = useFormContext()
 
     const triggerBoolValue = useWatch({ // field is a boolean
         control: control,
-        name: triggerField,
-        disabled: match // disabled when match is true
+        name: triggerFieldName,
+        disabled: shouldMatch // disabled when match is true
     })
 
     const triggerEnumValue = useWatch({
         control: control,
-        name: triggerField,
-        disabled: !match // disabled when match is false
+        name: triggerFieldName,
+        disabled: !shouldMatch // disabled when match is false
     })
 
-    const shouldExpand = match ? triggerEnumValue === matchWith : triggerBoolValue
+    const shouldExpand = shouldMatch ? triggerEnumValue === matchWithValue : triggerBoolValue
 
     return (
         <div className={!shouldExpand ? 'invisible hidden' : ''}>

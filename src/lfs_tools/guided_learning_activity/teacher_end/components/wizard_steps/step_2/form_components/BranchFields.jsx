@@ -1,37 +1,39 @@
-import { useFieldArray } from 'react-hook-form';
-import { TextInput } from '@/global_ui_components/form/TextInput';
-import { InquiryDetailFormDefaultValues } from '../ListInquiries';
-import { CheckboxFieldSecondary } from '@/global_ui_components/form/Checkbox';
-import FieldArrayAddButton from '@/global_ui_components/form/FieldArrayAddButton';
+import { useFieldArray } from "react-hook-form";
+import { TextInput } from "@/global_ui_components/form/TextInput";
+import { CheckboxFieldSecondary } from "@/global_ui_components/form/Checkbox";
+import FieldArrayAddButton from "@/global_ui_components/form/FieldArrayAddButton";
+import { BranchDefaultValues } from "../ListInquiries";
 
+const BranchFields = ({ fieldArrayName }) => {
+  const defaultValue = BranchDefaultValues;
 
-const BranchFields = () => {
-    const defaultValue = InquiryDetailFormDefaultValues.branches[0]
+  const { fields, append } = useFieldArray({
+    name: fieldArrayName,
+  });
 
-    const { fields, append } = useFieldArray({
-        name: 'branches',
-    });
-
-    return (
-        <div className='flex flex-col gap-4'>
-            {fields.map((field, index) => (
-                <div key={field.id}>
-                    <TextInput secondary
-                        {...field}
-                        fieldName={`branches.${index}.title`}
-                        label={`Branch ${index <= 9 ? `0${index + 1}` : `${index + 1}`}`}
-                        placeholder='Title of the branch'
-                    />
-                    <CheckboxFieldSecondary
-                        {...field}
-                        fieldName={`branches.${index}.shouldAttempt`}
-                        label='Should attempt'
-                    />
-                </div>
-            ))}
-            <FieldArrayAddButton label='Branch' onClick={() => append(defaultValue)} />
+  return (
+    <div className="flex flex-col gap-4">
+      {fields.map((field, index) => (
+        <div key={field.id}>
+          <TextInput secondary
+            {...field}
+            fieldName={`${fieldArrayName}.${index}.branchTitle`}
+            label={`Branch ${index <= 9 ? `0${index + 1}` : `${index + 1}`}`}
+            placeholder="Title of the branch"
+          />
+          <CheckboxFieldSecondary
+            {...field}
+            fieldName={`${fieldArrayName}.${index}.shouldAttemptBranch`}
+            label="Should attempt"
+          />
         </div>
-    );
+      ))}
+      <FieldArrayAddButton
+        label="Branch"
+        onClick={() => append(defaultValue)}
+      />
+    </div>
+  );
 };
 
 export default BranchFields;

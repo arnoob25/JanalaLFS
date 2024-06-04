@@ -5,17 +5,14 @@ import {
     AccordionTrigger,
 } from "@/global_ui_components/ui/accordion"
 import { TypographyLarge, TypographyP } from "@/global_ui_components/ui/typography"
+import * as s from "../../AccordionStyles";
 
 
-const StepList = (data, isValid, selectedItemId, setSelectedItemId) => {
-    const selectCurrentStep = currentId => {
-        if (isValid) setSelectedItemId(prevId => prevId === currentId ? null : currentId);
-    }
+const StepList = (data, selectedItemId, handleItemSelection, shouldDisableAccordionTrigger) => {
 
     return (
-        <Accordion type="single" value={selectedItemId} collapsible className='w-full'>
-            <div className="flex flex-col gap-2 mx-0">{data?.map((item, index) => {
-
+        <Accordion type="single" value={selectedItemId} collapsible className={`${s.AccordionParentContainerStyle}`}>
+            {data?.map((item, index) => {
                 // #region styling logic
                 const isGoalDefined = !!item.stepGoal
                 const isSelectedStep = item.itemId === selectedItemId
@@ -26,36 +23,36 @@ const StepList = (data, isValid, selectedItemId, setSelectedItemId) => {
                 // #endregion
 
                 return (
-                    <AccordionItem key={item.itemId} value={item.itemId} className={`px-3 pb-6`}>
-                        {/* Card Header */}
-                        <div className="flex flex-row justify-between items-center">
+                    <AccordionItem key={item.itemId} value={item.itemId} className={`${s.AccordionItemContainerStyle}`}>
+                        {/* Item Header */}
+                        <div className={`${s.AccordionItemHeaderContainerStyle}`}>
                             <TypographyLarge text={stepTitle} />
                             <AccordionTrigger
                                 value={item.itemId}
                                 iconSize={22}
-                                onClick={() => selectCurrentStep(item.itemId)}
+                                disabled={shouldDisableAccordionTrigger}
+                                onClick={() => handleItemSelection(item.itemId)}
                             />
                         </div>
 
-                        {/* Card Body */}
+                        {/* Item Body */}
                         <TypographyP
                             text={isGoalDefined ? `Goal: ${item.stepGoal}` : 'Goal not defined'}
                             muted={!isGoalDefined}
                             destructive={shouldDisplayDestructiveText}
-                            className='mt-3'
+                            className={`${s.AccordionItemBodyTextStyle}`}
                         />
 
-                        {/* Card Additional Info */}
-                        <AccordionContent className='pt-2.5 pb-0.5'>
+                        {/* Item Additional Info */}
+                        <AccordionContent className={`${s.AccordionCollapsedContainerStyle}`}>
                             <TypographyP small muted
                                 text={item.stepNarrative ? `Narrative: ${item.stepNarrative}` : 'Narrative not defined'}
                             />
                         </AccordionContent>
                     </AccordionItem>
                 )
-            }
-            )}</div>
-        </Accordion>
+            })}
+        </Accordion >
     )
 }
 
