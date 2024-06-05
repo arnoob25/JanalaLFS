@@ -2,11 +2,7 @@ import { FormContainer } from "@/global_ui_components/containers/FormContainer";
 import { AddIcon } from "@/global_ui_components/ui/button";
 import { ScrollArea, ScrollBar } from "@/global_ui_components/ui/scroll-area";
 import { Separator } from "@/global_ui_components/ui/separator";
-import {
-	TypographyH2,
-	TypographyH4,
-	TypographyMuted,
-} from "@/global_ui_components/ui/typography";
+import { TypographyH2, TypographyH4, TypographyMuted } from "@/global_ui_components/ui/typography";
 import { useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { WizardFocusAreaContext } from "./WizardBody";
