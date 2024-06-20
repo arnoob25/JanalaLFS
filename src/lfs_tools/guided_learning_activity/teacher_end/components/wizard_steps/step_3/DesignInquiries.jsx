@@ -1,9 +1,10 @@
+import { z } from "zod"
 import InquiryList from "./InquiryList"
 import GlaPage from "@/lfs_tools/guided_learning_activity/student_end/pages/GlaPage"
 import InquiryDetailForm from "./form_components/InquiryDetailForm"
-import { WizardBody, WizardControl, WizardFocusArea, WizardSidebar } from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardBody"
-import { ItemDetails, ItemPreview } from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardForm"
-import { z } from "zod"
+import { WizardBody, WizardControl, WizardFocusArea, WizardSidebar } from "@/global_ui_components/layouts/wizard/body/Containers"
+import { ItemDetails, ItemPreview } from "@/global_ui_components/layouts/wizard/body/ItemCreationAndDisplayComponents"
+    
 
 // #region form setup
 

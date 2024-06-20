@@ -10,14 +10,23 @@ import BranchList from "./BranchList"
 import * as s from "../../../AccordionStyles";
 
 
-const InquiryList = (data, selectedItemId, handleItemSelection, shouldDisableAccordionTrigger) => {
+const MainInquiryList = (
+    append,
+    data,
+    selectedItemId,
+    handleItemSelection,
+    selectedSecondaryItemId,
+    setSelectedSecondaryItemId,
+    shouldDisableAccordionTrigger
+) => {
+    const mainInquiries = data.filter(inquiry => inquiry.isBranchInquiry === false)
 
     return (
         <Accordion type="single" value={selectedItemId} collapsible className={`${s.AccordionParentContainerStyle}`}>
-            {data?.map((item, index) => {
+            {mainInquiries?.map((inquiry, index) => {
                 // #region styling logic
-                const isGoalDefined = !!item.inquiryGoal
-                const isSelectedInquiry = item.itemId === selectedItemId
+                const isGoalDefined = !!inquiry.inquiryGoal
+                const isSelectedInquiry = inquiry.itemId === selectedItemId
 
                 const shouldDisplayDestructiveText = !isGoalDefined && !isSelectedInquiry
 
@@ -25,26 +34,26 @@ const InquiryList = (data, selectedItemId, handleItemSelection, shouldDisableAcc
                 // #endregion
 
                 return (
-                    <AccordionItem key={item.itemId} value={item.itemId} className={`${s.AccordionItemContainerStyle}`}>
+                    <AccordionItem key={inquiry.itemId} value={inquiry.itemId} className={`${s.AccordionItemContainerStyle}`}>
                         {/* Item Header */}
                         <div className={`${s.AccordionItemHeaderContainerStyle}`}>
                             <span className="flex flex-row justify-start items-baseline gap-2">
                                 <TypographyLarge text={inquiryTitle} />
-                                {item.isBranching
+                                {inquiry.shouldOriginateBranch
                                     ? <Badge variant="secondary">Branch</Badge>
                                     : null}
                             </span>
                             <AccordionTrigger
-                                value={item.itemId}
+                                value={inquiry.itemId}
                                 iconSize={22}
                                 disabled={shouldDisableAccordionTrigger}
-                                onClick={() => handleItemSelection(item.itemId)}
+                                onClick={() => handleItemSelection(inquiry.itemId)}
                             />
                         </div>
 
                         {/* Item Body */}
                         <TypographyP
-                            text={isGoalDefined ? `Goal: ${item.inquiryGoal}` : 'Goal not defined'}
+                            text={isGoalDefined ? `Goal: ${inquiry.inquiryGoal}` : 'Goal not defined'}
                             muted={!isGoalDefined}
                             destructive={shouldDisplayDestructiveText}
                             className={`${s.AccordionItemBodyTextStyle}`}
@@ -53,12 +62,17 @@ const InquiryList = (data, selectedItemId, handleItemSelection, shouldDisableAcc
                         {/* Item Additional Info */}
                         <AccordionContent className={`${s.AccordionCollapsedContainerStyle}`}>
                             <TypographyP small muted
-                                text={item.inquiryNarrative ? `Narrative: ${item.inquiryNarrative}` : 'Narrative not defined'}
+                                text={inquiry.inquiryNarrative ? `Narrative: ${inquiry.inquiryNarrative}` : 'Narrative not defined'}
                             />
 
-                            {/* {item.isBranching
-                                ? BranchList(item.branches)
-                                : null} */}
+                            {inquiry.shouldOriginateBranch
+                                ? BranchList(data,
+                                    inquiry.branches,
+                                    selectedSecondaryItemId,
+                                    setSelectedSecondaryItemId,
+                                    append,
+                                    shouldDisableAccordionTrigger)
+                                : null}
                         </AccordionContent>
                     </AccordionItem>
                 )
@@ -67,4 +81,4 @@ const InquiryList = (data, selectedItemId, handleItemSelection, shouldDisableAcc
     )
 }
 
-export default InquiryList
+export default MainInquiryList

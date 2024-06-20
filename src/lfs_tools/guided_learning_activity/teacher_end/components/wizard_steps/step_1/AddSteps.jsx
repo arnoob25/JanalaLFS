@@ -4,11 +4,11 @@ import {
     WizardFocusArea,
     WizardControl,
     WizardSidebar,
-} from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardBody"
+} from "@/global_ui_components/layouts/wizard/body/Containers"
 import StepList from "./StepList"
 import GlaDetailFields from "./GlaDetailFields"
 import StepDetailFields from "./StepDetailFields"
-import { ItemDetails, ItemList } from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardForm"
+import { ItemDetails, ItemList } from "@/global_ui_components/layouts/wizard/body/ItemCreationAndDisplayComponents"
 
 //#region form setup
 
@@ -56,9 +56,10 @@ const AddSteps = ({ gla }) => {
                 requireSidebarFormToAddItems
                 fieldArrayName='steps'
                 fieldItemDefaultValues={StepDefaultValues}
+                fallbackItemName='step'
             >
                 <ItemList heading='Steps' renderList={StepList} />
-                <ItemDetails heading='Step Details' renderField={StepDetailFields} />
+                <ItemDetails heading='Step Details' renderDetailFields={StepDetailFields} />
             </WizardFocusArea>
 
             <WizardControl />

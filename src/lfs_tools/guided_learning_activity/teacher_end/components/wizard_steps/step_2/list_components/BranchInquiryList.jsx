@@ -1,29 +1,53 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/global_ui_components/ui/accordion"
 import { TypographyLarge, TypographyP } from "@/global_ui_components/ui/typography"
+import * as s from "../../../AccordionStyles";
 
-export const BranchInquiryList = ({ data }) => {
+export const BranchInquiryList = (data, selectedSecondaryItemId, handleInquirySelection, shouldDisableAccordionTrigger) => {
+
     return (
-        <div className="border-l-2 mb-4 pl-5 hover:border-muted-foreground">
-            <Accordion type="single" className='w-full' collapsible>
-                <div className="flex flex-col gap-3">{data?.map(item => {
-                    return (
-                        <AccordionItem key={item.id} value={item.id}>
-                            <div className="pb-6 rounded-xl">
-                                <div className="flex flex-row justify-between items-center mb-3">
-                                    <TypographyLarge text={item.header} />
-                                    <AccordionTrigger iconSize={22} />
-                                </div>
+        <Accordion type="single" value={selectedSecondaryItemId} collapsible className={`${s.AccordionParentContainerStyle}`}>
+            {data?.map((inquiry, index) => {
+                // #region styling logic
+                const isGoalDefined = !!inquiry.inquiryGoal
+                const isSelectedInquiry = inquiry.itemId === selectedSecondaryItemId
 
-                                <TypographyP text={`Goal: ${item.goal}`} />
+                const shouldDisplayDestructiveText = !isGoalDefined && !isSelectedInquiry
 
-                                <AccordionContent className='flex flex-col pt-2.5 pb-0.5 gap-1.5'>
-                                    <TypographyP text={`Narrative: ${item.description}`} muted />
-                                </AccordionContent>
-                            </div>
-                        </AccordionItem>
-                    )
-                })}</div>
-            </Accordion>
-        </div>
+                const inquiryTitle = `Inquiry ${index < 9 ? `0${index + 1}` : index + 1}`
+                // #endregion
+
+                return (
+                    <AccordionItem key={inquiry.itemId} value={inquiry.itemId} className={`${s.AccordionItemContainerStyle}`}>
+                        {/* Item Header */}
+                        <div className={`${s.AccordionItemHeaderContainerStyle}`}>
+                            <span className="flex flex-row justify-start items-baseline gap-2">
+                                <TypographyLarge text={inquiryTitle} />
+                            </span>
+                            <AccordionTrigger
+                                value={inquiry.itemId}
+                                iconSize={22}
+                                disabled={shouldDisableAccordionTrigger}
+                                onClick={() => handleInquirySelection(inquiry.itemId)}
+                            />
+                        </div>
+
+                        {/* Item Body */}
+                        <TypographyP
+                            text={isGoalDefined ? `Goal: ${inquiry.inquiryGoal}` : 'Goal not defined'}
+                            muted={!isGoalDefined}
+                            destructive={shouldDisplayDestructiveText}
+                            className={`${s.AccordionItemBodyTextStyle}`}
+                        />
+
+                        {/* Item Additional Info */}
+                        <AccordionContent className={`${s.AccordionCollapsedContainerStyle}`}>
+                            <TypographyP small muted
+                                text={inquiry.inquiryNarrative ? `Narrative: ${inquiry.inquiryNarrative}` : 'Narrative not defined'}
+                            />
+                        </AccordionContent>
+                    </AccordionItem>
+                )
+            })}
+        </Accordion >
     )
 }

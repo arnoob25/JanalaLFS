@@ -1,93 +1,105 @@
 import StepList from "./StepList";
-import InquiryList from "./list_components/InquiryList";
-import InquiryDetailFields from "./form_components/InquiryDetailFields";
+import MainInquiryList from "./list_components/MainInquiryList";
+import MainInquiryDetailFields from "./form_components/MainInquiryDetailFields";
 import { z } from "zod";
 import {
 	WizardBody,
 	WizardControl,
 	WizardFocusArea,
 	WizardSidebar,
-} from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardBody";
+} from "@/global_ui_components/layouts/wizard/body/Containers";
 import {
 	ItemDetails,
 	ItemList,
-} from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardForm";
+} from "@/global_ui_components/layouts/wizard/body/ItemCreationAndDisplayComponents";
+import BranchInquiryDetailFields from "./form_components/BranchInquiryDetailFields";
 
 // #region form setup
 // default values
-const ListInquiriesDefaultValues = {
-	inquiries: [],
+const MainInquiryDefaultValues = {
+	inquiryGoal: "",
+	inquiryNarrative: "",
+	isBranchInquiry: false,
+	shouldOriginateBranch: false,
+	branches: [],
+};
+
+export const BranchInquiryDefaultValues = {
+	inquiryGoal: "",
+	inquiryNarrative: "",
+	isBranchInquiry: true,
 };
 
 export const BranchDefaultValues = {
 	branchTitle: '',
 	shouldAttemptBranch: false,
-};
-
-const InquiryDefaultValues = {
-	inquiryGoal: "",
-	inquiryNarrative: "",
-	branches: [],
+	branchInquiries: []
 };
 
 // schemas
 const BranchSchema = z.object({
+	branchId: z.string(),
 	branchTitle: z.string().min(1, "Branch title is required"),
 	shouldAttemptBranch: z.boolean().default(false),
 });
 
-const BranchInquirySchema = z.object({
+const BaseInquirySchema = z.object({
+	isBranchInquiry: z.boolean(),
 	inquiryGoal: z.string().min(10, "Specify a meaningful goal"),
 	inquiryNarrative: z.string(),
 });
 
-const BaseInquirySchema = BranchInquirySchema.extend({
-	shouldOriginateBranch: z.boolean().default(false).optional(),
-	branches: z.array(BranchSchema).default((val) =>
-		val.shouldOriginateBranch ? [BranchDefaultValues, BranchDefaultValues] : []
-	),
+const BranchInquirySchema = BaseInquirySchema.extend({
+	isBranchInquiry: z.literal(true),
+	branchId: z.string(),
 });
 
-const MainInquirySchema = BaseInquirySchema.refine(
+const MainInquirySchema = BaseInquirySchema.extend({
+	isBranchInquiry: z.literal(false),
+	glaStepId: z.string(),
+	shouldOriginateBranch: z.boolean().default(false),
+	branches: z.array(BranchSchema).default([]),
+}).refine(
 	(data) =>
 		data.shouldOriginateBranch
-			? BaseInquirySchema.extend({
-				branches: z.array(BranchSchema).min(2, "At least one branch is required"),
-			}).safeParse(data).success
+			? data.branches.length > 0
 			: true,
 	{
-		message: "Invalid schema for the given shouldOriginateBranch value",
-		path: [], // The root path
+		message: "At least one branch is required if shouldOriginateBranch is true",
+		path: ["branches"],
 	}
 );
 
+const InquirySchema = z.union([MainInquirySchema, BranchInquirySchema]);
+
 const ListInquiriesSchema = z.object({
-	inquiries: z.array(MainInquirySchema),
+	inquiries: z.array(InquirySchema).default([]),
 });
+// #endregion
+
 
 const handleFormSubmission = (data) => console.log(data);
-
-// #endregion
 
 const ListInquiries = () => {
 	return (
 		<WizardBody
 			schema={ListInquiriesSchema}
-			defaultValues={ListInquiriesDefaultValues}
 			onSubmit={handleFormSubmission}
 		>
-			<WizardSidebar heading="Steps">
-				<StepList />
-			</WizardSidebar>
+			<WizardSidebar heading="Steps"><StepList /></WizardSidebar>
 
 			<WizardFocusArea
 				fieldArrayName="inquiries"
-				fieldItemDefaultValues={InquiryDefaultValues}
+				fieldItemDefaultValues={MainInquiryDefaultValues} /* TODO: the name should be fieldArrayItemDefaultValues */
+				fallbackItemName='inquiry'
 			>
-				<ItemList heading="Inquiries" renderList={InquiryList} />
+				<ItemList enableSecondaryItems
+					heading="Inquiries"
+					renderList={MainInquiryList} />
 				<ItemDetails
 					heading="Inquiry Details"
-					renderField={InquiryDetailFields}
+					renderDetailFields={MainInquiryDetailFields}
+					renderSecondaryDetailFields={BranchInquiryDetailFields}
 				/>
 			</WizardFocusArea>
 
