@@ -15,7 +15,6 @@ import {
 import BranchInquiryDetailFields from "./form_components/BranchInquiryDetailFields";
 
 // #region form setup
-// default values
 const MainInquiryDefaultValues = {
 	inquiryGoal: "",
 	inquiryNarrative: "",
@@ -60,7 +59,7 @@ const MainInquirySchema = BaseInquirySchema.extend({
 	shouldOriginateBranch: z.boolean().default(false),
 	branches: z.array(BranchSchema).default([]),
 }).refine(
-	(data) =>
+	data =>
 		data.shouldOriginateBranch
 			? data.branches.length > 0
 			: true,

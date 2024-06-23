@@ -5,7 +5,7 @@ const FieldArrayAddButton = ({ onClick, label }) => {
     return (
         <Button variant='ghost' onClick={onClick} className='w-full mt-2.5 items-center gap-1'>
             <Plus size={18} />
-            Add {label}
+            {label}
         </Button>
     )
 }

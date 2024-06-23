@@ -16,7 +16,7 @@ const GlaAuthoringWizard = () => {
 					{ label: "List Inquiries", route: "/page2" },
 					{ label: "Design Inquiries", route: "/page3" },
 				]}
-				page={"/page2"}
+				page={"/page3"}
 				onClose={() => console.log("Close wizard")}
 			/>
 			<DesignInquiries />
