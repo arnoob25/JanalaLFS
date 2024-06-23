@@ -1,8 +1,10 @@
 import { useFormContext, } from "react-hook-form";
 //import { FormItem, FormControl, FormLabel, FormField } from "@/global_ui_components/form/form-old";
 import { Input } from "@/global_ui_components/ui/input";
-import Combobox from "@/global_ui_components/ui/combobox";
 import { FormComposedFieldContainer } from "@/global_ui_components/containers/FormContainer";
+import { FormControl, FormField, FormLabel } from "@/global_ui_components/form/form";
+import { ComboboxField } from "@/global_ui_components/form/Combobox";
+import FileUpload from "@/global_ui_components/form/FileUpload";
 
 // TODO: replace with proper enum
 const mediaTypes = [
@@ -13,51 +15,17 @@ const mediaTypes = [
 ]
 
 const MediaUploadField = ({ label, comboboxName, uploaderName }) => {
-    const { control, setValue, trigger } = useFormContext();
-
-    const handleMediaTypeSelection = (field, item) => {
-        setValue(comboboxName, field.value === item.value ? '' : item.value)
-        trigger(comboboxName)
-    }
-
-    // TODO: apply when validation is available
-    const handleMediaFileUpload = () => {
-        trigger(uploaderName)
-    }
 
     return (
-        <FormComposedFieldContainer>
-            {label ? <FormLabel secondary>{label}</FormLabel> : null}
-            <FormField
-                name={comboboxName}
-                control={control}
-                render={({ field }) => (
-                    <FormItem>
-                        <FormControl>
-                            <Combobox
-                                field={field}
-                                selectionType='Media Type'
-                                options={mediaTypes}
-                                onSelect={handleMediaTypeSelection}
-                            />
-                        </FormControl>
-                    </FormItem >
-                )}
+        <FormComposedFieldContainer label={label}>
+            <ComboboxField
+                fieldName={comboboxName}
+                selectionType='Media Type'
+                options={mediaTypes}
             />
-            <FormField
-                name={uploaderName}
-                control={control}
-                render={({ field }) => (
-                    <FormItem>
-                        <FormControl>
-                            <Input
-                                {...field}
-                                type='file'
-                                onChange={handleMediaFileUpload}
-                            />
-                        </FormControl>
-                    </FormItem>
-                )}
+
+            <FileUpload
+                fieldName={uploaderName}
             />
         </FormComposedFieldContainer>
     );

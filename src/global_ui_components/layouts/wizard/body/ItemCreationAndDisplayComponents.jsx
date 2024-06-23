@@ -104,6 +104,8 @@ export const ItemList = ({ heading, renderList, enableSecondaryItems }) => {
 
 // previews the item created in the form
 export const ItemPreview = ({ heading, renderPage, renderPageProp, otherProps }) => {
+	const { selectedItemId } = useContext(WizardBodyContext)
+
 	return (
 		<div className="min-w-96 overflow-y-scroll flex flex-col pt-3 bg-[var(--card)] rounded-tl-2xl rounded-bl-2xl rounded-tr-md rounded-br-md">
 			<div className="mb-3.5 mx-5">
@@ -112,7 +114,7 @@ export const ItemPreview = ({ heading, renderPage, renderPageProp, otherProps })
 			<Separator />
 			<ScrollArea>
 				<div className="max-h-full flex flex-col-1 mt-5 mx-7 overflow-hidden">
-					{renderPage({ [renderPageProp]: { id: 1 }, ...otherProps })}
+					{renderPage({ [renderPageProp]: { id: selectedItemId }, ...otherProps })}
 					<ScrollBar />
 				</div>
 			</ScrollArea>
@@ -121,9 +123,19 @@ export const ItemPreview = ({ heading, renderPage, renderPageProp, otherProps })
 };
 
 // displays the fields that define the item
-export const ItemDetails = ({ heading, renderDetailFields, renderSecondaryDetailFields }) => {
+export const ItemDetails = ({ heading, renderDetailFields, renderSecondaryDetailFields, shouldDismissFieldArray = false }) => {
 	const { selectedStepId, selectedItemId, selectedSecondaryItemId } = useContext(WizardBodyContext);
 	const { fields, fieldArrayName, fallbackItemName } = useContext(WizardFocusAreaContext);
+
+	if (!shouldDismissFieldArray) return (<div className="flex flex-col min-w-72 h-full relative overflow-hidden gap-4 p-5 pr-0 bg-[var(--card)] rounded-tr-2xl rounded-br-2xl rounded-tl-md rounded-bl-md">
+		{heading && <TypographyMuted text={heading} />}
+
+		<ScrollArea>
+			<FormContainer scroll>
+				{renderDetailFields(selectedItemId)}
+			</FormContainer>
+		</ScrollArea>
+	</div>)
 
 	return (
 		<div className="flex flex-col min-w-72 h-full relative overflow-hidden gap-4 p-5 pr-0 bg-[var(--card)] rounded-tr-2xl rounded-br-2xl rounded-tl-md rounded-bl-md">

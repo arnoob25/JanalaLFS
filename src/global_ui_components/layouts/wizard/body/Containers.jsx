@@ -31,7 +31,7 @@ const WizardBodyContextProvider = ({ children, value }) => {
     const { getValues, formState: { errors, isDirty } } = useFormContext()
 
     const [selectedStepId, setSelectedStepId] = useState(null)
-    const [selectedItemId, setSelectedItemId] = useState(null)
+    const [selectedItemId, setSelectedItemId] = useState(1)
     const [selectedSecondaryItemId, setSelectedSecondaryItemId] = useState(null)
 
     // TODO: try using isValid from the formState
