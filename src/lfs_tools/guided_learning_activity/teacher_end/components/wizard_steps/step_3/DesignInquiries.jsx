@@ -4,11 +4,6 @@ import GlaPage from "@/lfs_tools/guided_learning_activity/student_end/pages/GlaP
 import InquiryDetailForm from "./form_components/InquiryDetailForm"
 import { WizardBody, WizardControl, WizardFocusArea, WizardSidebar } from "@/global_ui_components/layouts/wizard/body/Containers"
 import { ItemDetails, ItemPreview } from "@/global_ui_components/layouts/wizard/body/ItemCreationAndDisplayComponents"
-<<<<<<< HEAD
-=======
-
-// TODO: provide field value requirement criteria and messages in the schemas
->>>>>>> 834a6049ada4ae2b3cd1322bb157eb16f7a2d439
 
 // TODO: provide field value requirement criteria and messages in the schemas
 // #region form setup
@@ -69,21 +64,13 @@ const textSchema = z.object({
 const inquiryDetailsFormSchema = z.object({
     context: z.string().optional(),
     prompt: z.string().optional(),
-<<<<<<< HEAD
     media: mediaSchema.optional(),
-=======
-    /* media: mediaSchema.optional(),
->>>>>>> 834a6049ada4ae2b3cd1322bb157eb16f7a2d439
     responseType: responseTypes,
     responseOptions: z.union([
         choiceSchema,
         branchSchema,
         textSchema
-<<<<<<< HEAD
     ])
-=======
-    ]) */
->>>>>>> 834a6049ada4ae2b3cd1322bb157eb16f7a2d439
 }).refine(
     (data) => {
         switch (data.responseType) {
