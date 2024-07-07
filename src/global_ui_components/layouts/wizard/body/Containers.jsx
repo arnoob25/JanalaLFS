@@ -21,14 +21,12 @@ import { Button } from "@/global_ui_components/ui/button";
 
 // TODO: consider creating multiple contexts for the following values that serve various concerns
 export const WizardBodyContext = createContext(null)
-export const WizardFieldArrayContext = createContext(null)
 export const WizardFocusAreaContext = createContext(null)
 
 // TODO: this context will provide form isValid and stuff... so that it reaches the control as well allowing us to enable/ disable next button
 const WizardBodyContextProvider = ({
     listOfSteps,
     listOfItems,
-    templateMode,
     children,
     value,
 }) => {
@@ -100,7 +98,6 @@ const WizardBodyContextProvider = ({
             getValues,
             isFormValid,
             isDirty,
-            isTemplateMode: templateMode,
             ...value
         }}>
             {children}
@@ -108,11 +105,10 @@ const WizardBodyContextProvider = ({
     );
 };
 
-// TODO: rename to WizardFieldArrayContextProvider or something that indicates that this enables creating items
 /**creates the field array,
  * and propagates the fields array, and fieldArray methods to item list, item preview, and item detail
  */
-const WizardFieldArrayContextProvider = ({ fieldArrayName, fieldItemDefaultValues, children }) => {
+const WizardFocusAreaContextProvider = ({ fieldArrayName, fieldItemDefaultValues, value = {}, children }) => {
     const { listOfItems } = useContext(WizardBodyContext)
 
     const { fields, append } = useFieldArray({
@@ -121,23 +117,13 @@ const WizardFieldArrayContextProvider = ({ fieldArrayName, fieldItemDefaultValue
     });
 
     return (
-        <WizardFieldArrayContext.Provider value={{
+        <WizardFocusAreaContext.Provider value={{
             fieldArrayName,
             fieldItemDefaultValues,
             fields,
-            append
+            append,
+            ...value
         }}>
-            {children}
-        </ WizardFieldArrayContext.Provider >
-    )
-}
-
-
-const WizardFocusAreaContextProvider = ({ value = {}, children }) => {
-
-
-    return (
-        <WizardFocusAreaContext.Provider value={{ ...value }}>
             {children}
         </WizardFocusAreaContext.Provider >
     )
@@ -154,9 +140,6 @@ export const WizardBody = ({
     listOfSteps,
     listOfItems,
     children,
-    fieldArrayName,
-    fieldItemDefaultValues,
-    templateMode = false
 }) => {
 
     return (
@@ -164,22 +147,16 @@ export const WizardBody = ({
             <WizardBodyContextProvider
                 listOfSteps={listOfSteps}
                 listOfItems={listOfItems}
-                templateMode={templateMode}
             >
-                <WizardFieldArrayContextProvider
-                    fieldArrayName={fieldArrayName}
-                    fieldItemDefaultValues={fieldItemDefaultValues}
-                >
-                    <div className="h-full grid grid-cols-[1.2fr,3.5fr] gap-5 justify-stretch overflow-hidden">
-                        {children.filter(
-                            child => child.type.displayName === 'WizardSidebar'
-                                || child.type.displayName === 'WizardFocusArea')
-                        }
-                    </div>
-                    <div className="ml-auto">
-                        {children.find(child => child.type.displayName === 'WizardControl')}
-                    </div>
-                </WizardFieldArrayContextProvider>
+                <div className="h-full grid grid-cols-[1.2fr,3.5fr] gap-5 justify-stretch overflow-hidden">
+                    {children.filter(
+                        child => child.type.displayName === 'WizardSidebar'
+                            || child.type.displayName === 'WizardFocusArea')
+                    }
+                </div>
+                <div className="ml-auto">
+                    {children.find(child => child.type.displayName === 'WizardControl')}
+                </div>
             </WizardBodyContextProvider>
         </Form>
     )
@@ -213,12 +190,16 @@ export const WizardSidebar = ({ heading, children, renderForm, renderTree }) => 
 export const WizardFocusArea = ({
     children,
     requireSidebarFormForAddingItems = false,
-    fallbackItemName
+    fallbackItemName,
+    fieldArrayName,
+    fieldItemDefaultValues,
 }) => {
 
     return (<div className="w-full max-h-full grid grid-cols-[3fr,2fr] gap-1 overflow-hidden">
         {/* already provides the fields array, field methods, and fieldArrayName. Additional values are passed in from here. */}
         <WizardFocusAreaContextProvider
+            fieldArrayName={fieldArrayName}
+            fieldItemDefaultValues={fieldItemDefaultValues}
             value={{ requireSidebarFormForAddingItems, fallbackItemName }} // default values for each item
         >
             {children}

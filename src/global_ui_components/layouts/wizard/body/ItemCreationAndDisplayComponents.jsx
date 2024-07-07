@@ -5,7 +5,7 @@ import { Separator } from "@/global_ui_components/ui/separator";
 import { TypographyH2, TypographyH4, TypographyMuted } from "@/global_ui_components/ui/typography";
 import { useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { WizardBodyContext, WizardFieldArrayContext, WizardFocusAreaContext } from "./Containers";
+import { WizardBodyContext, WizardFocusAreaContext } from "./Containers";
 import FallbackText from "@/global_ui_components/fallbacks/FallbackText";
 
 // displays the list of items created with the form
@@ -31,9 +31,6 @@ export const ItemList = ({
 		append,
 		fieldArrayName,
 		fieldItemDefaultValues,
-	} = useContext(WizardFieldArrayContext)
-
-	const {
 		fallbackItemName,
 		requireSidebarFormForAddingItems,
 	} = useContext(WizardFocusAreaContext);
@@ -148,13 +145,18 @@ export const ItemDetails = ({
 	renderDetailFields,
 	renderSecondaryDetailFields,
 }) => {
+
 	const {
 		selectedStepId,
 		selectedItemId,
 		selectedSecondaryItemId,
 	} = useContext(WizardBodyContext);
-	const { fields, fieldArrayName } = useContext(WizardFieldArrayContext)
-	const { fallbackItemName } = useContext(WizardFocusAreaContext);
+
+	const {
+		fields,
+		fieldArrayName,
+		fallbackItemName
+	} = useContext(WizardFocusAreaContext);
 
 	return (
 		<div className="flex flex-col min-w-72 h-full relative overflow-hidden gap-4 p-5 pr-0 bg-[var(--card)] rounded-tr-2xl rounded-br-2xl rounded-tl-md rounded-bl-md">
