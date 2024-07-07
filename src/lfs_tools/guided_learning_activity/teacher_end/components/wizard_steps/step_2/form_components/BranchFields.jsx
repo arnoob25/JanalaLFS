@@ -2,14 +2,21 @@ import { useFieldArray } from "react-hook-form";
 import { TextInput } from "@/global_ui_components/form/TextInput";
 import { CheckboxFieldSecondary } from "@/global_ui_components/form/Checkbox";
 import FieldArrayAddButton from "@/global_ui_components/form/FieldArrayAddButton";
-import { BranchDefaultValues } from "../ListInquiries";
+import { v4 as uuidv4 } from "uuid"
+import { BranchDefaultValues } from "@/lfs_tools/guided_learning_activity/teacher_end/helpers/WizardStepFormSchemas";
 
 const BranchFields = ({ fieldArrayName }) => {
-  const defaultValue = BranchDefaultValues;
 
   const { fields, append } = useFieldArray({
     name: fieldArrayName,
   });
+
+  const addNewBranch = () => {
+    const newBranch = BranchDefaultValues;
+    newBranch.branchId = uuidv4()
+
+    append(newBranch)
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -29,8 +36,8 @@ const BranchFields = ({ fieldArrayName }) => {
         </div>
       ))}
       <FieldArrayAddButton
-        label="Branch"
-        onClick={() => append(defaultValue)}
+        label="Add Branch"
+        onClick={addNewBranch}
       />
     </div>
   );

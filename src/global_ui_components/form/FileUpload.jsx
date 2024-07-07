@@ -13,15 +13,15 @@ export const FileUpload = ({
 
     return (
         <FormField name={fieldName}>
-            {label && <FormLabel secondary={secondary}>{label}</FormLabel>}
+            {label ? <FormLabel secondary={secondary}>{label}</FormLabel> : null}
 
             <Input
                 {...register(fieldName)}
                 type='file'
-                // onChange={() => trigger(fieldName)} TODO: apply when validation is available
+            // onChange={() => trigger(fieldName)} TODO: apply when validation is available
             />
 
-            {description && <FormDescription>{description}</FormDescription>}
+            {description ? <FormDescription>{description}</FormDescription> : null}
             <FormMessage />
         </FormField>
     )

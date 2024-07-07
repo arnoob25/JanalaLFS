@@ -1,5 +1,5 @@
 import BasicPageContainer from "@/global_ui_components/layouts/page_layout/BasicPageContainer";
-import { WizardHeader } from "@/global_ui_components/layouts/wizard_layout/desktop_only/WizardHeader";
+import { WizardHeader } from "@/global_ui_components/layouts/wizard/WizardHeader";
 import AddSteps from "../components/wizard_steps/step_1/AddSteps";
 import ListInquiries from "../components/wizard_steps/step_2/ListInquiries";
 import DesignInquiries from "../components/wizard_steps/step_3/DesignInquiries";

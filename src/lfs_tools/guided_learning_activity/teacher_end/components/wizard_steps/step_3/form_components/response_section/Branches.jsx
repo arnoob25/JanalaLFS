@@ -3,27 +3,29 @@ import { useFieldArray } from "react-hook-form"
 import ChoiceField from "./ChoiceField"
 import CollapsibleFormSection from "@/global_ui_components/form/Collapsible"
 import FieldArrayAddButton from "@/global_ui_components/form/FieldArrayAddButton"
-import { inquiryDetailsFormDefaultValues } from "../../DesignInquiries"
+import { branchDefaultValue } from "@/lfs_tools/guided_learning_activity/teacher_end/helpers/WizardStepFormSchemas"
 
-const Branches = () => {
-    const defaultValue = inquiryDetailsFormDefaultValues.branches
+//import { inquiryDetailsFormDefaultValues } from "../../DesignInquiries"
 
-    const { fields, append } = useFieldArray({ name: 'branches' })
+const Branches = ({ fieldNamePrefix }) => {
+    const defaultValue = {}//inquiryDetailsFormDefaultValues.branches
+
+    const { fields, append } = useFieldArray({ name: `${fieldNamePrefix}.responseOptions.branches` })
 
     return (
-        <CollapsibleFormSection triggerField='responseType' match matchWith='branch'>
+        <CollapsibleFormSection collapseControlFieldName={`${fieldNamePrefix}.responseType`} enumValueToMatch='branch'>
             <FormSubSectionContainer>
                 {fields.map((field, index) => (
                     <ChoiceField
                         key={field.id}
                         label={fields.length > 1 ? `Branch ${index < 9 ? `0${index + 1}` : `${index + 1}`}` : null}
-                        textInputName={`branches.${index}.label`}
+                        textInputName={`${fieldNamePrefix}.responseOptions.branches.${index}.label`}
                         placeholder='Title of the branch'
-                        checkBoxName={`branches.${index}.shouldAttempt`}
+                        checkBoxName={`${fieldNamePrefix}.responseOptions.branches.${index}.shouldAttempt`}
                         checkboxLabel='Should attempt'
                     />
                 ))}
-                <FieldArrayAddButton label='Branch' onClick={() => append(defaultValue[0])} />
+                <FieldArrayAddButton label='Branch' onClick={() => append(branchDefaultValue)} />
             </FormSubSectionContainer>
         </CollapsibleFormSection>
     )

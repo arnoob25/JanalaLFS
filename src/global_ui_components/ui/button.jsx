@@ -34,11 +34,12 @@ const buttonVariants = cva(
   }
 )
 
-const Button = React.forwardRef(({ className, variant, size, asChild = false, ...props }, ref) => {
+const Button = React.forwardRef(({ className, variant, size, asChild = false, type, ...props }, ref) => {
   const Comp = asChild ? Slot : "button"
   return (
     (<Comp
       className={cn(buttonVariants({ variant, size, className }))}
+      type={type ? type : 'button'}
       ref={ref}
       {...props} />)
   );
@@ -81,6 +82,7 @@ export function AddIcon({ onClick, disabled = false }) {
       variant="ghost"
       size="icon"
       disabled={disabled}
+      type='submit'
       className={cn('rounded-full',
         disabled ? 'opacity-50' : ''
       )}

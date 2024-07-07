@@ -45,9 +45,12 @@ export function TypographyP({
   underline = false,
   uOffset = '',
   singleLine = false,
+  disableReadMore = false,
   maxWidth = 'lg',
   noWrap = false,
   numLines = 5,
+  className,
+  ...props
 }) {
   const [showFullText, setShowFullText] = useState(false);
 
@@ -70,13 +73,16 @@ export function TypographyP({
             : `underline underline-offset-8`
           : '',
         noWrap ? 'whitespace-nowrap' : '',
+        className
       )}
+
+
       >
         {text}
         {children}
       </p>
       {
-        singleLine
+        singleLine && !disableReadMore
           ? <span
             className={`${small ? 'text-sm min-w-[70px]' : 'min-w-[80px]'} text-muted-foreground hover:text-foreground cursor-pointer`}
             onClick={toggleTextVisibility}

@@ -28,16 +28,16 @@ export const Form = ({ children, schema, defaultValues = null, onSubmit, ...prop
     )
 }
 
-export const FormField = ({ controlledForm = false, children, ...props }) => {
+export const FormField = ({ controlledForm = false, children, className, ...props }) => {
     const id = useId()
 
     return (
         <FormFieldContext.Provider value={{ id, name: props.name }}>
-            <div>{controlledForm
+            <div className={className}>{controlledForm
                 ? <Controller {...props} />
                 : <>{children}</>
             }</div>
-        </FormFieldContext.Provider>
+        </FormFieldContext.Provider >
     )
 }
 
