@@ -46,18 +46,18 @@ const handleInquiryDetailFormSubmission = (data) => console.log(data);
 const DesignInquiries = () => {
     return (
         <WizardBody
-            templateMode
             schema={inquiryDetailsFormSchema}
             defaultValues={{ inquiries: smData }}
-            fieldArrayName='inquiries'
-            fieldItemDefaultValues={inquiryDetailsFormDefaultValues}
             listOfSteps={groups}
             listOfItems={smData}
             onSubmit={handleInquiryDetailFormSubmission}
         >
             <WizardSidebar heading='Inquiries' renderTree={InquiryList} />
 
-            <WizardFocusArea>
+            <WizardFocusArea
+                fieldArrayName='inquiries'
+                fieldItemDefaultValues={inquiryDetailsFormDefaultValues}
+            >
                 <ItemPreview
                     heading={'Inquiry 1'}
                     renderPage={GlaPage}

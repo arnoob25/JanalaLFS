@@ -19,19 +19,20 @@ const AddSteps = ({ gla }) => {
             schema={AddStepsSchema}
             defaultValues={AddStepsDefaultValues}
             onSubmit={handleFormSubmission}
-            fieldArrayName='steps'
-            fieldItemDefaultValues={StepDefaultValues}
         >
             <WizardSidebar heading='Gla Details' renderForm={GlaDetailFields} />
 
             <WizardFocusArea
-                requireSidebarFormForAddingItems
+                fieldArrayName='steps'
                 fallbackItemName='step'
+                fieldItemDefaultValues={StepDefaultValues}
+                requireSidebarFormForAddingItems
             >
                 <ItemList
                     heading='Steps'
                     renderList={StepList}
                 />
+
                 <ItemDetails
                     heading='Step Details'
                     renderDetailFields={StepDetailFields}

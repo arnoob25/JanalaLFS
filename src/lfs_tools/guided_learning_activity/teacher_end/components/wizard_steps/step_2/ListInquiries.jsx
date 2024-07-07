@@ -25,21 +25,25 @@ const handleFormSubmission = (data) => console.log(data);
 const ListInquiries = () => {
 	return (
 		<WizardBody
-			listOfSteps={stepListData}
 			schema={ListInquiriesSchema}
-			fieldArrayName="inquiries"
-			fieldItemDefaultValues={MainInquiryDefaultValues}
+			listOfSteps={stepListData}
 			onSubmit={handleFormSubmission}
 		>
 			<WizardSidebar heading="Steps" renderTree={StepList} />
 
-			<WizardFocusArea fallbackItemName='inquiry'>
+			<WizardFocusArea
+				fieldArrayName="inquiries"
+				fallbackItemName='inquiry'
+				fieldItemDefaultValues={MainInquiryDefaultValues}
+			>
 				<ItemList
+					heading="Inquiries"
 					filterMode='step'
 					propertyToFilterBy='glaStepId'
 					shouldEnableSecondaryItems
-					heading="Inquiries"
-					renderList={MainInquiryList} />
+					renderList={MainInquiryList}
+				/>
+
 				<ItemDetails
 					heading="Inquiry Details"
 					renderDetailFields={MainInquiryDetailFields}
