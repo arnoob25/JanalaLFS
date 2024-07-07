@@ -1,6 +1,6 @@
 import { TextInput } from "@/global_ui_components/form/TextInput"
 import MediaUploads from "./media_section/MediaUploads"
-import ResponseConfig from "./response_section/ResponseConfig"
+import ResponseConfig from "./response_section/ResponseTypes"
 
 const InquiryDetailForm = (fieldItemNamePrefix) => {
 
