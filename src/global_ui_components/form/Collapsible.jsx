@@ -1,25 +1,31 @@
 import { useFormContext, useWatch } from "react-hook-form"
 
-
-const CollapsibleFormSection = ({ triggerField, match = false, matchWith, children }) => {
+// TODO: use getValues instead of useWatch
+const CollapsibleFormSection = ({ collapseControlFieldName, enumValueToMatch, children }) => {
     const { control } = useFormContext()
 
-    const triggerBoolValue = useWatch({ // field is a boolean
+    const isEnumComparison = enumValueToMatch?.length > 0
+
+    const booleanFieldValue = useWatch({
         control: control,
-        name: triggerField,
-        disabled: match // disabled when match is true
+        name: collapseControlFieldName,
+        disabled: isEnumComparison
     })
 
-    const triggerEnumValue = useWatch({
+    const enumFieldValue = useWatch({
         control: control,
-        name: triggerField,
-        disabled: !match // disabled when match is false
+        name: collapseControlFieldName,
+        disabled: !isEnumComparison
     })
 
-    const shouldExpand = match ? triggerEnumValue === matchWith : triggerBoolValue
+    const shouldExpand = isEnumComparison
+        ? enumFieldValue === enumValueToMatch
+        : booleanFieldValue
 
+    
     return (
-        <div className={!shouldExpand ? 'invisible hidden' : ''}>
+        //note: when collapse is used, the invisible element still takes up space in the display
+        <div className={!shouldExpand ? 'invisible hidden ' : ''}>
             {children}
         </div>
     )

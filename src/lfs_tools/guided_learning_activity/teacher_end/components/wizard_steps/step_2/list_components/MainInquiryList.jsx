@@ -1,15 +1,34 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/global_ui_components/ui/accordion"
-import { TypographyLarge, TypographyP } from "@/global_ui_components/ui/typography"
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/global_ui_components/ui/accordion"
+import { Badge } from "@/global_ui_components/ui/badge"
+import { TypographyLarge, TypographyP, } from "@/global_ui_components/ui/typography"
+import BranchList from "./BranchList"
 import * as s from "../../../../helpers/AccordionStyles";
 
-export const BranchInquiryList = (data, selectedSecondaryItemId, handleInquirySelection, shouldDisableAccordionTrigger) => {
+
+const MainInquiryList = (
+    append,
+    data,
+    filteredData,
+    selectedItemId,
+    handleItemSelection,
+    selectedSecondaryItemId,
+    setSelectedSecondaryItemId,
+    shouldDisableAccordionTrigger
+) => {
+
+    const mainInquiries = filteredData?.filter(inquiry => inquiry.isBranchInquiry === false)
 
     return (
-        <Accordion type="single" value={selectedSecondaryItemId} collapsible className={`${s.AccordionParentContainerStyle}`}>
-            {data?.map((inquiry, index) => {
+        <Accordion type="single" value={selectedItemId} collapsible className={`${s.AccordionParentContainerStyle}`}>
+            {mainInquiries?.map((inquiry, index) => {
                 // #region styling logic
                 const isGoalDefined = !!inquiry.inquiryGoal
-                const isSelectedInquiry = inquiry.itemId === selectedSecondaryItemId
+                const isSelectedInquiry = inquiry.itemId === selectedItemId
 
                 const shouldDisplayDestructiveText = !isGoalDefined && !isSelectedInquiry
 
@@ -22,12 +41,15 @@ export const BranchInquiryList = (data, selectedSecondaryItemId, handleInquirySe
                         <div className={`${s.AccordionItemHeaderContainerStyle}`}>
                             <span className="flex flex-row justify-start items-baseline gap-2">
                                 <TypographyLarge text={inquiryTitle} />
+                                {inquiry.shouldOriginateBranch
+                                    ? <Badge variant="secondary">Branch</Badge>
+                                    : null}
                             </span>
                             <AccordionTrigger
                                 value={inquiry.itemId}
                                 iconSize={22}
                                 disabled={shouldDisableAccordionTrigger}
-                                onClick={() => handleInquirySelection(inquiry.itemId)}
+                                onClick={() => handleItemSelection(inquiry.itemId)}
                             />
                         </div>
 
@@ -44,6 +66,15 @@ export const BranchInquiryList = (data, selectedSecondaryItemId, handleInquirySe
                             <TypographyP small muted
                                 text={inquiry.inquiryNarrative ? `Narrative: ${inquiry.inquiryNarrative}` : 'Narrative not defined'}
                             />
+
+                            {inquiry.shouldOriginateBranch
+                                ? BranchList(data,
+                                    inquiry.branches,
+                                    selectedSecondaryItemId,
+                                    setSelectedSecondaryItemId,
+                                    append,
+                                    shouldDisableAccordionTrigger)
+                                : null}
                         </AccordionContent>
                     </AccordionItem>
                 )
@@ -51,3 +82,5 @@ export const BranchInquiryList = (data, selectedSecondaryItemId, handleInquirySe
         </Accordion >
     )
 }
+
+export default MainInquiryList

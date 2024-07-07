@@ -1,30 +1,30 @@
 import { useFormContext } from "react-hook-form";
 import { CheckboxBase } from "../ui/checkbox";
 import { TypographyP } from "../ui/typography";
-import { FormControl, FormField, FormItem } from "../ui/form";
+import { FormControl, FormField } from "./form";
 
-// one variant should be secondary, another primary
+// TODO: one variant should be secondary, another primary
 
-export const CheckboxSecondary = ({ fieldName, label }) => {
+// TODO: make it uncontrolled by default
+export const CheckboxFieldSecondary = ({ fieldName, label }) => {
   const { control } = useFormContext();
+
   return (
-    <FormField
+    <FormField controlledForm
       name={fieldName}
       control={control}
       render={({ field }) => (
-        <FormItem>
+        <label className="flex justify-start mt-[3px] ml-0.5 items-center gap-2 cursor-pointer select-none">
           <FormControl>
-            <label className="flex justify-start mt-[3px] ml-0.5 items-center gap-2 cursor-pointer select-none">
-              <CheckboxBase
-                {...field}
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                className='opacity-50 data-[state=checked]:opacity-80'
-              />
-              <TypographyP text={label} small muted />
-            </label>
+            <CheckboxBase
+              {...field}
+              checked={field.value}
+              onCheckedChange={field.onChange}
+              className='opacity-50 data-[state=checked]:opacity-80'
+            />
           </FormControl>
-        </FormItem>
+          <TypographyP text={label} small muted />
+        </label>
       )}
     />
   );

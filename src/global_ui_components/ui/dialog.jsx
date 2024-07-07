@@ -4,7 +4,7 @@ import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Drawer, DrawerContent } from "./drawer"
-import useMediaQuery from "../helpers/hooks/useMediaQueryHook"
+import useMediaQuery from "./hooks/useMediaQueryHook"
 
 const Dialog = DialogPrimitive.Root
 

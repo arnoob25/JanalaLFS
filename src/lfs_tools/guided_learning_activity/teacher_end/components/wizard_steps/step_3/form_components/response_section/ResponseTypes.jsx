@@ -4,6 +4,7 @@ import { Label } from "@/global_ui_components/ui/label"
 import Choices from "./Choices"
 import Branches from "./Branches"
 import OpenEndedQuestion from "./OpenEndedQuestion"
+import CollapsibleFormSection from "@/global_ui_components/form/Collapsible"
 
 const responseTypes = [
     { value: 'choice', label: 'Choice' },
@@ -11,19 +12,18 @@ const responseTypes = [
     { value: 'text', label: 'Open Ended Question' },
 ]
 
-const ResponseConfig = () => {
+const ResponseConfig = ({ fieldNamePrefix }) => {
     return (
-        <FormSectionContainer>
-            <Label>Response</Label>
+        <FormSectionContainer label='Response'>
             <ComboboxField
-                fieldName='responseType'
+                fieldName={`${fieldNamePrefix}.responseType`}
                 selectionType='Response Type'
                 options={responseTypes}
                 secondary
             />
-            <Choices />
-            <Branches />
-            <OpenEndedQuestion />
+            <Choices fieldNamePrefix={fieldNamePrefix} />
+            <Branches fieldNamePrefix={fieldNamePrefix} />
+            <OpenEndedQuestion fieldNamePrefix={fieldNamePrefix} />
         </FormSectionContainer>
     )
 }
