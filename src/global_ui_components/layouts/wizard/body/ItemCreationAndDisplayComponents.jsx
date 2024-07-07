@@ -5,40 +5,57 @@ import { Separator } from "@/global_ui_components/ui/separator";
 import { TypographyH2, TypographyH4, TypographyMuted } from "@/global_ui_components/ui/typography";
 import { useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { WizardBodyContext, WizardFocusAreaContext } from "./Containers";
+import { WizardBodyContext, WizardFieldArrayContext, WizardFocusAreaContext } from "./Containers";
 import FallbackText from "@/global_ui_components/fallbacks/FallbackText";
 
 // displays the list of items created with the form
-export const ItemList = ({ heading, renderList, enableSecondaryItems }) => {
+export const ItemList = ({
+	heading,
+	renderList,
+	shouldEnableSecondaryItems = false,
+	filterMode = '',
+	propertyToFilterBy = '',
+}) => {
 	const {
 		isDirty,
 		getValues,
 		isFormValid,
+		selectedStepId,
 		selectedItemId,
 		setSelectedItemId,
 		selectedSecondaryItemId,
 		setSelectedSecondaryItemId,
 	} = useContext(WizardBodyContext);
 
-
 	const {
 		append,
 		fieldArrayName,
-		fallbackItemName,
 		fieldItemDefaultValues,
-		requireSidebarFormToAddItems,
+	} = useContext(WizardFieldArrayContext)
+
+	const {
+		fallbackItemName,
+		requireSidebarFormForAddingItems,
 	} = useContext(WizardFocusAreaContext);
 
 	const itemListData = getValues(fieldArrayName);
+	let filteredItemListData = itemListData
+
+	switch (filterMode) {
+		case 'step':
+			filteredItemListData = itemListData?.filter(item => item[propertyToFilterBy] === selectedStepId)
+			break;
+
+		default:
+			break;
+	}
+
 
 	// TODO: allow updating and deleting steps
-
-	// when creating a new item, or when we want the user to fill in the fields in the sidebar, disable the list interaction
-	const shouldDisableListInteraction = requireSidebarFormToAddItems
+	// disable the list interaction when adding a new item, or when other form fields need to be filled first
+	const shouldDisableListInteraction = requireSidebarFormForAddingItems
 		? !(isDirty && isFormValid) // without isDirty, the form would be valid on first render
 		: !isFormValid;
-
-	// TODO: whenever new item is selected, we clear the selectedSecondaryItemId state
 
 	const addNewItem = () => {
 		if (shouldDisableListInteraction) return;
@@ -76,11 +93,12 @@ export const ItemList = ({ heading, renderList, enableSecondaryItems }) => {
 			</div>
 			<Separator />
 			<ScrollArea>
-				<div className="max-h-full flex flex-col-1 my-5 ml-4 mr-7 overflow-hidden">{itemListData?.length > 0
-					? enableSecondaryItems
+				<div className="max-h-full flex flex-col-1 my-5 ml-4 mr-7 overflow-hidden">{filteredItemListData?.length > 0
+					? shouldEnableSecondaryItems
 						? renderList(
-							append, // this is used to append new items - a workaround for avoiding context in the branchList because it leads to an error 
-							itemListData,
+							append,
+							itemListData, // this is used to append new items - a workaround for avoiding context in the branchList because it leads to an error 
+							filteredItemListData,
 							selectedItemId,
 							handleItemSelection,
 							selectedSecondaryItemId,
@@ -89,6 +107,8 @@ export const ItemList = ({ heading, renderList, enableSecondaryItems }) => {
 						)
 						: renderList(
 							itemListData,
+							filteredItemListData,
+							selectedStepId,
 							selectedItemId,
 							handleItemSelection,
 							shouldDisableListInteraction // this disables accordion triggers
@@ -123,54 +143,51 @@ export const ItemPreview = ({ heading, renderPage, renderPageProp, otherProps })
 };
 
 // displays the fields that define the item
-export const ItemDetails = ({ heading, renderDetailFields, renderSecondaryDetailFields, shouldDismissFieldArray = false }) => {
-	const { selectedStepId, selectedItemId, selectedSecondaryItemId } = useContext(WizardBodyContext);
-	const { fields, fieldArrayName, fallbackItemName } = useContext(WizardFocusAreaContext);
-
-	if (!shouldDismissFieldArray) return (<div className="flex flex-col min-w-72 h-full relative overflow-hidden gap-4 p-5 pr-0 bg-[var(--card)] rounded-tr-2xl rounded-br-2xl rounded-tl-md rounded-bl-md">
-		{heading && <TypographyMuted text={heading} />}
-
-		<ScrollArea>
-			<FormContainer scroll>
-				{renderDetailFields(selectedItemId)}
-			</FormContainer>
-		</ScrollArea>
-	</div>)
+export const ItemDetails = ({
+	heading,
+	renderDetailFields,
+	renderSecondaryDetailFields,
+}) => {
+	const {
+		selectedStepId,
+		selectedItemId,
+		selectedSecondaryItemId,
+	} = useContext(WizardBodyContext);
+	const { fields, fieldArrayName } = useContext(WizardFieldArrayContext)
+	const { fallbackItemName } = useContext(WizardFocusAreaContext);
 
 	return (
 		<div className="flex flex-col min-w-72 h-full relative overflow-hidden gap-4 p-5 pr-0 bg-[var(--card)] rounded-tr-2xl rounded-br-2xl rounded-tl-md rounded-bl-md">
 			{heading && <TypographyMuted text={heading} />}
 
-			{fields?.length > 0 ? (
-				selectedItemId ? (
-					fields.map((field, index) => {
+			{fields?.length > 0 ?
+				selectedItemId
+					? fields.map((field, index) => {
 						const fieldItemNamePrefix = `${fieldArrayName}.${index}`;
-						const isSelectedMainInquiry = selectedSecondaryItemId === null && field.itemId === selectedItemId;
+						const isMainItemSelected = selectedSecondaryItemId === null && field.itemId === selectedItemId;
+						const isSecondaryItemSelected = field.itemId === selectedSecondaryItemId
+						const isAnyItemSelected = isMainItemSelected || isSecondaryItemSelected
 
-						if (isSelectedMainInquiry || field.itemId === selectedSecondaryItemId) {
+						if (isAnyItemSelected) {
 							return (
-								<ScrollArea key={field.id}>
+								<ScrollArea key={field.itemId}>
 									<FormContainer scroll>
-										{isSelectedMainInquiry ? (
-											renderDetailFields(fieldItemNamePrefix, selectedStepId)
-										) : (
-											field.itemId === selectedSecondaryItemId && (
-												renderSecondaryDetailFields(fieldItemNamePrefix)
-											)
-										)}
+										{isMainItemSelected
+											? renderDetailFields(fieldItemNamePrefix, selectedStepId)
+											: isSecondaryItemSelected
+												? renderSecondaryDetailFields(fieldItemNamePrefix)
+												: null}
 									</FormContainer>
 									<ScrollBar />
 								</ScrollArea>
 							);
 						}
-						return null; // Return null for items that are not selected
-					})
-				) : (
-					<FallbackText compact text={`Expand an ${fallbackItemName ? fallbackItemName : 'item'} to modify`} />
-				)
-			) : (
-				<FallbackText text={`Add a new ${fallbackItemName ? fallbackItemName : 'item'} to get started`} />
-			)}
+						return null;
+					}) // Return null for items that are not selected
+
+					: <FallbackText compact text={`Expand an ${fallbackItemName ? fallbackItemName : 'item'} to modify`} />
+				: <FallbackText text={`Add a new ${fallbackItemName ? fallbackItemName : 'item'} to get started`} />
+			}
 		</div>
 	);
 };

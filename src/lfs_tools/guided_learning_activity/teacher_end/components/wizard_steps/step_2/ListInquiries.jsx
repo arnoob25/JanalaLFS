@@ -1,7 +1,6 @@
 import StepList from "./StepList";
 import MainInquiryList from "./list_components/MainInquiryList";
 import MainInquiryDetailFields from "./form_components/MainInquiryDetailFields";
-import { z } from "zod";
 import {
 	WizardBody,
 	WizardControl,
@@ -13,86 +12,32 @@ import {
 	ItemList,
 } from "@/global_ui_components/layouts/wizard/body/ItemCreationAndDisplayComponents";
 import BranchInquiryDetailFields from "./form_components/BranchInquiryDetailFields";
+import { ListInquiriesSchema, MainInquiryDefaultValues } from "../../../helpers/WizardStepFormSchemas";
 
-// #region form setup
-const MainInquiryDefaultValues = {
-	inquiryGoal: "",
-	inquiryNarrative: "",
-	isBranchInquiry: false,
-	shouldOriginateBranch: false,
-	branches: [],
-};
-
-export const BranchInquiryDefaultValues = {
-	inquiryGoal: "",
-	inquiryNarrative: "",
-	isBranchInquiry: true,
-};
-
-export const BranchDefaultValues = {
-	branchTitle: '',
-	shouldAttemptBranch: false,
-	branchInquiries: []
-};
-
-// schemas
-const BranchSchema = z.object({
-	branchId: z.string(),
-	branchTitle: z.string().min(1, "Branch title is required"),
-	shouldAttemptBranch: z.boolean().default(false),
-});
-
-const BaseInquirySchema = z.object({
-	isBranchInquiry: z.boolean(),
-	inquiryGoal: z.string().min(10, "Specify a meaningful goal"),
-	inquiryNarrative: z.string(),
-});
-
-const BranchInquirySchema = BaseInquirySchema.extend({
-	isBranchInquiry: z.literal(true),
-	branchId: z.string(),
-});
-
-const MainInquirySchema = BaseInquirySchema.extend({
-	isBranchInquiry: z.literal(false),
-	glaStepId: z.string(),
-	shouldOriginateBranch: z.boolean().default(false),
-	branches: z.array(BranchSchema).default([]),
-}).refine(
-	data =>
-		data.shouldOriginateBranch
-			? data.branches.length > 0
-			: true,
-	{
-		message: "At least one branch is required if shouldOriginateBranch is true",
-		path: ["branches"],
-	}
-);
-
-const InquirySchema = z.union([MainInquirySchema, BranchInquirySchema]);
-
-const ListInquiriesSchema = z.object({
-	inquiries: z.array(InquirySchema).default([]),
-});
-// #endregion
-
+const stepListData = [
+	{ stepId: '1', header: 'Step 1', goal: 'Enable Lift Mode to automatically "lift" smaller components from a block template for copy and paste.', description: 'Blocks are ready-made components that you can use to build your apps. They are fully responsive, accessible, and composable, meaning they are built using the same principles as the rest of the components in shadcn/ui.' },
+	{ stepId: '2', header: 'Step 2', goal: 'Enable Lift Mode to automatically "lift" smaller components from a block template for copy and paste.', description: 'Blocks are ready-made components that you can use to build your apps. They are fully responsive, accessible, and composable, meaning they are built using the same principles as the rest of the components in shadcn/ui.' },
+	{ stepId: '3', header: 'Step 3', goal: 'Enable Lift Mode to automatically "lift" smaller components from a block template for copy and paste.', description: 'Blocks are ready-made components that you can use to build your apps. They are fully responsive, accessible, and composable, meaning they are built using the same principles as the rest of the components in shadcn/ui.' },
+]
 
 const handleFormSubmission = (data) => console.log(data);
 
 const ListInquiries = () => {
 	return (
 		<WizardBody
+			listOfSteps={stepListData}
 			schema={ListInquiriesSchema}
+			fieldArrayName="inquiries"
+			fieldItemDefaultValues={MainInquiryDefaultValues}
 			onSubmit={handleFormSubmission}
 		>
-			<WizardSidebar heading="Steps"><StepList /></WizardSidebar>
+			<WizardSidebar heading="Steps" renderTree={StepList} />
 
-			<WizardFocusArea
-				fieldArrayName="inquiries"
-				fieldItemDefaultValues={MainInquiryDefaultValues} /* TODO: the name should be fieldArrayItemDefaultValues */
-				fallbackItemName='inquiry'
-			>
-				<ItemList enableSecondaryItems
+			<WizardFocusArea fallbackItemName='inquiry'>
+				<ItemList
+					filterMode='step'
+					propertyToFilterBy='glaStepId'
+					shouldEnableSecondaryItems
 					heading="Inquiries"
 					renderList={MainInquiryList} />
 				<ItemDetails
@@ -102,7 +47,7 @@ const ListInquiries = () => {
 				/>
 			</WizardFocusArea>
 
-			<WizardControl />
+			<WizardControl mode='step' />
 		</WizardBody>
 	);
 };

@@ -12,18 +12,18 @@ const responseTypes = [
     { value: 'text', label: 'Open Ended Question' },
 ]
 
-const ResponseConfig = () => {
+const ResponseConfig = ({ fieldNamePrefix }) => {
     return (
         <FormSectionContainer label='Response'>
             <ComboboxField
-                fieldName='responseType'
+                fieldName={`${fieldNamePrefix}.responseType`}
                 selectionType='Response Type'
                 options={responseTypes}
                 secondary
             />
-            <Choices />
-            <Branches />
-            <OpenEndedQuestion />
+            <Choices fieldNamePrefix={fieldNamePrefix} />
+            <Branches fieldNamePrefix={fieldNamePrefix} />
+            <OpenEndedQuestion fieldNamePrefix={fieldNamePrefix} />
         </FormSectionContainer>
     )
 }

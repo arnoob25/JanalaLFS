@@ -7,19 +7,21 @@ import {
 import { Badge } from "@/global_ui_components/ui/badge"
 import { TypographyLarge, TypographyP, } from "@/global_ui_components/ui/typography"
 import BranchList from "./BranchList"
-import * as s from "../../../AccordionStyles";
+import * as s from "../../../../helpers/AccordionStyles";
 
 
 const MainInquiryList = (
     append,
     data,
+    filteredData,
     selectedItemId,
     handleItemSelection,
     selectedSecondaryItemId,
     setSelectedSecondaryItemId,
     shouldDisableAccordionTrigger
 ) => {
-    const mainInquiries = data.filter(inquiry => inquiry.isBranchInquiry === false)
+
+    const mainInquiries = filteredData?.filter(inquiry => inquiry.isBranchInquiry === false)
 
     return (
         <Accordion type="single" value={selectedItemId} collapsible className={`${s.AccordionParentContainerStyle}`}>

@@ -24,11 +24,6 @@ const StepList = () => {
 
     const { selectedStepId, setSelectedStepId, getValues } = useContext(WizardBodyContext)
 
-    // TODO: maybe we can replace the effect with a custom hook
-    useEffect(() => {
-        setSelectedStepId(stepListData[1].id)
-    }, [setSelectedStepId, stepListData])
-
     const handleStepSelection = (currentStepId) => {
         setSelectedStepId(
             prevStepId => prevStepId === currentStepId ? null : currentStepId

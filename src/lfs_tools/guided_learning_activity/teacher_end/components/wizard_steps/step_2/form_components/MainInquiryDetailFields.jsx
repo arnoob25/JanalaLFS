@@ -23,7 +23,7 @@ const MainInquiryDetailFields = (fieldItemNamePrefix, selectedStepId) => {
       fieldName={`${fieldItemNamePrefix}.shouldOriginateBranch`}
       label="Originate Branches"
     />
-    <CollapsibleSection triggerFieldName={`${fieldItemNamePrefix}.shouldOriginateBranch`}>
+    <CollapsibleSection collapseControlFieldName={`${fieldItemNamePrefix}.shouldOriginateBranch`}>
       {/* TODO: add a field called branches where we can display errors 
         when for example when user didn't select any of the branches as shouldAttempt or, 
         created just one branch or too many */}

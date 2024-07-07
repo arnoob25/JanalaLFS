@@ -3,8 +3,8 @@ import { TypographyP } from "@/global_ui_components/ui/typography"
 import { Check, ChevronsUpDown } from "lucide-react"
 import { BranchInquiryList } from "./BranchInquiryList"
 import FieldArrayAddButton from "@/global_ui_components/form/FieldArrayAddButton"
-import { BranchInquiryDefaultValues } from "../ListInquiries"
 import { v4 as uuidv4 } from "uuid"
+import { BranchInquiryDefaultValues } from "@/lfs_tools/guided_learning_activity/teacher_end/helpers/WizardStepFormSchemas"
 
 const BranchList = (allInquiries, branches, selectedSecondaryItemId, setSelectedSecondaryItemId, append, shouldDisableAccordionTrigger) => {
 

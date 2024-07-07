@@ -3,24 +3,25 @@ import { useFieldArray } from "react-hook-form"
 import ChoiceField from "./ChoiceField"
 import CollapsibleFormSection from "@/global_ui_components/form/Collapsible"
 import FieldArrayAddButton from "@/global_ui_components/form/FieldArrayAddButton"
-import { branchDefaultValue } from "../../DesignInquiries"
+import { branchDefaultValue } from "@/lfs_tools/guided_learning_activity/teacher_end/helpers/WizardStepFormSchemas"
+
 //import { inquiryDetailsFormDefaultValues } from "../../DesignInquiries"
 
-const Branches = () => {
-    const defaultValue =  {}//inquiryDetailsFormDefaultValues.branches
+const Branches = ({ fieldNamePrefix }) => {
+    const defaultValue = {}//inquiryDetailsFormDefaultValues.branches
 
-    const { fields, append } = useFieldArray({ name: 'responseOptions.branches' })
+    const { fields, append } = useFieldArray({ name: `${fieldNamePrefix}.responseOptions.branches` })
 
     return (
-        <CollapsibleFormSection collapseControlFieldName='responseType' enumValueToMatch='branch'>
+        <CollapsibleFormSection collapseControlFieldName={`${fieldNamePrefix}.responseType`} enumValueToMatch='branch'>
             <FormSubSectionContainer>
                 {fields.map((field, index) => (
                     <ChoiceField
                         key={field.id}
                         label={fields.length > 1 ? `Branch ${index < 9 ? `0${index + 1}` : `${index + 1}`}` : null}
-                        textInputName={`responseOptions.branches.${index}.label`}
+                        textInputName={`${fieldNamePrefix}.responseOptions.branches.${index}.label`}
                         placeholder='Title of the branch'
-                        checkBoxName={`responseOptions.branches.${index}.shouldAttempt`}
+                        checkBoxName={`${fieldNamePrefix}.responseOptions.branches.${index}.shouldAttempt`}
                         checkboxLabel='Should attempt'
                     />
                 ))}

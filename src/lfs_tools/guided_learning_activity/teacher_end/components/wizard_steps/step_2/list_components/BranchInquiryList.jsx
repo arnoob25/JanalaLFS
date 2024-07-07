@@ -1,6 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/global_ui_components/ui/accordion"
 import { TypographyLarge, TypographyP } from "@/global_ui_components/ui/typography"
-import * as s from "../../../AccordionStyles";
+import * as s from "../../../../helpers/AccordionStyles";
 
 export const BranchInquiryList = (data, selectedSecondaryItemId, handleInquirySelection, shouldDisableAccordionTrigger) => {
 
